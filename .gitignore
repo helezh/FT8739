@@ -1,7 +1,7 @@
 #windows
 ininmap.ini
-/list
-/obj
+/list/*
+/obj/*
 *.hex
-/si
+/si/*
 
