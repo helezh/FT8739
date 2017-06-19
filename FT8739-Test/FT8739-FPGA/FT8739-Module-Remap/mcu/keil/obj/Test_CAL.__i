@@ -1,0 +1,1 @@
+"..\..\src\source\task\Test_CAL.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task) STRING(FAR) DEBUG PRINT(.\list\Test_CAL.lst) TABS (2) OBJECT(.\obj\Test_CAL.obj)

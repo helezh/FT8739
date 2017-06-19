@@ -1,0 +1,120 @@
+C251 COMPILER V5.54.0.0,  Test_Prom                                                        14/04/17  16:04:02  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Prom
+OBJECT MODULE PLACED IN .\obj\Test_Prom.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\source\task\Test_Prom.c XSMALL ROM(HUGE) OP
+                    -TIMIZE(9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task) ST
+                    -RING(FAR) DEBUG PRINT(.\list\Test_Prom.lst) TABS(2) OBJECT(.\obj\Test_Prom.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2013, FocalTech Systems (R)£¬All Rights Reserved.
+    3          *
+    4          * File Name: Test_Prom.c
+    5          *
+    6          *    Author: xinkunpeng
+    7          *
+    8          *   Created: 2013-04-22
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference: test PROM introduction:
+   13          * Version:
+   14          * 0.1:
+   15          *
+   16          *******************************************************************************/
+   17          
+   18          /*******************************************************************************
+   19          * 1.Included header files
+   20          *******************************************************************************/
+   21          #include "Test_Prom.h"
+   22          
+   23          #if _TEST_PROM_EN
+               /*******************************************************************************
+               * 2.Private constant and macro definitions using #define
+               *******************************************************************************/
+               #define PROM_START_ADDRESS      0xFD0000   //Prom start address
+               #define PROM_END_ADDRESS        0xFD0FFF   //Prom end address
+               #define PROM_LENGTH             1024*3///2  //0x80
+               
+               //UINT16 far *pRom;
+               //UINT16 XRAM ucRomTestBuf[PROM_LENGTH];
+               UINT8 far *pRom;
+               UINT8 XRAM ucRomTestBuf[PROM_LENGTH];
+               /*******************************************************************************
+               * 3.Private enumerations, structures and unions using typedef
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 4.Static variables
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 5.Global variable or extern global variabls/functions
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 6.Static function prototypes
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               *   Name:
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+C251 COMPILER V5.54.0.0,  Test_Prom                                                        14/04/17  16:04:02  PAGE 2   
+
+               void Test_Prom(void)
+               {
+                   UINT16 i;
+                   UINT8 t;
+                   DBG_MODE("\nprom test is start");
+                   pRom = PROM_START_ADDRESS;
+                   for (i = 0; i < PROM_LENGTH; i++)
+                   {
+                       ucRomTestBuf[i] = *pRom++;
+                   }
+                   for (i = 0; i < PROM_LENGTH; i++)
+                   {
+                       if (t%16 == 0)
+                       {
+                           t = 0;
+                           DBG_PROM("\n\r");
+                           DBG_PROM("%06x:",i);
+                       }
+                       t++;
+                       DBG_PROM("%02X ",ucRomTestBuf[i]);
+                       DelayMs(20);
+                   }
+                   DBG_MODE("\n\rprom test is end\n");
+               }
+               #endif
+   83          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

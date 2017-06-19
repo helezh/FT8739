@@ -1,0 +1,1 @@
+"..\..\src\source\driver\crckrmit.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\crckrmit.lst) TABS (2) OBJECT(.\obj\crckrmit.obj)

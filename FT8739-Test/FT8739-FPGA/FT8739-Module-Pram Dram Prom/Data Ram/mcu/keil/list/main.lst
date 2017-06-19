@@ -1,0 +1,409 @@
+C251 COMPILER V5.54.0.0,  main                                                             14/06/17  14:33:13  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE main
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\main.c XSMALL ROM(HUGE) OPTIMIZE(3,SPEED) B
+                    -ROWSE STRING(FAR) DEBUG PRINT(.\list\main.lst) TABS(2) OBJECT(.\obj\main.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2013, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: main.c
+    5          *
+    6          *    Author: xinkunpeng
+    7          *
+    8          *   Created: 2013-11-11
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference:
+   13          *
+   14          * Version: 0.2: Transplant from FT5412 by linjianjun
+   15          *******************************************************************************/
+   16          
+   17          /*******************************************************************************
+   18          * 1.Included header files
+   19          *******************************************************************************/
+   20          #include <intrins.h>
+   21          
+   22          /*******************************************************************************
+   23          * 2.Private constant and macro definitions using #define
+   24          *******************************************************************************/
+   25          #define DRAM data     // data can be mapped directly to the 251 data space
+   26          #define XRAM near     // xdata uses MOVX or MOV @DR56, use 251 near instead
+   27          #define PRAM near     // pdata uses MOVX Ri, use 251 near instead
+   28          #define CROM code     // code uses MOVC A, use 251 const instead
+   29          
+   30          typedef unsigned char  UINT8;
+   31          typedef unsigned short UINT16;
+   32          typedef unsigned long  UINT32;
+   33          
+   34          sfr CGUCON4 = 0xCC;
+   35          sfr P0BUF   = 0x80;
+   36          sfr P0DIR   = 0xAC;
+   37          sfr P0MOD   = 0xEB;
+   38          sfr P0SEL   = 0xEC;
+   39          sfr P1BUF   = 0x94;   /*P1Buf*/
+   40          sfr P1DIR   = 0xAD;   /*P1口方向配置，1:输出, 0:输入*/
+   41          sfr P1MOD   = 0xED;   /*0:P1 use as gpio;1:p1 use as function define*/
+   42          sfr P1SEL   = 0xEE;   /*0:P1 as OD port; 1:P1 as PUSH-PULL port*/
+   43          
+   44          
+   45          sbit P0_0 = P0BUF^0;
+   46          sbit P0_1 = P0BUF^1;
+   47          sbit P0_2 = P0BUF^2;
+   48          sbit P0_3 = P0BUF^3;
+   49          sbit P0_4 = P0BUF^4;
+   50          sbit P0_5 = P0BUF^5;
+   51          sbit P0_6 = P0BUF^6;
+   52          sbit P0_7 = P0BUF^7;
+   53          
+   54          sbit P1_0 = P1BUF^0;
+   55          sbit P1_1 = P1BUF^1;
+   56          sbit P1_2 = P1BUF^2;
+   57          sbit P1_3 = P1BUF^3;
+   58          sbit P1_4 = P1BUF^4;
+C251 COMPILER V5.54.0.0,  main                                                             14/06/17  14:33:13  PAGE 2   
+
+   59          sbit P1_5 = P1BUF^5;
+   60          sbit P1_6 = P1BUF^6;
+   61          sbit P1_7 = P1BUF^7;
+   62          
+   63          /*******************************************************************************
+   64          * 3.Private enumerations, structures and unions using typedef
+   65          *******************************************************************************/
+   66          
+   67          /*******************************************************************************
+   68          * 4.Static variables
+   69          *******************************************************************************/
+   70          #define XRAM_START_ADDRESS    0x0080
+   71          #define DRAM_START_ADDRESS    0x0000
+   72          #define DRAM_END_ADDRESS      0xA000//0xA000
+   73          #define DRAM_LENGTH_BYTE      (120 - 8)//定义数组没法定义到0x0000的，最前面只能定义到0x0008
+   74          #define XRAM_LENGTH_BYTE      (DRAM_END_ADDRESS-XRAM_START_ADDRESS)
+   75          #define XRAM_LENGTH_WORD      (XRAM_LENGTH_BYTE >> 1)
+   76          #define XRAM_LENGTH_DWORD     (XRAM_LENGTH_BYTE >> 2)
+   77          
+   78          #define _TEST_DRAM              0
+   79          #define _TEST_XRAM_BYTE         0
+   80          #define _TEST_XRAM_WORD         0
+   81          #define _TEST_XRAM_DWORD        1
+   82          
+   83          #define TEST_PATTERN1         0x55
+   84          #define TEST_PATTERN2         0xAA
+   85          #define TEST_PATTERN3         0x55AA
+   86          #define TEST_PATTERN4         0xAA55
+   87          #define TEST_PATTERN5         0x12345678//0x55AA55AA
+   88          #define TEST_PATTERN6         0xAA55AA55
+   89          
+   90          #if _TEST_DRAM
+               UINT8 XRAM ReadBackUINT8;
+               UINT8 DRAM g_ReadDramUINT8[DRAM_LENGTH_BYTE];  // DRAM test
+               #endif
+   94          
+   95          #if _TEST_XRAM_BYTE
+               UINT8 XRAM ReadBackUINT8;
+               UINT8 *g_ReadXramUINT8;  // XRAM test
+               #endif
+   99          
+  100          #if _TEST_XRAM_WORD
+               UINT16 XRAM ReadBackUINT16;
+               UINT16 * g_ReadXramUINT16;  // XRAM test
+               #endif
+  104          
+  105          #if _TEST_XRAM_DWORD
+  106          UINT32 XRAM ReadBackUINT32;
+  107          //UINT32 XRAM g_ReadDramUINT32[XRAM_LENGTH_DWORD];  // XRAM test
+  108          UINT32 * g_ReadXramUINT32;
+  109          #endif
+  110          
+  111          
+  112          /*******************************************************************************
+  113          * 5.Global variable or extern global variabls/functions
+  114          *******************************************************************************/
+  115          
+  116          /*******************************************************************************
+  117          * 6.Static function prototypes
+  118          *******************************************************************************/
+  119          
+  120          /*******************************************************************************
+  121          * Name: main
+  122          * Brief:
+  123          * Input:
+  124          * Output:
+C251 COMPILER V5.54.0.0,  main                                                             14/06/17  14:33:13  PAGE 3   
+
+  125          * Return:
+  126          * Note:不要使用函数嵌套，此时需要用到堆栈，堆栈分配在XRAM中，遍历XRAM的时候必定会
+  127                  对堆栈中的内容操作.使用函数嵌套，可能会在调用函数后出栈时找不到进入函数时
+  128                  的寄存器配置，导致系统跑飞。
+  129          *******************************************************************************/
+  130          
+  131          void main(void)
+  132          {
+  133   1          UINT16 XRAM i_tmp;
+  134   1      
+  135   1          CGUCON4 = 0x00;
+  136   1      
+  137   1          P0MOD   = 0x00;
+  138   1          P0DIR   = 0xFF;
+  139   1          P0SEL   = 0xFF;
+  140   1          P0BUF   = 0x00;
+  141   1      
+  142   1          P1MOD   = 0x00;
+  143   1          P1DIR   = 0xFF;
+  144   1          P1SEL   = 0xFF;
+  145   1          P1BUF   = 0xFF;
+  146   1      #if 0
+               
+                   while(1)
+                   {
+                       //P0_2 = 1;
+                       #if 1
+                       
+                       for(i_tmp = 0;i_tmp < XRAM_LENGTH_BYTE; i_tmp++);
+                           
+                       P0_7 = ~P0_7;
+                       #else
+                       P0_5 = 1;
+                       P0_5 = 0;
+                       #endif
+                   }
+               
+               #else    
+  163   1          while(1)
+  164   1         {
+  165   2      
+  166   2      #if _TEST_DRAM
+                   for (i_tmp = 0; i_tmp < DRAM_LENGTH_BYTE; i_tmp++)
+                   {
+                       if (!(i_tmp&0x01))
+                       {
+                           g_ReadDramUINT8[i_tmp] = TEST_PATTERN1;
+                       }
+                       else
+                       {
+                           g_ReadDramUINT8[i_tmp] = TEST_PATTERN2;
+                       }
+                   }
+                   for (i_tmp = 0; i_tmp < DRAM_LENGTH_BYTE; i_tmp++)
+                   {
+                       ReadBackUINT8 = g_ReadDramUINT8[i_tmp];
+               
+                       if (!(i_tmp&0x01))  //奇地址校验
+                       {
+                           if (ReadBackUINT8 ==  TEST_PATTERN1)
+                           {
+                               P0_0 = ~P0_0;
+                           }
+                           else 
+                           {
+                               P0_0 = 0;
+C251 COMPILER V5.54.0.0,  main                                                             14/06/17  14:33:13  PAGE 4   
+
+                               P0_1 = 1;
+                               P0_6 = 1;
+                               while(1);
+                           }
+                       }
+                       else  //偶地址校验
+                       {
+                           if (ReadBackUINT8 ==  TEST_PATTERN2)
+                           {
+                               P0_1 = ~P0_1;
+                           }
+                           else
+                           {
+                               P0_0 = 1;
+                               P0_1 = 0;
+                               P0_6 = 1;
+                               while(1);
+                           }
+                       }
+                   }
+               #endif
+  212   2      
+  213   2      #if _TEST_XRAM_BYTE
+                   g_ReadXramUINT8 = XRAM_START_ADDRESS;
+                   for (i_tmp = 0; i_tmp < XRAM_LENGTH_BYTE; i_tmp++)
+                   {
+                       if (!(i_tmp&0x01))
+                       {
+                           g_ReadXramUINT8[i_tmp] = TEST_PATTERN1;
+                       }
+                       else
+                       {
+                           g_ReadXramUINT8[i_tmp] = TEST_PATTERN2;
+                       }
+                   }
+                   g_ReadXramUINT8 = XRAM_START_ADDRESS;
+                   for (i_tmp = 0; i_tmp < XRAM_LENGTH_BYTE; i_tmp++)
+                   {
+                       ReadBackUINT8 = g_ReadXramUINT8[i_tmp];
+                       if (!(i_tmp&0x01))
+                       {
+                           if (ReadBackUINT8 ==  TEST_PATTERN1)
+                           {
+                               P0_0 = ~ P0_0;
+                           }
+                           else 
+                           {
+                               P0_0 = 0;
+                               P0_1 = 1;
+                               P0_6 = 1;
+                               while(1);
+                           }
+                       }
+                       else
+                       {
+                           if (ReadBackUINT8 ==  TEST_PATTERN2)
+                           {
+                               P0_1 = ~P0_1;
+                           }
+                           else 
+                           {
+                               P0_0 = 1;
+                               P0_1 = 0;
+                               P0_6 = 1;                
+                               while(1);
+                           }
+C251 COMPILER V5.54.0.0,  main                                                             14/06/17  14:33:13  PAGE 5   
+
+                       }
+                   }
+               
+               #endif
+  261   2      #if _TEST_XRAM_WORD
+                   g_ReadXramUINT16 = XRAM_START_ADDRESS;
+                   for (i_tmp = 0; i_tmp < XRAM_LENGTH_WORD; i_tmp++)
+                   {
+                       if (!(i_tmp&0x01))
+                       {
+                           g_ReadXramUINT16[i_tmp] = TEST_PATTERN3;
+                       }
+                       else
+                       {
+                           g_ReadXramUINT16[i_tmp] = TEST_PATTERN4;
+                       }
+                   }
+                   
+                   g_ReadXramUINT16 = XRAM_START_ADDRESS;    
+                   for (i_tmp = 0; i_tmp < XRAM_LENGTH_WORD; i_tmp++)
+                   {
+                       ReadBackUINT16 = g_ReadXramUINT16[i_tmp];
+               
+                       if (!(i_tmp&0x01))
+                       {
+                           if (ReadBackUINT16 ==  TEST_PATTERN3)
+                           {
+                               P0_0 = ~P0_0;
+                           }
+                           else 
+                           {
+                               P0_0 = 0;
+                               P0_1 = 1;
+                               P0_6 = 1;                
+                               while(1);
+                           }
+                       }
+                       else
+                       {
+                           if (ReadBackUINT16 ==  TEST_PATTERN4)
+                           {
+                               P0_1 = ~P0_1;
+                           }
+                           else 
+                           {
+                               P0_0 = 1;
+                               P0_1 = 0;
+                               P0_6 = 1;                
+                               while(1);
+                           }
+                       }
+                   }
+               #endif
+  310   2      #if _TEST_XRAM_DWORD
+  311   2          g_ReadXramUINT32 = XRAM_START_ADDRESS;
+  312   2          for (i_tmp = 0; i_tmp < XRAM_LENGTH_DWORD; i_tmp++)
+  313   2          {
+  314   3              if (!(i_tmp&0x01))
+  315   3              {
+  316   4                  g_ReadXramUINT32[i_tmp] = TEST_PATTERN5;
+  317   4              }
+  318   3              else
+  319   3              {
+  320   4                  g_ReadXramUINT32[i_tmp] = TEST_PATTERN6;
+  321   4              }
+  322   3          }
+C251 COMPILER V5.54.0.0,  main                                                             14/06/17  14:33:13  PAGE 6   
+
+  323   2          
+  324   2          g_ReadXramUINT32 = XRAM_START_ADDRESS;    
+  325   2          for (i_tmp = 0; i_tmp < XRAM_LENGTH_DWORD; i_tmp++)
+  326   2          {
+  327   3              ReadBackUINT32 = g_ReadXramUINT32[i_tmp];
+  328   3      
+  329   3              if (!(i_tmp&0x01))
+  330   3              {
+  331   4                  if (ReadBackUINT32 ==  TEST_PATTERN5)
+  332   4                  {
+  333   5                      P0_0 = ~P0_0;
+  334   5                  }
+  335   4                  else 
+  336   4                  {
+  337   5                      P0_0 = 0;
+  338   5                      P0_1 = 1;
+  339   5                      P0_6 = 1;                
+  340   5                      while(1);
+  341   5                  }
+  342   4              }
+  343   3              else
+  344   3              {
+  345   4                  if (ReadBackUINT32 ==  TEST_PATTERN6)
+  346   4                  {
+  347   5                      P0_1 = ~P0_1;
+  348   5                  }
+  349   4                  else 
+  350   4                  {
+  351   5                      P0_0 = 1;
+  352   5                      P0_1 = 0;
+  353   5                      P0_6 = 1;                
+  354   5                      while(1);
+  355   5                  }
+  356   4              }
+  357   3          }
+  358   2      #endif
+  359   2      
+  360   2          P0_7 = ~ P0_7;
+  361   2          }
+  362   1      #endif
+  363   1      
+  364   1      }
+  365          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =       223     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =         8     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

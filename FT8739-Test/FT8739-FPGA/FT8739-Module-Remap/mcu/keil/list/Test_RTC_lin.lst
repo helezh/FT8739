@@ -1,0 +1,403 @@
+C251 COMPILER V5.54.0.0,  Test_RTC_lin                                                     31/03/17  19:58:44  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_RTC_lin
+OBJECT MODULE PLACED IN .\obj\Test_RTC_lin.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\source\task\Test_RTC_lin.c XSMALL ROM(HUGE)
+                    - OPTIMIZE(9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task)
+                    - STRING(FAR) DEBUG PRINT(.\list\Test_RTC_lin.lst) TABS(2) OBJECT(.\obj\Test_RTC_lin.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2013-2014, FocalTech Systems (R)£¬All Rights Reserved.
+    3          *
+    4          * File Name: Test_RTC.c
+    5          *
+    6          *    Author: xinkunpeng
+    7          *
+    8          *   Created: 2014-04-18
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference:
+   13          *******************************************************************************/
+   14          
+   15          /*******************************************************************************
+   16          * 1.Included header files
+   17          *******************************************************************************/
+   18          #include "Test_RTC.h"
+   19          
+   20          #if _TEST_RTC_EN
+   21           
+   22          /*******************************************************************************
+   23          * 2.Private constant and macro definitions using #define
+   24          *******************************************************************************/
+   25          /* RTC */
+   26          #define RTC_MS        32
+   27          #define RTC_N_MS     (RTC_MS*100)//100ms
+   28          
+   29          /* time0 */
+   30          #define T0MODE                            0x02    //¸ßËÄÎ»ÎªT1,µÍËÄÎ»ÎªT0
+   31          #define IRQTIME0_VALUE                    10       //(MS)
+   32          #define IRQTIME0_LOAD()                   TMOD|=T0MODE;TH0=IRQTIME0_VALUE;TL0=0
+   33          
+   34          #define TEST_RTC_WK                       0//0:²»²âÊÔrtc wk£»1 ²âÊÔrtc wk
+   35          #define INT1_TRI_MODE                     1// 0:LOW level triggered 1:falling edge
+   36          
+   37          #define AUTO_MODE                         0//0:²»¿ªÆôAuto_mode  1:¿ªÆôAuto_Mode
+   38          #define RTC_SLOT_NUM                      9
+   39          #define TEST_WAKE_EN_SUB                  1
+   40          
+   41          //ÒÔÏÂÈýÖÖÄ£Ê½×î¶àÖ»ÄÜ½øÈëÒ»ÖÖ
+   42          #define STANDBY_MODE                      0//0:²»½øÈëstandy 1:½øÈëstandy
+   43          #define STOP_MODE                         0// 0:²»½øÈëstop   1:½øÈëstop
+   44          #define IDLE_MODE                         1//0:²»½øÈëidle     1:½øÈëidle
+   45          
+   46          /*******************************************************************************
+   47          * 3.Private enumerations, structures and unions using typedef
+   48          *******************************************************************************/
+   49          
+   50          /*******************************************************************************
+   51          * 4.Static variables
+   52          *******************************************************************************/
+   53          UINT8 g_nWKsrc     = 0x00; 
+   54          BOOLEAN g_bWKsrcOut = 1;
+   55          BOOLEAN g_bRtcFlag  = 0;
+   56          BOOLEAN g_bTimerFlag = 0;
+   57          UINT16 m_usCnt = 0;
+C251 COMPILER V5.54.0.0,  Test_RTC_lin                                                     31/03/17  19:58:44  PAGE 2   
+
+   58          /*******************************************************************************
+   59          * 5.Global variable or extern global variabls/functions
+   60          *******************************************************************************/
+   61          
+   62          /*******************************************************************************
+   63          * 6.Static function prototypes
+   64          *******************************************************************************/
+   65          
+   66          /*******************************************************************************
+   67          *   Name:  DrvRTCInit
+   68          *  Brief:  RTC³õÊ¼»¯
+   69          *          1.Ê±ÖÓÊÇ¹Ì¶¨32K, 1Ãë32000´Î£¬1msÊÇ32´Î = 0x20
+   70          *          2.¼ÆÊýÆ÷Îª16Î»£¬--µ½0£¬²úÉúÖÐ¶Ï
+   71          *          3.×î´ó¶¨Ê±Ê±¼ä: t = 0x10000/0x20 = 65536/32 = 2048ms
+   72          *  Input:
+   73          * Output:
+   74          * Return:
+   75          *******************************************************************************/
+   76          void DrvRTCInit(void)
+   77          {
+   78   1          // 32KÊ±ÖÓÊ¹ÄÜ
+   79   1          CLK_WP = 1;
+   80   1          EN_32K = 1;
+   81   1          CKEN_32KRTC = 1;
+   82   1          
+   83   1          // rtc clk enable
+   84   1          RTCCKEN = 1;
+   85   1      
+   86   1          // clear rtc
+   87   1          RTC_WP  = 1;
+   88   1          RTC_CLR = 1;
+   89   1      
+   90   1          // ÉèÖÃRTC¼ÆÊýÊ±¼ä
+   91   1          #if 1
+   92   1          RTCIVH  = RTC_N_MS>>8;
+   93   1          RTCIVL  = RTC_N_MS;
+   94   1          #else
+                   RTCIVH  = 0;
+                   RTCIVL  = 32;    
+                   #endif
+   98   1         
+   99   1          #if AUTO_MODE  
+                   RTC_AUTO_MODE = 1;
+                   #endif
+  102   1      
+  103   1          DBG_RTC("\nRTCCON:%x",RTCCON);
+  104   1      
+  105   1      
+  106   1          //RTCÖÐ¶Ï×÷ÎªÖÐ¶Ï0
+  107   1          #if TEST_WAKE_EN_SUB
+  108   1          RTC_WKEN_SUB = 1;
+  109   1          RTC_WKEN     = 0;
+  110   1          RTCSLN       = RTC_SLOT_NUM;
+  111   1          #else
+                   RTC_WKEN     = 1;  // select rtc  
+                   RTC_WKEN_SUB = 0;
+                   RTCSLN = RTC_SLOT_NUM;    
+                   #endif
+  116   1      
+  117   1      
+  118   1          #if TEST_RTC_WK
+                   RTC_CNT_WKEN = 1;  // RTC wake en  
+                   #endif
+  121   1       
+  122   1      
+  123   1          DBG_RTC("\nRTC:%02x",RTC_N_MS);
+C251 COMPILER V5.54.0.0,  Test_RTC_lin                                                     31/03/17  19:58:44  PAGE 3   
+
+  124   1          DBG_RTC("\nRTC_IVH:%02X,RTC_IVL:%02X",RTCIVH,RTCIVL);
+  125   1          DBG_RTC("\ninit RTC OK!");
+  126   1      }
+  127          
+  128          /*******************************************************************************
+  129          *   Name:
+  130          *  Brief:
+  131          *  Input:
+  132          * Output:
+  133          * Return: INT0ÖÐ¶Ï³õÊ¼»¯º¯Êý
+  134          *******************************************************************************/
+  135          void ExternInt0Init(void)
+  136          {
+  137   1          IT0   = 0;   // 0:LOW level triggered 1:falling edge
+  138   1      
+  139   1          IPL0  = 0;
+  140   1          IPH0  = 0;
+  141   1      
+  142   1          IPLX0 = 1;
+  143   1          IPHX0 = 1;  //ÖÐ¶Ï0ÓÅÏÈ¼¶±ØÐë×î¸ß
+  144   1      
+  145   1          EX0   = 1;
+  146   1      }
+  147          
+  148          /*******************************************************************************
+  149          *   Name:
+  150          *  Brief:
+  151          *  Input:
+  152          * Output:
+  153          * Return: INT1ÖÐ¶Ï³õÊ¼»¯º¯Êý
+  154          *******************************************************************************/
+  155          void ExternInt1Init(void)
+  156          {
+  157   1          IT1 = INT1_TRI_MODE;   // 0:LOW level triggered 1:falling edge
+  158   1          IPHX1 = 1;
+  159   1          IPLX1 = 1;
+  160   1          EX1   = 1;       
+  161   1          EA    = 1;
+  162   1      }
+  163          
+  164          /*******************************************************************************
+  165          *   Name:
+  166          *  Brief:
+  167          *  Input:
+  168          * Output:
+  169          * Return: INT0ÖÐ¶ÏÏìÓ¦º¯Êý
+  170          *******************************************************************************/
+  171          void Exint0_IRQHandler(void) interrupt 0
+  172          {
+  173   1          if (g_bWKsrcOut)
+  174   1          {
+  175   2              g_nWKsrc = IWKSTA;
+  176   2              g_bWKsrcOut = FALSE;
+  177   2          }
+  178   1      
+  179   1          if(RTC_CNT_INT)
+  180   1          {
+  181   2              //P0_6 = ~P0_6;
+  182   2              RTC_CNT_WKEN = 0;
+  183   2              //RTC_WP  = 1;
+  184   2              //RTC_CLR = 1;        
+  185   2              DBG_FLOW("\n\rrtc int0");
+  186   2          }
+  187   1      }
+  188          
+  189          /*******************************************************************************
+C251 COMPILER V5.54.0.0,  Test_RTC_lin                                                     31/03/17  19:58:44  PAGE 4   
+
+  190          *   Name:
+  191          *  Brief:
+  192          *  Input:
+  193          * Output:
+  194          * Return: INT1ÖÐ¶ÏÏìÓ¦º¯Êý.
+  195          *******************************************************************************/
+  196          void Exint1_IRQHandler(void) interrupt 2
+  197          {   
+  198   1          //if(RTC_CNT_INT)//²»ÄÜÓÃRTC_CNT_INTÅÐ¶Ï£¬½øÈëint0ÓÃ¸Ã±êÖ¾ÅÐ¶ÏÁË£¬½øÈëint1Ê±¸Ã±êÖ¾ÒÑ¾­Îª0
+  199   1          {
+  200   2              //P0_7 = ~ P0_7;
+  201   2              
+  202   2              //Çårtc
+  203   2              #if !AUTO_MODE//AUTO MODE²»ÄÜÐ´CLR¡£ÒòÎªÐ´CLRÊ±»á¹Ø±ÕRTCÄÚ²¿µÄgating£¬Ã»·¨ÖØ¸´½øÈëRTCÖÐ¶Ï¡£
+  204   2              RTC_WP  = 1;
+  205   2              RTC_CLR = 1;
+  206   2              #endif
+  207   2              
+  208   2              #if !INT1_TRI_MODE//Èç¹ûÊÇµÍµçÆ½´¥·¢Ä£Ê½£¬ÐèÒªµÈ´ýRTC_CNT_INTÇå0£¬·ñÔò»á½øÈë¼¸´ÎÖÐ¶Ï£¬¸Ã±êÖ¾³ÖÐøÊ
+             -±¼äÎª1¸öRTC CLK
+                       while(RTC_CNT_INT);
+                       #endif
+  211   2              
+  212   2              DBG_FLOW("\n\r rtc int1");
+  213   2              g_bRtcFlag = TRUE;
+  214   2      
+  215   2              #if TEST_RTC_WK
+                           RTC_CNT_WKEN = 1;
+                       #endif
+  218   2          }
+  219   1      }
+  220          
+  221          /*******************************************************************************
+  222          *   Name:
+  223          *  Brief:
+  224          *  Input:
+  225          * Output:
+  226          * Return: timer0 ¶¨Ê±Æ÷ÖÐ¶ÏÏìÓ¦º¯Êý
+  227          *******************************************************************************/
+  228          void Timer0_IRQHandler(void) interrupt  1
+  229          {
+  230   1          m_usCnt++;
+  231   1          g_bTimerFlag = 1;
+  232   1          DBG_FLOW("\n1");
+  233   1      }
+  234          
+  235          /*******************************************************************************
+  236          *   Name: DrvSysTimer0_Init
+  237          *  Brief: ¶¨Ê±1ms
+  238          *  Input:
+  239          * Output:
+  240          * Return: timer0 ¶¨Ê±Æ÷³õÊ¼»¯º¯Êý
+  241          *******************************************************************************/
+  242          void DrvSysTimer0_Init(void)
+  243          {
+  244   1          TR0 = 0;     /* Stop Timer Counter */
+  245   1          IRQTIME0_LOAD();
+  246   1      
+  247   1          TR0 = 1;
+  248   1          ET0 = 1;     // enable timer interrupt
+  249   1      }
+  250          
+  251          /*******************************************************************************
+  252          *   Name: Test_RTC
+  253          *  Brief:
+  254          *  Input:
+C251 COMPILER V5.54.0.0,  Test_RTC_lin                                                     31/03/17  19:58:44  PAGE 5   
+
+  255          * Output:
+  256          * Return:
+  257          *******************************************************************************/
+  258          void Test_RTC(void)
+  259          {
+  260   1          DrvRTCInit();
+  261   1      
+  262   1          DrvSysTimer0_Init();
+  263   1          #if TEST_RTC_WK
+                   ExternInt0Init();
+                   #endif
+  266   1      
+  267   1          ExternInt1Init();
+  268   1      
+  269   1          #if 0
+                   P0_7 = 1;
+                   P0_6 = 1;
+                   #endif
+  273   1          
+  274   1          //RTC_WP    = 1;
+  275   1          //RTC_START = 1;
+  276   1      
+  277   1          #if AUTO_MODE
+                   RTC_WP    = 1;
+                   RTC_START = 1;
+                   #endif
+  281   1      
+  282   1         
+  283   1          #if 1
+  284   1          while (1)
+  285   1          {
+  286   2      #if 0    
+                       RTC_WKEN = 0;
+                       RTC_WKEN_SUB = 1;
+                       EX1 = 0;
+               
+                       IF1 = 0;
+                       DBG_FLOW("\nRTC_CNT_INT:%02x,IE1:%02x",RTC_CNT_INT,IF1);
+               #endif        
+  294   2              #if !AUTO_MODE
+  295   2      #if 0        
+                       g_bTimerFlag = 0;
+                       RTC_WP    = 1;
+                       while(g_bTimerFlag);
+                       RTC_START = 1;
+               #else
+  301   2              RTC_WP    = 1;
+  302   2              RTC_START = 1;
+  303   2      #endif
+  304   2              #endif
+  305   2      #if 0
+                       while(!RTC_CNT_INT);
+                       while(1)
+                       {
+                           DBG_FLOW("\nRTC_CNT_INT:%02x",RTC_CNT_INT);
+                           DBG_FLOW("\nIE1:%02x",IF1);
+                       }
+               #else        
+  313   2            
+  314   2              #if TEST_RTC_WK
+                       RTC_CNT_WKEN = 1;  // RTC wake en  
+                       #endif 
+  317   2            
+  318   2              g_bRtcFlag  = FALSE;
+  319   2              m_usCnt     = 0;
+  320   2              g_bWKsrcOut = 1;
+C251 COMPILER V5.54.0.0,  Test_RTC_lin                                                     31/03/17  19:58:44  PAGE 6   
+
+  321   2      
+  322   2              #if  IDLE_MODE
+  323   2              DBG_RTC("\njoin in Idle");
+  324   2              DelayMs(50);
+  325   2              DrvSysPowerIdle();
+  326   2              DBG_RTC("\n exit power");        
+  327   2              #endif
+  328   2      
+  329   2              #if STOP_MODE
+                       DBG_RTC("\njoin in Stop");
+                       DelayMs(50);        
+                       DrvSysPowerStop();
+                       DBG_RTC("\n exit power");        
+                       #endif
+  335   2      
+  336   2              #if STANDBY_MODE
+                       DBG_RTC("\njoin in Standby");
+                       DelayMs(50);        
+                       DrvSysPowerStandby();
+                       DBG_RTC("\n exit power");
+                       #endif
+  342   2              while (!g_bRtcFlag);
+  343   2              DBG_RTC("\n\rRTC time=%dms",m_usCnt);        
+  344   2              if (g_bRtcFlag && g_bWKsrcOut == FALSE)
+  345   2              {
+  346   3                  DBG_RTC("\n\rWK src:%x",g_nWKsrc);
+  347   3              }
+  348   2              
+  349   2              //DelayMs(2000);
+  350   2      #endif
+  351   2          }
+  352   1          #endif
+  353   1      }
+  354          #endif
+  355          
+  356          
+  357          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =        18     ------
+  ecode size           =       472     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =         3     ------
+  bit size             =         3     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       154     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

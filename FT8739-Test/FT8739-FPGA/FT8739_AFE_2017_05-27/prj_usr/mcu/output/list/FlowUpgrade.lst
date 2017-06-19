@@ -1,0 +1,136 @@
+C251 COMPILER V5.54.0.0,  FlowUpgrade                                                      26/05/17  20:21:04  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE FlowUpgrade
+OBJECT MODULE PLACED IN ..\output\obj\FlowUpgrade.obj
+COMPILER INVOKED BY: D:\software\Keil\C251\BIN\C251.EXE ..\..\src\source\flow\FlowUpgrade.c SMALL ROM(HUGE) OPTIMIZE(9,S
+                    -PEED) REGFILE(..\output\obj\mcu.ORC) BROWSE INCDIR(..\..\src\include;..\..\src\include\app;..\..\src\include\flow;..\..\
+                    -src\include\driver\;..\..\src\include\lib_drv\;..\..\src\include\config;..\..\src\include\Debug) DEFINE(__FT8836__) DEBU
+                    -G PRINT(..\output\list\FlowUpgrade.lst) TABS(2) OBJECT(..\output\obj\FlowUpgrade.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2013, FocalTech Systems (R)£¬All Rights Reserved.
+    3          *
+    4          * File Name: FlowUpgrade.c
+    5          *
+    6          *    Author: 
+    7          *
+    8          *   Created: 2013-02-01
+    9          *
+   10          *  Abstract: Please describe what the module complete, what relationship with
+   11          *            other modules, etc.
+   12          *
+   13          * Reference:
+   14          *
+   15          *******************************************************************************/
+   16          
+   17          /*******************************************************************************
+   18          * Included header files
+   19          *******************************************************************************/
+   20          //#include "FlowUpgrade.h"
+   21          #include "AppHostComm.h"
+   22          #include "DrvSysCtrl.h"
+   23          #include "AppSysCtrl.h"
+   24          
+   25          /*******************************************************************************
+   26          * Private constant and macro definitions using #define
+   27          *******************************************************************************/
+   28          
+   29          /*******************************************************************************
+   30          * Private enumerations, structures and unions using typedef
+   31          *******************************************************************************/
+   32          
+   33          /*******************************************************************************
+   34          * Static variables
+   35          *******************************************************************************/
+   36          
+   37          /*******************************************************************************
+   38          * Global variable or extern global variabls/functions
+   39          *******************************************************************************/
+   40          
+   41          /*******************************************************************************
+   42          * Static function prototypes
+   43          *******************************************************************************/
+   44          
+   45          #if _PRAM_UPGRADE_EN
+               /*******************************************************************************
+               *   Name: FlowUpgrade
+               *  Brief: Upgrad firmware flow, check if entering legal upgrade steps, then goto 
+               *         internal bootloader.
+               *         1. App will enter into SS_UPGRADE1 state when host send 0xaa to
+               *         register 0xFC.
+               *         2. App will enter into SS_UPGRADE2 state when host send 0x55 to
+               *         register 0xFC. After that, if last state is S_UPGRADE1, system
+               *         goes to upgrade firware.
+               *  Input: None
+               * Output: None
+C251 COMPILER V5.54.0.0,  FlowUpgrade                                                      26/05/17  20:21:04  PAGE 2   
+
+               * Return: None
+               *******************************************************************************/
+               void FlowUpgrade(void)
+               {
+                   static UINT8 XRAM g_LastState = SS_WORK;
+               
+                   if (g_State == SS_UPGRADE1)
+                   {
+                       g_LastState = SS_UPGRADE1;
+                   }
+                   else if (g_State == SS_UPGRADE2)
+                   {
+                       DBG_FLOW("\nUpgrade2");    
+                       if (g_LastState == SS_UPGRADE1)
+                       {
+                           g_LastState = SS_UPGRADE2;
+                           /* Delay a short time for sending ack */
+                           DelayMs(1);
+                           DrvGoToUpgrade();
+                       }
+                       else
+                       {
+                           g_LastState = SS_WORK;
+                       }
+                   }
+                   else if (g_State == SS_SW_RESET)
+                   {
+                       if (g_LastState == SS_UPGRADE1)
+                       {
+                           g_LastState = SS_SW_RESET;
+                           /* Delay a short time for sending ack */
+                           DelayMs(1);
+                           DrvSwReset();
+                       }
+                   }
+                   else
+                   {
+                       g_LastState = SS_WORK;
+                   }
+               }
+               #endif
+   98          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

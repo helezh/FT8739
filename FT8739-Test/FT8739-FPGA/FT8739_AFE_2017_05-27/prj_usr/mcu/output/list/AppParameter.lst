@@ -1,0 +1,85 @@
+C251 COMPILER V5.54.0.0,  AppParameter                                                     26/05/17  20:21:05  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE AppParameter
+OBJECT MODULE PLACED IN ..\output\obj\AppParameter.obj
+COMPILER INVOKED BY: D:\software\Keil\C251\BIN\C251.EXE ..\..\src\source\app\AppParameter.c SMALL ROM(HUGE) OPTIMIZE(9,S
+                    -PEED) REGFILE(..\output\obj\mcu.ORC) BROWSE INCDIR(..\..\src\include;..\..\src\include\app;..\..\src\include\flow;..\..\
+                    -src\include\driver\;..\..\src\include\lib_drv\;..\..\src\include\config;..\..\src\include\Debug) DEFINE(__FT8836__) DEBU
+                    -G PRINT(..\output\list\AppParameter.lst) TABS(2) OBJECT(..\output\obj\AppParameter.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2013, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: AppParameter.c
+    5          *
+    6          *    Author: lisen
+    7          *
+    8          *   Created: 2016-12-26
+    9          *
+   10          *  Abstract:
+   11          *  1.Description:
+   12          *  2.参数设置及其相关函数
+   13          *
+   14          * Reference:
+   15          *
+   16          * Version:
+   17          *
+   18          *******************************************************************************/
+   19          
+   20          /*******************************************************************************
+   21          * 1.Included header files
+   22          *******************************************************************************/
+   23          #include "AppParameter.h"
+   24          
+   25          /*******************************************************************************
+   26          * 2.Private constant and macro definitions using #define
+   27          *******************************************************************************/
+   28          
+   29          
+   30          /*******************************************************************************
+   31          * 3.Private enumerations, structures and unions using typedef
+   32          *******************************************************************************/
+   33          
+   34          /*******************************************************************************
+   35          * 4.Static variables
+   36          *******************************************************************************/
+   37          
+   38          /*******************************************************************************
+   39          * 5.Global variable or extern global variabls/functions
+   40          *******************************************************************************/
+   41          // System Parameters Accessed by Host
+   42          UNION_SystemParameter XRAM g_stSysParam;
+   43          
+   44          /*******************************************************************************
+   45          * 6.Static function prototypes
+   46          *******************************************************************************/
+   47          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+C251 COMPILER V5.54.0.0,  AppParameter                                                     26/05/17  20:21:05  PAGE 2   
+
+  xdata-const size     =    ------     ------
+  edata size           =        90     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

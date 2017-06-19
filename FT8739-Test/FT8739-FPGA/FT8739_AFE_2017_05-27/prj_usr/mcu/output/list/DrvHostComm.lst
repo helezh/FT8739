@@ -1,0 +1,112 @@
+C251 COMPILER V5.54.0.0,  DrvHostComm                                                      26/05/17  20:21:06  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE DrvHostComm
+OBJECT MODULE PLACED IN ..\output\obj\DrvHostComm.obj
+COMPILER INVOKED BY: D:\software\Keil\C251\BIN\C251.EXE ..\..\src\source\driver\DrvHostComm.c SMALL ROM(HUGE) OPTIMIZE(9
+                    -,SPEED) REGFILE(..\output\obj\mcu.ORC) BROWSE INCDIR(..\..\src\include;..\..\src\include\app;..\..\src\include\flow;..\.
+                    -.\src\include\driver\;..\..\src\include\lib_drv\;..\..\src\include\config;..\..\src\include\Debug) DEFINE(__FT8836__) DE
+                    -BUG PRINT(..\output\list\DrvHostComm.lst) TABS(2) OBJECT(..\output\obj\DrvHostComm.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2013-2014, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: DrvHostComm.c
+    5          *
+    6          *    Author: 
+    7          *
+    8          *   Created: 2014-01-02
+    9          *
+   10          *  Abstract: 
+   11          *
+   12          * Reference:
+   13          *
+   14          *******************************************************************************/
+   15          
+   16          /*******************************************************************************
+   17          * 1.Included header files
+   18          *******************************************************************************/
+   19          #include "CfgGlobal.h"
+   20          #include "DrvHostComm.h"
+   21          #include "CfgAutoTune.h"
+   22          
+   23          /*******************************************************************************
+   24          * 2.Private constant and macro definitions using #define
+   25          *******************************************************************************/
+   26          
+   27          /*******************************************************************************
+   28          * 3.Private enumerations, structures and unions using typedef
+   29          *******************************************************************************/
+   30          
+   31          /*******************************************************************************
+   32          * 4.Static variables
+   33          *******************************************************************************/
+   34          
+   35          /*******************************************************************************
+   36          * 5.Global variable or extern global variabls/functions
+   37          *******************************************************************************/
+   38          
+   39          /*******************************************************************************
+   40          * 6.Static function prototypes
+   41          *******************************************************************************/
+   42          
+   43          /*******************************************************************************
+   44          *   Name: DrvHostCommInit
+   45          *  Brief: Initialize communication port at hardware level based on pre-defined
+   46          *         macro _COMM_HOST_PORT
+   47          *  Input: None
+   48          * Output: None
+   49          * Return: None
+   50          *******************************************************************************/
+   51          void DrvHostCommInit(void)
+   52          {
+   53   1          I2CCKEN = 1;
+   54   1          
+   55   1          I2CBUF = 0;
+   56   1          I2CRI  = 0;
+C251 COMPILER V5.54.0.0,  DrvHostComm                                                      26/05/17  20:21:06  PAGE 2   
+
+   57   1          I2CTI  = 0;
+   58   1      
+   59   1          /* 设置设备地址 */
+   60   1          I2CADDR = I2C_SLAVE_ADDR & 0xFE;
+   61   1      
+   62   1          /* I2C stop enable */
+   63   1          I2C_STOP_EI = 1; 
+   64   1          I2C_STOP_IF = 0;
+   65   1      
+   66   1          I2C_IPH = 0;
+   67   1          I2C_IPL = 1;    
+   68   1      
+   69   1          /* 开启I2C中断 */
+   70   1          ET2 = 1; 
+   71   1          EA = 1;
+   72   1      
+   73   1      }
+   74          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =        26     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

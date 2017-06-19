@@ -1,0 +1,66 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.11.2.0
+Copyright (C) 2014 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: tom Microsoft, Microsoft, LIC=IK9SB-2GTJP-WIK5S-LFD30-BVKYY-R51VT
+ 
+Tool Versions:
+Toolchain:       PK251 Prof. Developers Kit  Version: 5.57.0.0
+Toolchain Path:  C:\Keil_v5\C251\BIN
+C Compiler:      C251.exe V5.57.0.0
+Assembler:       A251.exe V4.69.5.0
+Linker/Locator:  L251.exe V4.66.30.0
+Library Manager: LIB251.exe V4.30.0.2
+Hex Converter:   OH251.exe V2.1d
+CPU DLL:         S251.DLL V3.98.0.0
+Dialog DLL:      DP51.DLL V2.62.0.1 
+<h2>Project:</h2>
+E:\ft8836_svn\rom_boot\prj_rom\keil\FT8836-romboot.uvproj
+Project File Date:  12/20/2016
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+assembling START251.A51...
+compiling Main.c...
+compiling uart.c...
+compiling spi_flash.c...
+compiling Drv_mcu.c...
+compiling drv_calxorsum.c...
+compiling DrvTimer.c...
+compiling Task_main.c...
+compiling Task_hcomm.c...
+linking...
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvTimer0Init/DrvTimer
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    task_soft_rst/Task_main
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    FlashToPram/Task_main
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    task_send_int/Task_main
+Program Size: data=63.6 edata+hdata=513 xdata=0 const=25 code=1483
+creating hex file from "..\output\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+E:\ft8836_svn\rom_boot\prj_rom\keil>del ..\output\obj\*.crf 
+E:\ft8836_svn\rom_boot\prj_rom\keil>del ..\output\obj\*.lnp 
+E:\ft8836_svn\rom_boot\prj_rom\keil>copy ..\output\list\mcu.map ..\output\ 
+系统找不到指定的路径。
+E:\ft8836_svn\rom_boot\prj_rom\keil>copy ..\output\obj\mcu.hex ..\output\ 
+已复制         1 个文件。
+E:\ft8836_svn\rom_boot\prj_rom\keil>del ..\output\Obj\mcu.hex 
+E:\ft8836_svn\rom_boot\prj_rom\keil>cd ..\output 
+E:\ft8836_svn\rom_boot\prj_rom\output>del *.bin 
+E:\ft8836_svn\rom_boot\prj_rom\output>set y=2016 
+E:\ft8836_svn\rom_boot\prj_rom\output>set m=12 
+E:\ft8836_svn\rom_boot\prj_rom\output>set d=20 
+E:\ft8836_svn\rom_boot\prj_rom\output>HEX2BIN.EXE   mcu.hex  rom_20161220.bin  
+E:\ft8836_svn\rom_boot\prj_rom\output>copy .\*.bin .\bin\ 
+.\rom_20161220.bin
+已复制         1 个文件。
+"..\output\obj\mcu" - 0 Error(s), 4 Warning(s).
+</pre>
+</body>
+</html>

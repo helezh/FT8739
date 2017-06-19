@@ -1,0 +1,253 @@
+C251 COMPILER V5.54.0.0,  Main                                                             16/06/17  16:14:22  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Main
+OBJECT MODULE PLACED IN ..\output\obj\Main.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\source\Main.c SMALL HPTR INTR2 ROM(HUGE) OPTIMIZE(
+                    -9,SPEED) REGFILE(..\output\obj\mcu.ORC) BROWSE INCDIR(..\source;..\source\debug;..\source\Drv;..\source\task) STRING(FAR
+                    -) DEBUG PRINT(.\list\Main.lst) TABS(2) OBJECT(..\output\obj\Main.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2013, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: main.c
+    5          *
+    6          *    Author: tangzhewei
+    7          *
+    8          *   Created: 2015-03-16
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference:
+   13          *
+   14          * Version:
+   15          * 0.1: Transplant from FT5412 by linjianjun
+   16          *
+   17          *******************************************************************************/
+   18          
+   19          /*******************************************************************************
+   20          * 1.Included header files
+   21          *******************************************************************************/
+   22          #include "CfgGlobal.h"
+   23          #include "Drv_mcu.h"
+   24          
+   25          
+   26          /*******************************************************************************
+   27          * 2.Private constant and macro definitions using #define
+   28          *******************************************************************************/
+   29          #define TEST_PRAM8      1
+   30          #define TEST_PRAM16     0
+   31          #define TEST_PRAM32     0
+   32          /*******************************************************************************
+   33          * 3.Private enumerations, structures and unions using typedef
+   34          *******************************************************************************/
+   35          
+   36          /*******************************************************************************
+   37          * 4.Static variables
+   38          *******************************************************************************/
+   39          
+   40          /*******************************************************************************
+   41          * 5.Global variable or extern global variabls/functions
+   42          *******************************************************************************/
+   43          UINT8 XRAM g_ucSFR[256];
+   44          UINT8 temp = 0;
+   45          volatile UINT8 far  *ptr8 = 0;
+   46          volatile UINT16 far *ptr16 = 0;
+   47          volatile UINT32 far *ptr32 = 0;
+   48          /*******************************************************************************
+   49          * 6.Static function prototypes
+   50          *******************************************************************************/
+   51          /*******************************************************************************
+   52          *   Name: init_mcu
+   53          *  Brief:
+   54          * 功能:
+   55          *  Input:
+   56          * Output:
+   57          * Return:
+C251 COMPILER V5.54.0.0,  Main                                                             16/06/17  16:14:22  PAGE 2   
+
+   58          *******************************************************************************/
+   59          void init_mcu(void)
+   60          {    
+   61   1          EA = 0;
+   62   1          
+   63   1          // 1.IO口初始化
+   64   1          DrvIOInit();
+   65   1      
+   66   1          DrvUartInit();
+   67   1      
+   68   1          EA = 1;
+   69   1      
+   70   1          DBG_FLOW("\n ROMMBOOT REMAP =%02x ",REMAP);
+   71   1      }
+   72          /*******************************************************************************
+   73          *   Name: main
+   74          *  Brief:
+   75          * 功能:
+   76          *  Input:
+   77          * Output:
+   78          * Return:
+   79          *******************************************************************************/
+   80          void main(void)
+   81          {
+   82   1          UINT8 i; 
+   83   1          UINT32 j=0,k=0;
+   84   1          UINT32 cnt_err=0,cnt_ok=0;
+   85   1          UINT32 cnt_err16=0,cnt_ok16=0;
+   86   1          UINT32 cnt_err32=0,cnt_ok32=0;
+   87   1          UINT32 test_data=0;
+   88   1          
+   89   1      
+   90   1          init_mcu();
+   91   1          
+   92   1          while (1)
+   93   1          {
+   94   2              test_data++;
+   95   2              if (test_data == 0xffffffff)
+   96   2              {
+   97   3                  test_data=0;
+   98   3              }
+   99   2      
+  100   2      #if TEST_PRAM8
+  101   2      
+  102   2          for(k=0; k<1; k++)
+  103   2          {
+  104   3      
+  105   3              temp =0;
+  106   3              test_data &=0xff;
+  107   3              for(j=0; j<(1024ul*70ul); j++)
+  108   3              {
+  109   4                  PRAM_ADDR8(j) = test_data;
+  110   4              }
+  111   3      
+  112   3              for(j=0; j<(1024ul*70ul); j++)
+  113   3              {
+  114   4                  if(PRAM_ADDR8(j)  != test_data) 
+  115   4                  {
+  116   5                      temp=5;
+  117   5                      break;
+  118   5                  }
+  119   4                  else
+  120   4                  {
+  121   5                      P0_2 = !P0_2;
+  122   5                  }
+  123   4              }
+C251 COMPILER V5.54.0.0,  Main                                                             16/06/17  16:14:22  PAGE 3   
+
+  124   3      
+  125   3              if(temp ==5)
+  126   3                  cnt_err++;
+  127   3              else
+  128   3                  cnt_ok++;
+  129   3      
+  130   3              DBG_FLOW("\n PRAM08 OK=%lx,ERR=%lx,test_data=%lx",cnt_ok,cnt_err,test_data);
+  131   3          }
+  132   2      #endif
+  133   2      #if TEST_PRAM16
+               
+                   for(k=0; k<1; k++)
+                   {
+                       test_data &=0xffff;
+                       temp =0;
+                       ptr16 = (volatile UINT16 *)0xfce800;
+                       for(j=0; j<(512UL*70); j++)
+                       {
+                           *ptr16  =test_data;
+                           ptr16 ++;
+               
+                       }
+               
+                       ptr16 = (volatile UINT16 *)0xfce800;
+                       for(j=0; j<(512UL*70); j++)
+                       {
+                           if(*ptr16  !=test_data) 
+                           {
+                               temp=5;
+                               break;
+                           }
+                           ptr16 ++;
+                       }
+               
+                       if(temp ==5)
+                           cnt_err16++;
+                       else
+                           cnt_ok16++;
+               
+                       DBG_FLOW("\n PRAM16 OK=%lx,ERR=%lx,j=%lx",cnt_ok16,cnt_err16,test_data);
+               
+                   }
+               
+               #endif
+  168   2      #if TEST_PRAM32
+               
+                   for(k=0; k<1; k++)
+                   {
+               
+                       temp =0;
+                       ptr32 = (volatile UINT32 *)0xfce800;
+                       for(j=0; j<(128UL*70); j++)
+                       {
+                       *ptr32  =test_data; 
+               
+                       ptr32 ++;
+               
+                       }
+               
+                       ptr32 = (volatile UINT32 *)0xfce800;
+                       for(j=0; j<(128UL*70); j++)
+                       {
+                       if(*ptr32  !=test_data) 
+                       {
+                           temp=5;
+                           break;
+C251 COMPILER V5.54.0.0,  Main                                                             16/06/17  16:14:22  PAGE 4   
+
+                       }
+               
+               
+                       ptr32 ++;
+               
+                       }
+               
+                       if(temp ==5)
+                       cnt_err32++;
+                       else
+                       cnt_ok32++;
+               
+                       DBG_FLOW("\n PRAM32 OK=%lx,ERR=%lx,j=%lx",cnt_ok32,cnt_err32,test_data);
+               
+                   }
+               
+               #endif
+  207   2          }    
+  208   1      
+  209   1      }
+*** WARNING C47 IN LINE 82 OF ..\source\Main.c: 'i': unreferenced local variable
+  210          
+  211          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =         3     ------
+  ecode size           =       227     ------
+  data size            =        13         16
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       256     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        86     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,16 @@
+e 2 
+delayms_pc(200);
+//enbale membist clk
+w 09 f6 c8 ff 
+w 09 f6 ca 1c
+w 09 f6 cb 70
+
+//enable all membist
+w 09 f6 e1 ff
+w 09 f6 e2 ff  
+delayms_pc(1000);
+w 06 f9 b1 00 00 01 r 02
+w 06 f9 a2 00 00 01 r 02
+
+w 06 f9 b0 00 00 01 r 01
+w 06 f9 95 00 00 01 r 01

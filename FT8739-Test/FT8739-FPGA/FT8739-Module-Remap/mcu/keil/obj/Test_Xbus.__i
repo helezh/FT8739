@@ -1,0 +1,1 @@
+"..\..\src\source\task\Test_Xbus.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task) STRING(FAR) DEBUG PRINT(.\list\Test_Xbus.lst) TABS (2) OBJECT(.\obj\Test_Xbus.obj)

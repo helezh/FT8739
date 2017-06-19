@@ -1,0 +1,1 @@
+"..\..\src\source\task\Test_SFR.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEFINE (_FT8836_) DEBUG CODE LISTINCLUDE SYMBOLS PRINT(.\list\Test_SFR.lst) PREPRINT(.\list\Test_SFR.i) OBJECT(.\obj\Test_SFR.obj)
