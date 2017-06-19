@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  11:18:44  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  20:03:23  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_RTC
@@ -29,112 +29,112 @@ stmt  level    source
    18          #include "Test_RTC.h"
    19          
    20          #if _TEST_RTC_EN
-   21           
-   22          /*******************************************************************************
-   23          * 2.Private constant and macro definitions using #define
-   24          *******************************************************************************/
-   25          /* RTC */
-   26          #define RTC_MS        32
-   27          #define RTC_N_MS     (RTC_MS*150)//100ms
-   28          
-   29          /*
-   30           * Normal   :此时CPU启动RTC，RTC产生一次定时中断，计时时间与计数Counter相关
-   31           * Auto     :此时CPU启动一次RTC，产生一次RTC中断给CPU，产生无限次中断给ASM，
-   32                       直到CPU CLR RTC
-   33           * LCD Start:此时RTC会根据LCD信号启动，在Counter中间会自动屏蔽LCD的start
-   34                       信号
-   35           */
-   36          
-   37          //RTC MODE 0-Normal,1-Auto,2-Lcd Start
-   38          #define RTC_MODE    0
-   39          
-   40          /* time0 */
-   41          #define T0MODE                            0x02      // 高四位为T1,低四位为T0
-   42          #define IRQTIME0_VALUE                    1         // (MS)
-   43          //#define IRQTIME0_LOAD()                   TMOD|=T0MODE;TH0=IRQTIME0_VALUE;TL0=0 old
-   44          #define IRQTIME0_LOAD()                   do{TMOD|=T0MODE;TH0=IRQTIME0_VALUE;TL0=0;}while(0)
-   45          
-   46          #define TEST_RTC_WK                       1         // 0:不测试rtc wk；1 测试rtc wk
-   47          #define INT1_TRI_MODE                     0         // 0:LOW level triggered 1:falling edge
-   48          
-   49          // 设置LCD Start信号源--0--Vstart,1--Vmid;2--Vend;3--Vblank
-   50          #define LCD_START_SRC   0
-   51          
-   52          //以下三种模式最多只能进入一种
-   53          #define IDLE_MODE                         0         // 0:不进入idle   1:进入idle
-   54          #define STANDBY_MODE                      1         // 0:不进入standy 1:进入standy
-   55          #define STOP_MODE                         0         // 0:不进入stop   1:进入stop
-   56          
-   57          /*******************************************************************************
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  11:18:44  PAGE 2   
+                
+               /*******************************************************************************
+               * 2.Private constant and macro definitions using #define
+               *******************************************************************************/
+               /* RTC */
+               #define RTC_MS        32
+               #define RTC_N_MS     (RTC_MS*150)//100ms
+               
+               /*
+                * Normal   :此时CPU启动RTC，RTC产生一次定时中断，计时时间与计数Counter相关
+                * Auto     :此时CPU启动一次RTC，产生一次RTC中断给CPU，产生无限次中断给ASM，
+                            直到CPU CLR RTC
+                * LCD Start:此时RTC会根据LCD信号启动，在Counter中间会自动屏蔽LCD的start
+                            信号
+                */
+               
+               //RTC MODE 0-Normal,1-Auto,2-Lcd Start
+               #define RTC_MODE    0
+               
+               /* time0 */
+               #define T0MODE                            0x02      // 高四位为T1,低四位为T0
+               #define IRQTIME0_VALUE                    1         // (MS)
+               //#define IRQTIME0_LOAD()                   TMOD|=T0MODE;TH0=IRQTIME0_VALUE;TL0=0 old
+               #define IRQTIME0_LOAD()                   do{TMOD|=T0MODE;TH0=IRQTIME0_VALUE;TL0=0;}while(0)
+               
+               #define TEST_RTC_WK                       1         // 0:不测试rtc wk；1 测试rtc wk
+               #define INT1_TRI_MODE                     0         // 0:LOW level triggered 1:falling edge
+               
+               // 设置LCD Start信号源--0--Vstart,1--Vmid;2--Vend;3--Vblank
+               #define LCD_START_SRC   0
+               
+               //以下三种模式最多只能进入一种
+               #define IDLE_MODE                         0         // 0:不进入idle   1:进入idle
+               #define STANDBY_MODE                      1         // 0:不进入standy 1:进入standy
+               #define STOP_MODE                         0         // 0:不进入stop   1:进入stop
+               
+               /*******************************************************************************
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  20:03:23  PAGE 2   
 
-   58          * 3.Private enumerations, structures and unions using typedef
-   59          *******************************************************************************/
-   60          
-   61          /*******************************************************************************
-   62          * 4.Static variables
-   63          *******************************************************************************/
-   64          UINT8 g_nWKsrc     = 0x00;
-   65          BOOLEAN g_bWKsrcOut = 1;
-   66          BOOLEAN g_bRtcFlag  = 0;
-   67          
-   68          UINT16 m_usCnt = 0;
-   69          /*******************************************************************************
-   70          * 5.Global variable or extern global variabls/functions
-   71          *******************************************************************************/
-   72          
-   73          /*******************************************************************************
-   74          * 6.Static function prototypes
-   75          *******************************************************************************/
-   76          
-   77          
-   78          /*******************************************************************************
-   79          *   Name:  DrvRTCInit
-   80          *  Brief:  RTC初始化
-   81          *          1.时钟是固定32K, 1秒32000次，1ms是32次 = 0x20
-   82          *          2.计数器为16位，--到0，产生中断
-   83          *          3.最大定时时间: t = 0x10000/0x20 = 65536/32 = 2048ms
-   84          *  Input:
-   85          * Output:
-   86          * Return:
-   87          *******************************************************************************/
-   88          void DrvRTCInit(void)
-   89          {
-   90   1          // 32K时钟使能
-   91   1          CLK_WP = 1;
-   92   1          EN_32K = 1;
-   93   1          RTC_32K_EN = 1;
-   94   1          
-   95   1          // rtc clk enable
-   96   1          RTCCKEN = 1;
-   97   1      
-   98   1          // clear rtc
-   99   1          RTC_WP  = 1;
-  100   1          RTC_CLR = 1;
-  101   1          //DelayMs(100);
-  102   1      
-  103   1          // 设置RTC计数时间
-  104   1          RTCIVH  = RTC_N_MS>>8;
-  105   1          RTCIVL  = RTC_N_MS;
-  106   1          //RTCIVH  = 0xFF;
-  107   1          //RTCIVL  = 0xFF;
-  108   1          
-  109   1          //Normal mode
-  110   1      #if (RTC_MODE == 0)
-  111   1          RTC_AUTO_MODE = 0;
-  112   1          LCD_START_EN  = 0;
-  113   1      #endif
-  114   1      
-  115   1          //Auto mode
-  116   1      #if (RTC_MODE == 1)
+               * 3.Private enumerations, structures and unions using typedef
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 4.Static variables
+               *******************************************************************************/
+               UINT8 g_nWKsrc     = 0x00;
+               BOOLEAN g_bWKsrcOut = 1;
+               BOOLEAN g_bRtcFlag  = 0;
+               
+               UINT16 m_usCnt = 0;
+               /*******************************************************************************
+               * 5.Global variable or extern global variabls/functions
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 6.Static function prototypes
+               *******************************************************************************/
+               
+               
+               /*******************************************************************************
+               *   Name:  DrvRTCInit
+               *  Brief:  RTC初始化
+               *          1.时钟是固定32K, 1秒32000次，1ms是32次 = 0x20
+               *          2.计数器为16位，--到0，产生中断
+               *          3.最大定时时间: t = 0x10000/0x20 = 65536/32 = 2048ms
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void DrvRTCInit(void)
+               {
+                   // 32K时钟使能
+                   CLK_WP = 1;
+                   EN_32K = 1;
+                   RTC_32K_EN = 1;
+                   
+                   // rtc clk enable
+                   RTCCKEN = 1;
+               
+                   // clear rtc
+                   RTC_WP  = 1;
+                   RTC_CLR = 1;
+                   //DelayMs(100);
+               
+                   // 设置RTC计数时间
+                   RTCIVH  = RTC_N_MS>>8;
+                   RTCIVL  = RTC_N_MS;
+                   //RTCIVH  = 0xFF;
+                   //RTCIVL  = 0xFF;
+                   
+                   //Normal mode
+               #if (RTC_MODE == 0)
+                   RTC_AUTO_MODE = 0;
+                   LCD_START_EN  = 0;
+               #endif
+               
+                   //Auto mode
+               #if (RTC_MODE == 1)
                    RTC_AUTO_MODE   = 1;
                    LCD_START_EN    = 0;
                #endif
-  120   1      
-  121   1          //LCD Start mode
-  122   1      #if (RTC_MODE == 2)
+               
+                   //LCD Start mode
+               #if (RTC_MODE == 2)
                    #if (LCD_START_SRC == 0)
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  11:18:44  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  20:03:23  PAGE 3   
 
                    RTCCON1 |= 0x00;
                    #elif (LCD_START_SRC == 1)
@@ -151,236 +151,236 @@ stmt  level    source
                    TEST_OUT3_EN = 1;
                    TESTCON3 |= 0x0D;       //0D--Vstart output from P0_6;0E--Vmid;
                #endif
-  139   1      
-  140   1      #if TEST_RTC_WK
-  141   1          RTC_CNT_WKEN = 1;  // RTC wake en  
-  142   1      #endif
-  143   1      
-  144   1          //RTC中断使能
-  145   1          //RTC_INT_EN_CPU = 1;
-  146   1       
-  147   1          DBG_RTC("\nRTC Interval:%dms",RTC_N_MS/RTC_MS);         // 1.8ms@115200bps total 19 character 100us p
+               
+               #if TEST_RTC_WK
+                   RTC_CNT_WKEN = 1;  // RTC wake en  
+               #endif
+               
+                   //RTC中断使能
+                   //RTC_INT_EN_CPU = 1;
+                
+                   DBG_RTC("\nRTC Interval:%dms",RTC_N_MS/RTC_MS);         // 1.8ms@115200bps total 19 character 100us p
              -er character
-  148   1          DBG_RTC("\nRTC_IVH:%02X,RTC_IVL:%02X",RTCIVH,RTCIVL);
-  149   1          DBG_RTC("\ninit RTC OK!");
-  150   1          DelayMs(10);
-  151   1      }
-  152          
-  153          /*******************************************************************************
-  154          *   Name:
-  155          *  Brief:
-  156          *  Input:
-  157          * Output:
-  158          * Return: INT0中断初始化函数
-  159          *******************************************************************************/
-  160          void ExternInt0Init(void)
-  161          {
-  162   1          IT0   = 0;   // 0:LOW level triggered 1:falling edge
-  163   1      
-  164   1          IPL0  = 0;
-  165   1          IPH0  = 0;
-  166   1      
-  167   1          IPLX0 = 1;
-  168   1          IPHX0 = 1;  //中断0优先级必须最高
-  169   1      
-  170   1          EX0   = 1;
-  171   1      }
-  172          
-  173          /*******************************************************************************
-  174          *   Name: DrvSysTimer0_Init
-  175          *  Brief: 定时1ms
-  176          *  Input:
-  177          * Output:
-  178          * Return: timer0 定时器初始化函数
-  179          *******************************************************************************/
-  180          void DrvSysTimer0_Init(void)
-  181          {
-  182   1          TR0 = 0;     /* Stop Timer Counter */
-  183   1          IRQTIME0_LOAD();    //1//1ms interval
-  184   1          
-  185   1          TR0 = 1;
-  186   1          ET0 = 1;     // enable timer interrupt
-  187   1      }
-  188          
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  11:18:44  PAGE 4   
+                   DBG_RTC("\nRTC_IVH:%02X,RTC_IVL:%02X",RTCIVH,RTCIVL);
+                   DBG_RTC("\ninit RTC OK!");
+                   DelayMs(10);
+               }
+               
+               /*******************************************************************************
+               *   Name:
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return: INT0中断初始化函数
+               *******************************************************************************/
+               void ExternInt0Init(void)
+               {
+                   IT0   = 0;   // 0:LOW level triggered 1:falling edge
+               
+                   IPL0  = 0;
+                   IPH0  = 0;
+               
+                   IPLX0 = 1;
+                   IPHX0 = 1;  //中断0优先级必须最高
+               
+                   EX0   = 1;
+               }
+               
+               /*******************************************************************************
+               *   Name: DrvSysTimer0_Init
+               *  Brief: 定时1ms
+               *  Input:
+               * Output:
+               * Return: timer0 定时器初始化函数
+               *******************************************************************************/
+               void DrvSysTimer0_Init(void)
+               {
+                   TR0 = 0;     /* Stop Timer Counter */
+                   IRQTIME0_LOAD();    //1//1ms interval
+                   
+                   TR0 = 1;
+                   ET0 = 1;     // enable timer interrupt
+               }
+               
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  20:03:23  PAGE 4   
 
-  189          /*******************************************************************************
-  190          *   Name:
-  191          *  Brief:
-  192          *  Input:
-  193          * Output:
-  194          * Return: INT1中断初始化函数
-  195          *******************************************************************************/
-  196          void ExternInt1Init(void)
-  197          {
-  198   1          IT1 = INT1_TRI_MODE;   // 0:LOW level triggered 1:falling edge
-  199   1          IPHX1 = 1;
-  200   1          IPLX1 = 1;
-  201   1          EX1   = 1;       
-  202   1          EA    = 1;
-  203   1      }
-  204          
-  205          /*******************************************************************************
-  206          *   Name:
-  207          *  Brief:
-  208          *  Input:
-  209          * Output:
-  210          * Return: INT0中断响应函数
-  211          *******************************************************************************/
-  212          void Exint0_IRQHandler(void) interrupt 0
-  213          {
-  214   1          P0_2 = 1;
-  215   1          if (g_bWKsrcOut)
-  216   1          {
-  217   2              g_nWKsrc = IWKSTA;
-  218   2              g_bWKsrcOut = FALSE;
-  219   2          }
-  220   1          g_bRtcFlag = TRUE;
-  221   1          if(RTC_CNT_INT)
-  222   1          {
-  223   2              RTC_CNT_WKEN = 0;
-  224   2              DBG_FLOW("\n\rrtc int0");
-  225   2          }
-  226   1      }
-  227          
-  228          /*******************************************************************************
-  229          *   Name:
-  230          *  Brief:
-  231          *  Input:
-  232          * Output:
-  233          * Return: timer0 定时器中断响应函数
-  234          *******************************************************************************/
-  235          void Timer0_IRQHandler(void) interrupt  1
-  236          {
-  237   1          m_usCnt++;
-  238   1      }
-  239          
-  240          /*******************************************************************************
-  241          *   Name:
-  242          *  Brief:
-  243          *  Input:
-  244          * Output:
-  245          * Return: INT1中断响应函数.
-  246          *******************************************************************************/
-  247          void Exint1_IRQHandler(void) interrupt 2
-  248          {   
-  249   1          P0_2 = 0;    
-  250   1          //如果是在AUTO模式，则不清rtc，否则一定要清RTC，不然会一直在中断中出不去
-  251   1      #if !(RTC_MODE == 1)
-  252   1          while(RTC_START_STA == 0);
-  253   1          RTC_WP  = 1;
-  254   1          RTC_CLR = 1;
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  11:18:44  PAGE 5   
+               /*******************************************************************************
+               *   Name:
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return: INT1中断初始化函数
+               *******************************************************************************/
+               void ExternInt1Init(void)
+               {
+                   IT1 = INT1_TRI_MODE;   // 0:LOW level triggered 1:falling edge
+                   IPHX1 = 1;
+                   IPLX1 = 1;
+                   EX1   = 1;       
+                   EA    = 1;
+               }
+               
+               /*******************************************************************************
+               *   Name:
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return: INT0中断响应函数
+               *******************************************************************************/
+               void Exint0_IRQHandler(void) interrupt 0
+               {
+                   P0_2 = 1;
+                   if (g_bWKsrcOut)
+                   {
+                       g_nWKsrc = IWKSTA;
+                       g_bWKsrcOut = FALSE;
+                   }
+                   g_bRtcFlag = TRUE;
+                   if(RTC_CNT_INT)
+                   {
+                       RTC_CNT_WKEN = 0;
+                       DBG_FLOW("\n\rrtc int0");
+                   }
+               }
+               
+               /*******************************************************************************
+               *   Name:
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return: timer0 定时器中断响应函数
+               *******************************************************************************/
+               void Timer0_IRQHandler(void) interrupt  1
+               {
+                   m_usCnt++;
+               }
+               
+               /*******************************************************************************
+               *   Name:
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return: INT1中断响应函数.
+               *******************************************************************************/
+               void Exint1_IRQHandler(void) interrupt 2
+               {   
+                   P0_2 = 0;    
+                   //如果是在AUTO模式，则不清rtc，否则一定要清RTC，不然会一直在中断中出不去
+               #if !(RTC_MODE == 1)
+                   while(RTC_START_STA == 0);
+                   RTC_WP  = 1;
+                   RTC_CLR = 1;
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  20:03:23  PAGE 5   
 
-  255   1      #endif
-  256   1      
-  257   1          DBG_FLOW("\n\rrtc int1");
-  258   1      
-  259   1          g_bRtcFlag = TRUE;
-  260   1      
-  261   1      #if TEST_RTC_WK
-  262   1          RTC_CNT_WKEN = 1;
-  263   1      #endif
-  264   1      }
-  265          
-  266          /*******************************************************************************
-  267          *   Name: Test_RTC
-  268          *  Brief:
-  269          *  Input:
-  270          * Output:
-  271          * Return:
-  272          *******************************************************************************/
-  273          void Test_RTC(void)
-  274          {
-  275   1          P0_2 = 0;
-  276   1          DrvSysTimer0_Init();
-  277   1          DrvRTCInit();
-  278   1          ExternInt1Init();
-  279   1      
-  280   1          #if TEST_RTC_WK
-  281   1          ExternInt0Init();
-  282   1          #endif 
-  283   1      
-  284   1          P0_2 = 1;
-  285   1          // RTC Start
-  286   1          RTC_WP    = 1;
-  287   1          DelayMs(10);
-  288   1          RTC_START = 1;
-  289   1          while (RTC_START_STA == 0);
-  290   1          //RTC Clear
-  291   1          //RTC_WP  = 1;
-  292   1          //RTC_CLR = 1;
-  293   1          P0_2 = 0;
-  294   1      /*    
-  295   1       *  RTC_CNT_INT标志位测试
-  296   1          //RTC_CNT_INT = 0;
-  297   1          //while (RTC_CNT_INT == 0);
-  298   1          //P0_2 = 1;  
-  299   1          //while (RTC_CNT_INT == 1)
-  300   1          //{
-  301   1          //    P0_2 = !P0_2;
-  302   1          //}
-  303   1      */
-  304   1          while (1)
-  305   1          {      
-  306   2              g_bRtcFlag = FALSE;
-  307   2              g_bWKsrcOut = 1;
-  308   2              m_usCnt = 0;
-  309   2      
-  310   2          #if 0
+               #endif
+               
+                   DBG_FLOW("\n\rrtc int1");
+               
+                   g_bRtcFlag = TRUE;
+               
+               #if TEST_RTC_WK
+                   RTC_CNT_WKEN = 1;
+               #endif
+               }
+               
+               /*******************************************************************************
+               *   Name: Test_RTC
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void Test_RTC(void)
+               {
+                   P0_2 = 0;
+                   DrvSysTimer0_Init();
+                   DrvRTCInit();
+                   ExternInt1Init();
+               
+                   #if TEST_RTC_WK
+                   ExternInt0Init();
+                   #endif 
+               
+                   P0_2 = 1;
+                   // RTC Start
+                   RTC_WP    = 1;
+                   DelayMs(10);
+                   RTC_START = 1;
+                   while (RTC_START_STA == 0);
+                   //RTC Clear
+                   //RTC_WP  = 1;
+                   //RTC_CLR = 1;
+                   P0_2 = 0;
+               /*    
+                *  RTC_CNT_INT标志位测试
+                   //RTC_CNT_INT = 0;
+                   //while (RTC_CNT_INT == 0);
+                   //P0_2 = 1;  
+                   //while (RTC_CNT_INT == 1)
+                   //{
+                   //    P0_2 = !P0_2;
+                   //}
+               */
+                   while (1)
+                   {      
+                       g_bRtcFlag = FALSE;
+                       g_bWKsrcOut = 1;
+                       m_usCnt = 0;
+               
+                   #if 0
                        // RTC Start
                        RTC_WP    = 1;
                        RTC_START = 1;
                    #endif
-  315   2          
-  316   2              #if 0
+                   
+                       #if 0
                        if(m_usCnt = 10)
                        {
                            LCD_START_EN = 0;
                        }
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  11:18:44  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         19/06/17  20:03:23  PAGE 6   
 
                        else if(m_usCnt = 20)
                        {
                            LCD_START_EN = 1;
                        }
                        #endif
-  326   2      
-  327   2              //idle_mode
-  328   2              #if  IDLE_MODE
+               
+                       //idle_mode
+                       #if  IDLE_MODE
                        DBG_RTC("\n\rjoin in Idle");
                        DelayMs(50);
                        DrvSysPowerIdle();
                        DBG_RTC("\n\rexit Idle");        
                        #endif
-  334   2      
-  335   2              //standby_mode
-  336   2              #if STANDBY_MODE
-  337   2              DBG_RTC("\n\rjoin in Standby");
-  338   2              DelayMs(50);    
-  339   2              DrvSysPowerStandby();
-  340   2              DBG_RTC("\n\rexit Standby");
-  341   2              #endif
-  342   2              
-  343   2              //stop_mode
-  344   2              #if STOP_MODE
+               
+                       //standby_mode
+                       #if STANDBY_MODE
+                       DBG_RTC("\n\rjoin in Standby");
+                       DelayMs(50);    
+                       DrvSysPowerStandby();
+                       DBG_RTC("\n\rexit Standby");
+                       #endif
+                       
+                       //stop_mode
+                       #if STOP_MODE
                        DBG_RTC("\n\rjoin in Stop");
                        DelayMs(50);        
                        DrvSysPowerStop();
                        DBG_RTC("\n\rexit Stop");        
                        #endif
-  350   2              
-  351   2              while (!g_bRtcFlag);
-  352   2              DBG_RTC("\nm_usCnt=%dms",m_usCnt);   
-  353   2              DelayMs(10);
-  354   2              
-  355   2              if (g_bRtcFlag && g_bWKsrcOut == FALSE)
-  356   2              {
-  357   3                  DBG_RTC("\n\rWK src:%x",g_nWKsrc);
-  358   3              }
-  359   2          }
-  360   1      }
-  361          #endif
+                       
+                       while (!g_bRtcFlag);
+                       DBG_RTC("\nm_usCnt=%dms",m_usCnt);   
+                       DelayMs(10);
+                       
+                       if (g_bRtcFlag && g_bWKsrcOut == FALSE)
+                       {
+                           DBG_RTC("\n\rWK src:%x",g_nWKsrc);
+                       }
+                   }
+               }
+               #endif
   362          
   363          
   364          
@@ -388,22 +388,22 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        16     ------
-  ecode size           =       454     ------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
-  edata size           =         3     ------
-  bit size             =         2     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =       152     ------
+  hconst size          =    ------     ------
 End of Module Information.
 
 

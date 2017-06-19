@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  16/06/17  17:19:12  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  19/06/17  20:03:22  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_i2c_wakeup
@@ -66,7 +66,7 @@ stmt  level    source
                
                /*******************************************************************************
                *   Name: ExternInt0Init
-C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  16/06/17  17:19:12  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  19/06/17  20:03:22  PAGE 2   
 
                *  Brief:
                *  Input:
@@ -134,7 +134,7 @@ stmt  level    source
                *  Brief:
                         1.cmd 02: idle mode wake up
                         2.cmd 03: standby mode wake up
-C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  16/06/17  17:19:12  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  19/06/17  20:03:22  PAGE 3   
 
                         3.cmd 04: stop mode wake up
                *  Input:
@@ -202,7 +202,7 @@ stmt  level    source
                            g_ucI2Ccmd = 0;
                            
                        }
-C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  16/06/17  17:19:12  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  19/06/17  20:03:22  PAGE 4   
 
                        if (g_ucI2Ccmd == I2CWakeup_AddrUp)
                        {
@@ -270,7 +270,7 @@ stmt  level    source
                *  Brief:
                *  Input:
                * Output:
-C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  16/06/17  17:19:12  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_i2c_wakeup                                                  19/06/17  20:03:22  PAGE 5   
 
                * Return:
                *******************************************************************************/

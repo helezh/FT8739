@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Xbus
@@ -66,7 +66,7 @@ stmt  level    source
                //ST_LcdWrapRegisters *XRAM pLcdWrapRegs = (volatile ST_LcdWrapRegisters *)XBUS_REG_BASE_ADDR;
                /*******************************************************************************
                * 4.Static variables
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 2   
 
                *******************************************************************************/
                
@@ -134,7 +134,7 @@ stmt  level    source
                    usCrcCode &= (~(0x0001 << ucbitaddr));
                    usCrcCode |= ucData<<ucbitaddr;
                    //printf("Bit = %2d CrcCode = 0x%04x\n",ucbitaddr,usCrcCode);
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 3   
 
                
                    return usCrcCode;
@@ -202,7 +202,7 @@ stmt  level    source
                
                        usDataTmp = _writebit(usDataTmp,usXorBit,7);
                
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 4   
 
                        usXorBit = (GRAB_BIT(usExeCode,0));
                        usXorBit = _xorbit(14,16,usExeCode,usXorBit);
@@ -270,7 +270,7 @@ stmt  level    source
                    unsigned char * pucLcdCrcbuf; // for calculate lcd crc
                    
                    unsigned short usLcd_crc;
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 5   
 
                    
                    unsigned char auc_infoBuf[8];
@@ -338,7 +338,7 @@ stmt  level    source
                
                    }*/
                    
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 6   
 
                    ucLcdCrclen=ulBufOffset;
                    DBG_FLOW("\nucLcdCrclen=%04x",ucLcdCrclen);
@@ -406,7 +406,7 @@ stmt  level    source
                           
                            DrvXbus_WriteLcd8(LCD_REG_SET_RELOAD_ADDR,LCD_REG_SET_RELOAD_VALUE);
                            INTOUT=0;
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 7   
 
                            while(LCD_RELOAD_FLASH == 0);  //wait LCD_RELOAD_INT rise 2.45MS
                            INTOUT=1;
@@ -474,7 +474,7 @@ stmt  level    source
                    for(i=0;i<8;i+=2)
                    {        
                        temp=DrvXbus_ReadLcd16(LCD_OTP_REG_ADDR+i);
-C251 COMPILER V5.54.0.0,  Test_Xbus                                                        16/06/17  17:19:14  PAGE 8   
+C251 COMPILER V5.54.0.0,  Test_Xbus                                                        19/06/17  20:03:24  PAGE 8   
 
                        DBG_FLOW("\nXbus[%02x]=%04x\n",i,temp);        
                    }

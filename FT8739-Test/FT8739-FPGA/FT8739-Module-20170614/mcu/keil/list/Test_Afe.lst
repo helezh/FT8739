@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_Afe                                                         16/06/17  17:19:11  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_Afe                                                         19/06/17  20:03:20  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Afe
@@ -66,7 +66,7 @@ stmt  level    source
                UINT8 g_ucTpmodeFlag    = 0x00;
                UINT8 g_ucAramReadyFlag = 0x00;
                UINT8 g_ucLcdStopFlag   = 0x00;
-C251 COMPILER V5.54.0.0,  Test_Afe                                                         16/06/17  17:19:11  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_Afe                                                         19/06/17  20:03:20  PAGE 2   
 
                UINT8 g_ucLcdBusyFlag   = 0x00;
                
@@ -134,7 +134,7 @@ stmt  level    source
                
                    IPLX0 = 1;
                    IPHX0 = 1;    // 中断0优先级必须最高
-C251 COMPILER V5.54.0.0,  Test_Afe                                                         16/06/17  17:19:11  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_Afe                                                         19/06/17  20:03:20  PAGE 3   
 
                
                    EX0 = 1;
@@ -202,7 +202,7 @@ stmt  level    source
                    Drv_XsiWriteReg(pXSI1Regs,25, 0x0200,AFE_REG);
                    Drv_XsiWriteReg(pXSI0Regs,26, 0x0200,AFE_REG);
                    Drv_XsiWriteReg(pXSI1Regs,26, 0x0200,AFE_REG);
-C251 COMPILER V5.54.0.0,  Test_Afe                                                         16/06/17  17:19:11  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_Afe                                                         19/06/17  20:03:20  PAGE 4   
 
                
                    /* XSI_S Reg Init */
@@ -270,7 +270,7 @@ stmt  level    source
                    {
                        SCAN_MON_WKEN = 1;
                        EA = 0;
-C251 COMPILER V5.54.0.0,  Test_Afe                                                         16/06/17  17:19:11  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_Afe                                                         19/06/17  20:03:20  PAGE 5   
 
                
                        SCAN_EN = 0;
@@ -338,7 +338,7 @@ stmt  level    source
                *  Brief:
                *  Input:
                * Output:
-C251 COMPILER V5.54.0.0,  Test_Afe                                                         16/06/17  17:19:11  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_Afe                                                         19/06/17  20:03:20  PAGE 6   
 
                * Return:
                *******************************************************************************/
@@ -406,7 +406,7 @@ stmt  level    source
                    {
                        g_ucLcdBusyFlag = 1;
                        INT_FLAG1    = 0x04;
-C251 COMPILER V5.54.0.0,  Test_Afe                                                         16/06/17  17:19:11  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_Afe                                                         19/06/17  20:03:20  PAGE 7   
 
                    }
                

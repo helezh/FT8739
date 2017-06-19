@@ -34,14 +34,14 @@
 //#define BAUD_RATE 38400
 //#define BAUD_RATE 19200
 //#define BAUD_RATE 9600
-#define _UART_RECEIVE_EN   0  // 接收使能宏
+#define _UART_RECEIVE_EN   0    // 接收使能宏
 
 
-#define _UART_OUT_GPIO2    0    //P0.6
-#define _UART_OUT_GPIO3    1    //default P0.7
-#define _UART_OUT_GPIO4    0    //P0.3 or P1.7
+#define _UART_OUT_GPIO2    0    // P0.6
+#define _UART_OUT_GPIO3    1    // default P0.7
+#define _UART_OUT_GPIO4    0    // P0.3 or P1.7
 
-#define _FOR_RD            0    //用来取消打印和delay
+#define _FOR_RD            0    // 1取消打印和delay
 
 /************** 模块输出宏 ***************/
 /* module */

@@ -62,10 +62,10 @@
 #define _TEST_UART_EN                   0
 #define _TEST_SOFT_RST_EN               0     /* 软件复位测试*/
 #define _TEST_WDT_EN                    0     /* WDT单独进行测试 */
-#define _TEST_RTC_EN                    1     /* 和CNT中断冲突，单独进行测试 */
+#define _TEST_RTC_EN                    0     /* 和CNT中断冲突，单独进行测试 */
 #define _TEST_CNT_EN                    0     /* 和RTC中断冲突，单独进行测试 */
 #define _TEST_GPIO_EN                   0     /* gpio需要判断其input output以及高低电平切换的状态，需分别单独进行测试 */
-#define _TEST_TIMER_EN                  0     /* Timer单独进行测试 */ 
+#define _TEST_TIMER_EN                  1     /* Timer单独进行测试 */ 
 #define _TEST_GPIO_WK_EN                0     /* int0中断唤醒源过多,单独进行测试 */
 #define _TEST_I2C_WK_EN                 0     /* 和I2C中断冲突，单独进行测试 */ 
 #define _TEST_INT_NEST_EN               0     /* 中断嵌套测试,单独进行测试  */

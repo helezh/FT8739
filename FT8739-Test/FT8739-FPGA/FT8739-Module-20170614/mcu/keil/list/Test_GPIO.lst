@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_GPIO                                                        16/06/17  17:19:11  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_GPIO                                                        19/06/17  20:03:21  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_GPIO
@@ -66,7 +66,7 @@ stmt  level    source
                *  Input:
                * Output:
                * Return:
-C251 COMPILER V5.54.0.0,  Test_GPIO                                                        16/06/17  17:19:11  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_GPIO                                                        19/06/17  20:03:21  PAGE 2   
 
                *******************************************************************************/
                void Test_GPIO(void)
@@ -134,7 +134,7 @@ stmt  level    source
                        case GPIO_PULLOUTPUT:
                        {
                            DBG_GPIO("\n\rTest GPIO pull output :");
-C251 COMPILER V5.54.0.0,  Test_GPIO                                                        16/06/17  17:19:11  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_GPIO                                                        19/06/17  20:03:21  PAGE 3   
 
                            #if _UART_OUT_GPIO2
                            P0MOD = BITn(6)+0x00;      //uart : gpio6
@@ -202,7 +202,7 @@ stmt  level    source
                        }
                        /* test gpio pull output trigger 0 or 1 */
                        case GPIO_PULLTRIGGER:
-C251 COMPILER V5.54.0.0,  Test_GPIO                                                        16/06/17  17:19:11  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_GPIO                                                        19/06/17  20:03:21  PAGE 4   
 
                        {
                            DBG_GPIO("\n\rTest GPIO PULL trigger :");
@@ -270,7 +270,7 @@ stmt  level    source
                            P0MOD = BITn(7)+0x00;      //uart : gpio7
                            P0DIR |= 0x7f;
                            P0SEL &= 0x80;
-C251 COMPILER V5.54.0.0,  Test_GPIO                                                        16/06/17  17:19:11  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_GPIO                                                        19/06/17  20:03:21  PAGE 5   
 
                
                          P1MOD = 0x00;

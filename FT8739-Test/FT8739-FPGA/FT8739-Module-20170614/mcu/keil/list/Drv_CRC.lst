@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 1   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Drv_CRC
@@ -66,7 +66,7 @@ stmt  level    source
    55          * 4.Static variables
    56          *******************************************************************************/
    57          
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 2   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 2   
 
    58          /*******************************************************************************
    59          * 5.Global variable or extern global variabls/functions
@@ -134,7 +134,7 @@ stmt  level    source
   121   2            nTemp = *nData++ ^ wCRCWord;
   122   2            wCRCWord >>= 8;
   123   2            wCRCWord ^= wCRCTable[nTemp];
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 3   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 3   
 
   124   2         }
   125   1         return wCRCWord;
@@ -202,7 +202,7 @@ stmt  level    source
   187   2                              pCrcInit->xorout=0XFFFF;           
   188   2              break;
   189   2              case CRC16_MODBUS_M:
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 4   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 4   
 
   190   2                              pCrcInit->init=0XFFFF;
   191   2                              pCrcInit->poly=0X8005;
@@ -270,7 +270,7 @@ stmt  level    source
                            wCRCin = wCRCin << 1;  
                        }  
                  }
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 5   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 5   
 
                  
                  if(Crc_mode.refin==1)
@@ -338,7 +338,7 @@ stmt  level    source
   319          *  Input:
   320          * Output:
   321          * Return:
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 6   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 6   
 
   322          *******************************************************************************/
   323          UINT16 CRC16_LCD(UINT8 *puchMsg, UINT16 usDataLen)  
@@ -406,7 +406,7 @@ stmt  level    source
   385   1          crc       = low_byte | high_byte;
   386   1      
   387   1          return crc;
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 7   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 7   
 
   388   1      
   389   1      }  /* crc_sick */
@@ -474,7 +474,7 @@ stmt  level    source
   451   1      }
 *** WARNING C47 IN LINE 402 OF ..\..\src\source\driver\Drv_CRC.c: 'i': unreferenced local variable
   452          
-C251 COMPILER V5.54.0.0,  Drv_CRC                                                          16/06/17  17:19:16  PAGE 8   
+C251 COMPILER V5.54.0.0,  Drv_CRC                                                          19/06/17  20:03:26  PAGE 8   
 
   453          
   454          /*******************************************************************************

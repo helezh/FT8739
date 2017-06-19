@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_spi0
@@ -66,7 +66,7 @@ stmt  level    source
                
                /*******************************************************************************
                * 3.Private enumerations, structures and unions using typedef
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 2   
 
                *******************************************************************************/
                
@@ -134,7 +134,7 @@ stmt  level    source
                
                
                     
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 3   
 
                #if SPI0_AUTO_CLR
                    SPI0RX_AUTO_CLR =1;
@@ -202,7 +202,7 @@ stmt  level    source
                            {
                                
                                ch = g_ucChipId[idx-3];
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 4   
 
                            }
                
@@ -270,7 +270,7 @@ stmt  level    source
                
                        }
                        //86 AH AM AL LH LL --> set read address read len
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 5   
 
                        case HCMD_DATA_RN:
                        {
@@ -338,7 +338,7 @@ stmt  level    source
                    if (SPI0RI)
                    {
                    //    SPI0RI_CLR = 1;
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 6   
 
                        ch = SPI0BUF;  
                        
@@ -406,7 +406,7 @@ stmt  level    source
                        
                
                        DBG_SPI("\n b SPI0CON5=%02x ",SPI0CON5);
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 7   
 
                        DBG_SPI("\n SPI0_START=%02x ",SPI0_START);
                                     
@@ -474,7 +474,7 @@ stmt  level    source
                            SPI0CON3 =0;
                        } 
                    }
-C251 COMPILER V5.54.0.0,  Test_spi0                                                        16/06/17  17:19:14  PAGE 8   
+C251 COMPILER V5.54.0.0,  Test_spi0                                                        19/06/17  20:03:24  PAGE 8   
 
                }
                

@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_timer                                                       16/06/17  17:19:13  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_timer                                                       19/06/17  20:25:09  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_timer
@@ -29,45 +29,46 @@ stmt  level    source
    18          #include "Test_timer.h"
    19          
    20          #if _TEST_TIMER_EN
-               /*******************************************************************************
-               * 2.Private constant and macro definitions using #define
-               *******************************************************************************/
-               
-               //选择定时器0 or 1
-               #define TIMER_TEST  0
-               
-               //暂停停止测试
-               #define INT_HOLD          0//在定时中断中，暂停计数
-               #define INT_STOP          1//在定时中断中，停止计数,该stop为串口的stop模式,不是低功耗的stop模式
-               #define MAIN_HOLD         0//主程序中，直接暂停
-               #define RUN_MODE          1 //0:single mode   1:repeat mode
-               
-               //中断唤醒测试
-               #define TEST_IDLE          0//在定时中断中，暂停计数
-               #define TEST_STANDBY       0//在定时中断中，停止计数
-               #define TEST_STOP          0//主程序中，直接暂停，低功耗的stop模式
-               
-               #define TEST_SW_CLR_INT   0 // 1:软件清中断标志 0:硬件清中断标志位
-               
-               #define MODE0 0x00  //stop
-               #define MODE1 0X01  //16 bit counter single mode
-               #define MODE2 0x02  //16 bit counter repeat mode
-               #define MODE3 0x03  //halt timer暂停工作，如果复原到之前的模式，timer将继续工作
-               
-               #define TMAXTH 0x7f //TH0[7]必须为0，所以最长时间为127ms
-               #define TMAXTL 0xf9 //计数时间为TL0[7:0]X4us,最大值不能超过1ms也就是说最大值为8'hF9,大于此值时将强制为8'h
-             -F9.
-               
-               #define TIMER_MS    1 //timer最大的时间设置为127ms，不能超过
-               #define TIMER_4US   0    //4//timer 4us最大的时间设置为249，即996us，不能超过
-               //----------------------------------------------------------------------------------------------
-               //宏常量
-               #if TIMER_TEST
+   21          /*******************************************************************************
+   22          * 2.Private constant and macro definitions using #define
+   23          *******************************************************************************/
+   24          
+   25          //选择定时器0 or 1
+   26          #define TIMER_TEST  0
+   27          
+   28          //暂停停止测试
+   29          #define INT_HOLD          0     // 在定时中断中，暂停计数
+   30          #define INT_STOP          0     // 在定时中断中，停止计数,该stop为串口的stop模式,不是低功耗的stop模式
+   31          #define MAIN_HOLD         1     // 主程序中，直接暂停
+   32          #define MAIN_STOP         0     // 主程序中，直接停止
+   33          #define RUN_MODE          0     // 0:single mode   1:repeat mode
+   34          
+   35          //中断唤醒测试
+   36          #define TEST_IDLE          0    // 在定时中断中，暂停计数
+   37          #define TEST_STANDBY       0    // 在定时中断中，停止计数
+   38          #define TEST_STOP          0    // 主程序中，直接暂停，低功耗的stop模式
+   39          
+   40          #define TEST_SW_CLR_INT   0     // 1:软件清中断标志 0:硬件清中断标志位
+   41          
+   42          #define MODE0 0x00              // stop
+   43          #define MODE1 0X01              // 16 bit counter single mode
+   44          #define MODE2 0x02              // 16 bit counter repeat mode
+   45          #define MODE3 0x03              // halt timer暂停工作，如果复原到之前的模式，timer将继续工作
+   46          
+   47          #define TMAXTH 0x7f             // TH0[7]必须为0，所以最长时间为127ms
+   48          #define TMAXTL 0xf9             // 计数时间为TL0[7:0]X4us,最大值不能超过1ms也就是说最大值为8'hF9,大于此值
+             -时将强制为8'hF9.
+   49          
+   50          #define TIMER_MS    100          // timer最大的时间设置为127ms，不能超过
+   51          #define TIMER_4US   0           // timer 4us最大的时间设置为249，即996us，不能超过
+   52          //----------------------------------------------------------------------------------------------
+   53          //宏常量
+   54          #if TIMER_TEST
                #define MODE0_SEL  (MODE0<<4)
                #define MODE1_SEL  (MODE1<<4)
-               #define MODE2_SEL  (MODE2<<4)
-C251 COMPILER V5.54.0.0,  Test_timer                                                       16/06/17  17:19:13  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_timer                                                       19/06/17  20:25:09  PAGE 2   
 
+               #define MODE2_SEL  (MODE2<<4)
                #define MODE3_SEL  (MODE3<<4)
                #define TR_SEL     TR1
                #define TH_SEL     TH1
@@ -81,118 +82,129 @@ stmt  level    source
                #define IPHT       IPHT1
                
                #else
-               #define MODE0_SEL  MODE0
-               #define MODE1_SEL  MODE1
-               #define MODE2_SEL  MODE2
-               #define MODE3_SEL  MODE3
-               #define TR_SEL     TR0
-               #define TH_SEL     TH0
-               #define TL_SEL     TL0
-               #define TF_SEL     TF0
-               #define ET_SEL     ET0
-               #define INT_SEL    1
-               #define TDIV_SET   0x40
-               #define TDIV_CLR   0x10
-               #define IPLT       IPLT0
-               #define IPHT       IPHT0
-               #endif
-               /*******************************************************************************
-               * 3.Private enumerations, structures and unions using typedef
-               *******************************************************************************/
-               
-               /*******************************************************************************
-               * 4.Static variables
-               *******************************************************************************/
-               UINT8 m_nTimeState = 0;  //定时器状态
-               
-               /*******************************************************************************
-               * 5.Global variable or extern global variabls/functions
-               *******************************************************************************/
-               
-               /*******************************************************************************
-               * 6.Static function prototypes
-               *******************************************************************************/
-               
-               /*******************************************************************************
-               * Name:
-               * Brief:
-               * Input:
-               * Output: t = TH0*1ms + TL0*4us  TH0 <= 0x7F; TL0 <= 0xF9
-               *         Tmax = 127*1ms + 249*4us = 127.996ms
-               * Return:
-               *******************************************************************************/
-               void TimerInit(void)
-               {
-                   TIMERCKEN = 1;       // clk
-                   TIMER_500K_EN = 1;
-               
-               #if 0
+   71          #define MODE0_SEL  MODE0
+   72          #define MODE1_SEL  MODE1
+   73          #define MODE2_SEL  MODE2
+   74          #define MODE3_SEL  MODE3
+   75          #define TR_SEL     TR0
+   76          #define TH_SEL     TH0
+   77          #define TL_SEL     TL0
+   78          #define TF_SEL     TF0
+   79          #define ET_SEL     ET0
+   80          #define INT_SEL    1
+   81          #define TDIV_SET   0x40
+   82          #define TDIV_CLR   0x10
+   83          #define IPLT       IPLT0
+   84          #define IPHT       IPHT0
+   85          #endif
+   86          /*******************************************************************************
+   87          * 3.Private enumerations, structures and unions using typedef
+   88          *******************************************************************************/
+   89          
+   90          /*******************************************************************************
+   91          * 4.Static variables
+   92          *******************************************************************************/
+   93          UINT8 m_nTimeState = 0;  //定时器状态
+   94          
+   95          /*******************************************************************************
+   96          * 5.Global variable or extern global variabls/functions
+   97          *******************************************************************************/
+   98          
+   99          /*******************************************************************************
+  100          * 6.Static function prototypes
+  101          *******************************************************************************/
+  102          
+  103          /*******************************************************************************
+  104          * Name:
+  105          * Brief:
+  106          * Input:
+  107          * Output: t = TH0*1ms + TL0*4us  TH0 <= 0x7F; TL0 <= 0xF9
+  108          *         Tmax = 127*1ms + 249*4us = 127.996ms
+  109          * Return:
+  110          *******************************************************************************/
+  111          void TimerInit(void)
+  112          {
+  113   1          TIMERCKEN = 1;       // clk
+  114   1          TIMER_500K_EN = 1;
+  115   1      
+  116   1      #if 0
                  CLOSE_500K_EN = 0;   //standby不关闭500k
                  CLOSE_TIMER_EN = 0;  //standby不关闭timer_clk
                #else
-                 CLOSE_500K_EN = 1;   //standby关闭500k
-                 CLOSE_TIMER_EN = 1;  //standby关闭timer_clk
-               #endif
-                   
-C251 COMPILER V5.54.0.0,  Test_timer                                                       16/06/17  17:19:13  PAGE 3   
+  120   1        CLOSE_500K_EN = 1;   //standby关闭500k
+  121   1        CLOSE_TIMER_EN = 1;  //standby关闭timer_clk
+  122   1      #endif
+C251 COMPILER V5.54.0.0,  Test_timer                                                       19/06/17  20:25:09  PAGE 3   
 
-               #if RUN_MODE
+  123   1          
+  124   1      #if RUN_MODE
                    TMOD = MODE2_SEL;       // repeat mode
                    DBG_TIMER("\n\rTest Timer%d Repeat Mode",TIMER_TEST);
                #else    
-                   TMOD = MODE1_SEL;       //single mode
-                   DBG_TIMER("\n\rTest Timer%d Single Mode",TIMER_TEST);    
-               #endif    
-               
-               #if TEST_SW_CLR_INT
+  128   1          TMOD = MODE1_SEL;       //single mode
+  129   1          DBG_TIMER("\n\rTest Timer%d Single Mode",TIMER_TEST);    
+  130   1      #endif    
+  131   1      
+  132   1      #if TEST_SW_CLR_INT
                    TDIV |= TDIV_SET;
                #endif
-               
-                   //定时时间设置
-                   TH_SEL = TIMER_MS;
-                   TL_SEL = TIMER_4US;
-               
-                   TF_SEL = 0;
-               
-                   // run the timer0
-                   TR_SEL = 1;
-               
-                   IPLT= 1;
-                   IPHT = 0;
-               
-                   // interrupt enable
-                   ET_SEL = 1;
-                   EA  = 1;
-                   DBG_TIMER("\n\rinit Timer");
-               }
-               
-               /*******************************************************************************
-               * 功能:定时器中断服务程序
-               * 1.闪灯
-               * 2.计数n次，暂停
-               * 3.计数n次，停止
-               ********************************************************************************/
-               void Timer_IRQ(void) interrupt INT_SEL
-               {
-                   static UINT16 count = 0;
-                   static UINT8  ledcnt = 0;
-               
-               #if TEST_SW_CLR_INT
+  135   1      
+  136   1          //定时时间设置
+  137   1          TH_SEL = TIMER_MS;
+  138   1          TL_SEL = TIMER_4US;
+  139   1      
+  140   1          TF_SEL = 0;
+  141   1      
+  142   1          // run the timer0
+  143   1          TR_SEL = 1;
+  144   1          //TR_SEL 位测试
+  145   1          //while (1)
+  146   1          //{
+  147   1              //DBG_TIMER("\nTL_SEL=%x",TL_SEL);
+  148   1              //DelayMs(5);
+  149   1          //}
+  150   1      
+  151   1          //优先级设置
+  152   1          IPLT = 1;
+  153   1          IPHT = 0;
+  154   1      
+  155   1          // interrupt enable
+  156   1          ET_SEL = 1;
+  157   1          EA  = 1;
+  158   1          DBG_TIMER("\n\rinit Timer OK");
+  159   1          //DelayMs(5);
+  160   1      }
+  161          
+  162          /*******************************************************************************
+  163          * 功能:定时器中断服务程序
+  164          * 1.闪灯
+  165          * 2.计数n次，暂停
+  166          * 3.计数n次，停止
+  167          ********************************************************************************/
+  168          void Timer_IRQ(void) interrupt INT_SEL
+  169          {
+  170   1          static UINT16 count  = 0;
+  171   1          static UINT8  ledcnt = 0;
+  172   1      
+  173   1          P0_2 = !P0_2;
+  174   1      #if TEST_SW_CLR_INT
                    //TF_SEL = 0;
                    TDIV |= TDIV_CLR;
                #endif
-               
-                   m_nTimeState = 0;        
-                   count++;
-                   ledcnt++;
-                   DBG_TIMER("\n\rledcnt:%02x",ledcnt);
-                   if (ledcnt > 10)
-                   {
-                       ledcnt = 0;
-                   }
-                   
-                   //TMOD  = MODE0_SEL;
-               #if INT_HOLD
+  178   1      
+  179   1          m_nTimeState = 0;        
+  180   1          count++;
+  181   1          ledcnt++;
+  182   1          DBG_TIMER("\n\rledcnt:%02x",ledcnt);
+  183   1          if (ledcnt > 10)
+  184   1          {
+  185   2              ledcnt = 0;
+  186   2          }
+  187   1          
+  188   1          //TMOD  = MODE0_SEL;
+C251 COMPILER V5.54.0.0,  Test_timer                                                       19/06/17  20:25:09  PAGE 4   
+
+  189   1      #if INT_HOLD
                    if (count == 20)
                    {
                        m_nTimeState = 1;
@@ -201,10 +213,8 @@ stmt  level    source
                        count = 0;
                    }
                #endif
-               
-C251 COMPILER V5.54.0.0,  Test_timer                                                       16/06/17  17:19:13  PAGE 4   
-
-               #if INT_STOP
+  198   1      
+  199   1      #if INT_STOP
                    if (count == 10)
                    {
                        m_nTimeState = 1;
@@ -213,41 +223,42 @@ stmt  level    source
                        m_nTimeState = 1;
                    }
                #endif
-               }
-               
-               
-               /*******************************************************************************
-               * 功能:Test_Timer
-               ********************************************************************************/
-               void Test_Timer(void)
-               {
-                 UINT8 XRAM ucMode;
-                   UINT16 i = 0;
-                 
-                   TimerInit();
-               //    DelayMs(50);   
-                   while (1)
-                   { 
-               #ifdef INT_HOLD
-                       if (m_nTimeState)
-                       {
-                           //TMOD = MODE2_SEL;
-                           DBG_TIMER("\n\rInt Hold");
-                           DelayMs(2000);
-                           m_nTimeState = 0;
-                           DBG_TIMER("\n\rTH_SEL=%02X",TH_SEL);    
-                           DelayMs(1000);
-                           DBG_TIMER("\n\rTH_SEL=%02X",TH_SEL);    
-                           TMOD = MODE2_SEL;    /* 1.复原原来模式，继续启动 2.不用重新启动 TR  */
-                           DelayMs(1);
-                           DBG_TIMER("\n\rTH:%02X,TL:%02X",TH_SEL,TL_SEL);
-                           DelayMs(10);
-                           DBG_TIMER("\n\rTH:%02X,TL:%02X",TH_SEL,TL_SEL);
-                           DBG_TIMER("\n\rmode=%02X",TMOD);
-                       }
-               #endif//INT_HOLD
-                       //--------------------------------------------------------------------------------------
-               #if INT_STOP
+  208   1      }
+  209          
+  210          
+  211          /*******************************************************************************
+  212          * 功能:Test_Timer
+  213          ********************************************************************************/
+  214          void Test_Timer(void)
+  215          {
+  216   1          UINT8 XRAM ucMode;
+  217   1          UINT16 i = 0;
+  218   1          P0_2 = 0;
+  219   1          TimerInit();
+  220   1          P0_2 = 1;
+  221   1          DelayMs(50);   
+  222   1          while (1)
+  223   1          { 
+  224   2      #ifdef INT_HOLD
+  225   2              if (m_nTimeState)
+  226   2              {
+  227   3                  //TMOD = MODE2_SEL;
+  228   3                  DBG_TIMER("\n\rInt Hold");
+  229   3                  DelayMs(2000);
+  230   3                  m_nTimeState = 0;
+  231   3                  DBG_TIMER("\n\rTH_SEL=%02X",TH_SEL);    
+  232   3                  DelayMs(1000);
+  233   3                  DBG_TIMER("\n\rTH_SEL=%02X",TH_SEL);    
+  234   3                  TMOD = MODE2_SEL;    /* 1.复原原来模式，继续启动 2.不用重新启动 TR  */
+  235   3                  DelayMs(1);
+  236   3                  DBG_TIMER("\n\rTH:%02X,TL:%02X",TH_SEL,TL_SEL);
+  237   3                  DelayMs(10);
+  238   3                  DBG_TIMER("\n\rTH:%02X,TL:%02X",TH_SEL,TL_SEL);
+  239   3                  DBG_TIMER("\n\rmode=%02X",TMOD);
+  240   3              }
+  241   2      #endif//INT_HOLD
+  242   2      
+  243   2      #if INT_STOP
                        if (m_nTimeState)
                        {
                            DBG_TIMER("\n\rInt Stop");
@@ -258,20 +269,32 @@ stmt  level    source
                            DBG_TIMER("\n\rmode=%02X",TMOD);
                        }
                #endif//INT_STOP 
-                       //--------------------------------------------------------------------------------------
-               #if  MAIN_HOLD
-                   ucMode = TMOD;
-                       TMOD = MODE3_SEL;      //hold
-                       DBG_TIMER("\nMain Hold");
+  254   2      
+C251 COMPILER V5.54.0.0,  Test_timer                                                       19/06/17  20:25:09  PAGE 5   
+
+  255   2      #if  MAIN_HOLD
+  256   2              P0_2 = !P0_2;
+  257   2            ucMode = TMOD;
+  258   2              TMOD = MODE3_SEL;      //hold
+  259   2              DBG_TIMER("\nMain Hold");
+  260   2              DelayMs(500);
+  261   2              TMOD = ucMode;
+  262   2              DelayMs(500);
+  263   2              DBG_TIMER("\nRun");
+  264   2      #endif//MAIN_HOLD
+  265   2      
+  266   2      #if MAIN_STOP
+                     ucMode = TMOD;
+                       TMOD = MODE0_SEL;      //stop
+                       DBG_TIMER("\nMain Stop");
                        DelayMs(1000);
-                       TMOD = ucMode;//MODE1_SEL;      //MODE1 MODE2
+                       TMOD = ucMode;
+                       //TR_SEL = 1;
                        DelayMs(2000);
                        DBG_TIMER("\nRun");
-               #endif//MAIN_HOLD
-                       //--------------------------------------------------------------------------------------
-               #if    TEST_IDLE
-C251 COMPILER V5.54.0.0,  Test_timer                                                       16/06/17  17:19:13  PAGE 5   
-
+               #endif//MAIN_STOP    
+  276   2      
+  277   2      #if    TEST_IDLE
                //        TMOD  = MODE2_SEL;
                //        TR_SEL = 1;      //需要重新启动
                //        DelayMs(1);
@@ -281,8 +304,8 @@ stmt  level    source
                        DelayMs(2000);
                        DBG_TIMER("\nIdle Mode out");
                #endif//TEST_IDLE
-                       //--------------------------------------------------------------------------------------
-               #if    TEST_STANDBY
+  287   2      
+  288   2      #if    TEST_STANDBY
                //        TMOD  = MODE1_SEL;
                //        TR_SEL = 1;      //需要重新启动
                //        DelayMs(1);
@@ -292,8 +315,8 @@ stmt  level    source
                        DelayMs(2000);
                        DBG_TIMER("\n\rSTANDBY Mode Out");
                #endif//TEST_STANDBY
-                       //--------------------------------------------------------------------------------------
-               #if    TEST_STOP
+  298   2      
+  299   2      #if    TEST_STOP
                        //TMOD  = MODE1_SEL;
                        //TR_SEL = 1;      //需要重新启动
                        DBG_TIMER("\n\rSTOP Mode in");
@@ -302,23 +325,24 @@ stmt  level    source
                        DelayMs(2000);
                        DBG_TIMER("\n\rSTOP Mode Out");
                #endif//TEST_STOP
-                       //--------------------------------------------------------------------------------------
-                   }
-               }
-               #endif
-  289          
+  308   2          }
+  309   1      }
+  310          #endif
+  311          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =    ------     ------
-  ecode size           =    ------     ------
+  code size            =         4     ------
+  ecode size           =       412     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
+C251 COMPILER V5.54.0.0,  Test_timer                                                       19/06/17  20:25:09  PAGE 6   
+
   xdata-const size     =    ------     ------
-  edata size           =    ------     ------
+  edata size           =         4     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
@@ -326,7 +350,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =    ------     ------
+  hconst size          =       144     ------
 End of Module Information.
 
 

@@ -26,28 +26,29 @@
 #define TIMER_TEST  0
 
 //暂停停止测试
-#define INT_HOLD          0//在定时中断中，暂停计数
-#define INT_STOP          1//在定时中断中，停止计数,该stop为串口的stop模式,不是低功耗的stop模式
-#define MAIN_HOLD         0//主程序中，直接暂停
-#define RUN_MODE          1 //0:single mode   1:repeat mode
+#define INT_HOLD          0     // 在定时中断中，暂停计数
+#define INT_STOP          0     // 在定时中断中，停止计数,该stop为串口的stop模式,不是低功耗的stop模式
+#define MAIN_HOLD         1     // 主程序中，直接暂停
+#define MAIN_STOP         0     // 主程序中，直接停止
+#define RUN_MODE          1     // 0:single mode   1:repeat mode
 
 //中断唤醒测试
-#define TEST_IDLE          0//在定时中断中，暂停计数
-#define TEST_STANDBY       0//在定时中断中，停止计数
-#define TEST_STOP          0//主程序中，直接暂停，低功耗的stop模式
+#define TEST_IDLE          0    // 在定时中断中，暂停计数
+#define TEST_STANDBY       0    // 在定时中断中，停止计数
+#define TEST_STOP          0    // 主程序中，直接暂停，低功耗的stop模式
 
-#define TEST_SW_CLR_INT   0 // 1:软件清中断标志 0:硬件清中断标志位
+#define TEST_SW_CLR_INT   0     // 1:软件清中断标志 0:硬件清中断标志位
 
-#define MODE0 0x00  //stop
-#define MODE1 0X01  //16 bit counter single mode
-#define MODE2 0x02  //16 bit counter repeat mode
-#define MODE3 0x03  //halt timer暂停工作，如果复原到之前的模式，timer将继续工作
+#define MODE0 0x00              // stop
+#define MODE1 0X01              // 16 bit counter single mode
+#define MODE2 0x02              // 16 bit counter repeat mode
+#define MODE3 0x03              // halt timer暂停工作，如果复原到之前的模式，timer将继续工作
 
-#define TMAXTH 0x7f //TH0[7]必须为0，所以最长时间为127ms
-#define TMAXTL 0xf9 //计数时间为TL0[7:0]X4us,最大值不能超过1ms也就是说最大值为8'hF9,大于此值时将强制为8'hF9.
+#define TMAXTH 0x7f             // TH0[7]必须为0，所以最长时间为127ms
+#define TMAXTL 0xf9             // 计数时间为TL0[7:0]X4us,最大值不能超过1ms也就是说最大值为8'hF9,大于此值时将强制为8'hF9.
 
-#define TIMER_MS    1 //timer最大的时间设置为127ms，不能超过
-#define TIMER_4US   0    //4//timer 4us最大的时间设置为249，即996us，不能超过
+#define TIMER_MS    100          // timer最大的时间设置为127ms，不能超过
+#define TIMER_4US   0           // timer 4us最大的时间设置为249，即996us，不能超过
 //----------------------------------------------------------------------------------------------
 //宏常量
 #if TIMER_TEST
@@ -140,14 +141,22 @@ void TimerInit(void)
 
     // run the timer0
     TR_SEL = 1;
+    //TR_SEL 位测试
+    //while (1)
+    //{
+        //DBG_TIMER("\nTL_SEL=%x",TL_SEL);
+        //DelayMs(5);
+    //}
 
-    IPLT= 1;
+    //优先级设置
+    IPLT = 1;
     IPHT = 0;
 
     // interrupt enable
     ET_SEL = 1;
     EA  = 1;
-    DBG_TIMER("\n\rinit Timer");
+    DBG_TIMER("\n\rinit Timer OK");
+    //DelayMs(5);
 }
 
 /*******************************************************************************
@@ -158,9 +167,10 @@ void TimerInit(void)
 ********************************************************************************/
 void Timer_IRQ(void) interrupt INT_SEL
 {
-    static UINT16 count = 0;
+    static UINT16 count  = 0;
     static UINT8  ledcnt = 0;
 
+    P0_2 = !P0_2;
 #if TEST_SW_CLR_INT
     //TF_SEL = 0;
     TDIV |= TDIV_CLR;
@@ -203,11 +213,12 @@ void Timer_IRQ(void) interrupt INT_SEL
 ********************************************************************************/
 void Test_Timer(void)
 {
-	UINT8 XRAM ucMode;
+    UINT8 XRAM ucMode;
     UINT16 i = 0;
-	
+    P0_2 = 0;
     TimerInit();
-//    DelayMs(50);   
+    P0_2 = 1;
+    DelayMs(50);   
     while (1)
     { 
 #ifdef INT_HOLD
@@ -228,7 +239,7 @@ void Test_Timer(void)
             DBG_TIMER("\n\rmode=%02X",TMOD);
         }
 #endif//INT_HOLD
-        //--------------------------------------------------------------------------------------
+
 #if INT_STOP
         if (m_nTimeState)
         {
@@ -240,17 +251,29 @@ void Test_Timer(void)
             DBG_TIMER("\n\rmode=%02X",TMOD);
         }
 #endif//INT_STOP 
-        //--------------------------------------------------------------------------------------
+
 #if  MAIN_HOLD
-		ucMode = TMOD;
+        //P0_2 = !P0_2;
+	    ucMode = TMOD;
         TMOD = MODE3_SEL;      //hold
         DBG_TIMER("\nMain Hold");
-        DelayMs(1000);
-        TMOD = ucMode;//MODE1_SEL;      //MODE1 MODE2
-        DelayMs(2000);
+        DelayMs(500);
+        TMOD = ucMode;
+        DelayMs(500);
         DBG_TIMER("\nRun");
 #endif//MAIN_HOLD
-        //--------------------------------------------------------------------------------------
+
+#if MAIN_STOP
+	    ucMode = TMOD;
+        TMOD = MODE0_SEL;      //stop
+        DBG_TIMER("\nMain Stop");
+        DelayMs(1000);
+        TMOD = ucMode;
+        //TR_SEL = 1;
+        DelayMs(2000);
+        DBG_TIMER("\nRun");
+#endif//MAIN_STOP    
+
 #if    TEST_IDLE
 //        TMOD  = MODE2_SEL;
 //        TR_SEL = 1;      //需要重新启动
@@ -261,7 +284,7 @@ void Test_Timer(void)
         DelayMs(2000);
         DBG_TIMER("\nIdle Mode out");
 #endif//TEST_IDLE
-        //--------------------------------------------------------------------------------------
+
 #if    TEST_STANDBY
 //        TMOD  = MODE1_SEL;
 //        TR_SEL = 1;      //需要重新启动
@@ -272,7 +295,7 @@ void Test_Timer(void)
         DelayMs(2000);
         DBG_TIMER("\n\rSTANDBY Mode Out");
 #endif//TEST_STANDBY
-        //--------------------------------------------------------------------------------------
+
 #if    TEST_STOP
         //TMOD  = MODE1_SEL;
         //TR_SEL = 1;      //需要重新启动
@@ -282,7 +305,6 @@ void Test_Timer(void)
         DelayMs(2000);
         DBG_TIMER("\n\rSTOP Mode Out");
 #endif//TEST_STOP
-        //--------------------------------------------------------------------------------------
     }
 }
 #endif

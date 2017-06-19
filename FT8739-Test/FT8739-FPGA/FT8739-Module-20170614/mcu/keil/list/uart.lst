@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  17:19:16  PAGE 1   
+C251 COMPILER V5.54.0.0,  uart                                                             19/06/17  20:03:26  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE uart
@@ -66,7 +66,7 @@ stmt  level    source
                volatile UINT8 XRAM s_ucUartRxLen = 0;     // length of receive
                #endif
    57          
-C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  17:19:16  PAGE 2   
+C251 COMPILER V5.54.0.0,  uart                                                             19/06/17  20:03:26  PAGE 2   
 
    58          /*******************************************************************************
    59          * 5.Global variable or extern global variabls/functions
@@ -134,7 +134,7 @@ stmt  level    source
   121   1          s_ucUartTxLen++;                          //长度+1
   122   1          if (s_ucUartTxLen == 1)                   //第一个数据，直接发送,不进入缓冲区
   123   1          {
-C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  17:19:16  PAGE 3   
+C251 COMPILER V5.54.0.0,  uart                                                             19/06/17  20:03:26  PAGE 3   
 
   124   2              UARTBUF = ch;
   125   2          }
@@ -202,7 +202,7 @@ stmt  level    source
                        if (s_ucUartRxLen >= UBUF_IN_LEN)
                        {
                            s_ucUartRxLen = UBUF_IN_LEN;
-C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  17:19:16  PAGE 4   
+C251 COMPILER V5.54.0.0,  uart                                                             19/06/17  20:03:26  PAGE 4   
 
                        }
                        else
@@ -270,7 +270,7 @@ stmt  level    source
                    UART1  = 1;
                    UART0  = 1;
                
-C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  17:19:16  PAGE 5   
+C251 COMPILER V5.54.0.0,  uart                                                             19/06/17  20:03:26  PAGE 5   
 
                  if(BUS_SEL == 1)
                  {
@@ -339,7 +339,7 @@ Module Information          Static   Overlayable
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
-C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  17:19:16  PAGE 6   
+C251 COMPILER V5.54.0.0,  uart                                                             19/06/17  20:03:26  PAGE 6   
 
   const size           =    ------     ------
   hconst size          =        15     ------

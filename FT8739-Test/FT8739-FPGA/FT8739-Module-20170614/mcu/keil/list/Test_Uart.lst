@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_Uart                                                        16/06/17  17:19:14  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_Uart                                                        19/06/17  20:03:24  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Uart
@@ -66,7 +66,7 @@ stmt  level    source
                    UINT16 cnt;
                    
                    cnt = (0x400 - (main_clk*1000000/16)/Rate);  //波特率设置
-C251 COMPILER V5.54.0.0,  Test_Uart                                                        16/06/17  17:19:14  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_Uart                                                        19/06/17  20:03:24  PAGE 2   
 
                    UART_RELH = cnt>>8;
                    UART_RELL = cnt;
@@ -134,7 +134,7 @@ stmt  level    source
                    DelayMs(1000);
                    DBG_UART("\n%x",0x55);
                    DBG_UART("\n%x",0xAA);
-C251 COMPILER V5.54.0.0,  Test_Uart                                                        16/06/17  17:19:14  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_Uart                                                        19/06/17  20:03:24  PAGE 3   
 
                
                    /*测试发送大量数据*/

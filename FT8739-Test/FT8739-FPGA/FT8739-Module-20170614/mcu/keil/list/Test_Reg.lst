@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Reg
@@ -66,7 +66,7 @@ stmt  level    source
                
                UINT16 CROM g_usLcdReadBuf[LCD_REG_MAX_SIZE/2] =
                {
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 2   
 
                0x06,0x98,0x99,0x89,0xff,0xe0,0x01,0x5a,0xa4,0x80,0x0f,0x44,0x00,0x00,0x00,0x00,
                0x00,0x2e,0x00,0x2e,0x00,0x00,0x00,0xe6,0x01,0x59,0xa5,0x80,0x06,0x11,0x42,0x00,
@@ -134,7 +134,7 @@ stmt  level    source
                0x00,0xce,0x80,0x08,0x8a,0x00,0x00,0x00,0x09,0x00,0x00,0x00,0xce,0x90,0x0c,0x00,
                0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xce,0xa0,0x0f,0x00,0x80,
                0x00,0x80,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xce,0xb0,0x07,
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 3   
 
                0x00,0x00,0x87,0x04,0x06,0x05,0x00,0xce,0xc0,0x07,0x00,0x00,0xa0,0x04,0x06,0x05,
                0x00,0xce,0xd0,0x07,0x00,0x00,0xa0,0x04,0x06,0x05,0x00,0xce,0xe0,0x0f,0x00,0x54,
@@ -202,7 +202,7 @@ stmt  level    source
   187          * Output:
   188          * Return:
   189          *******************************************************************************/
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 4   
 
   190          void Test_WriteRamReg(UINT16 addr,UINT16 mask0,UINT16 mask1)
   191          {
@@ -270,7 +270,7 @@ stmt  level    source
   253   2              else
   254   2              {
   255   3                  DBG_CAL_REG("\n\rREG_%02X write ok!",Addr_Offset);
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 5   
 
   256   3              }
   257   2          }
@@ -338,7 +338,7 @@ stmt  level    source
   319   2              if (_TEST_AFE_REG_EN)
   320   2              {
   321   3                  DBG_AFE_REG("\n\rREG_%02x write ok!",addr);
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 6   
 
   322   3              }
   323   2              else
@@ -406,7 +406,7 @@ stmt  level    source
                * Return:
                *******************************************************************************/
                void Test_XsiReg(void)
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 7   
 
                {
                    UINT8 i;
@@ -474,7 +474,7 @@ stmt  level    source
                    Test_WriteRamReg(0xBC00,0x00ff,0x0000);
                    Test_WriteRamReg(0xBC01,0x00ff,0x0000);
                    Test_WriteRamReg(0xBC03,0x0003,0x0000);
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 8   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 8   
 
                    Test_WriteRamReg(0xBC04,0xffff,0x0000);
                    DBG_MODE("\n\rXBUS reg write OK\n\r");
@@ -542,7 +542,7 @@ stmt  level    source
   517          /******************************************************************************/
   518          /* CAL¼Ä´æÆ÷¶ÁÐ´²âÊÔ */
   519          #if _TEST_CAL_REG_EN
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 9   
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 9   
 
                /*******************************************************************************
                *   Name: Test_CalReg
@@ -610,7 +610,7 @@ stmt  level    source
                    DBG_MODE("\n\rafe Reg Test is start");
                    Drv_XsiInit();
                
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 10  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 10  
 
                    /* AFE_REG Read and Write Test */
                    DBG_AFE_REG("\n\rAfe Reg read and write:XSI0");
@@ -678,7 +678,7 @@ stmt  level    source
                    }            
                    //Test_AfeRegWrite(pXSI1Regs,0x46,0xC000,0x0000);
                
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 11  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 11  
 
                    for(i = 0x47; i < 0x58; i++)
                    {
@@ -746,7 +746,7 @@ stmt  level    source
                    }
                    DBG_AFE_RAM("\n\rRead Ram_Tab2 is ok!");
                
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 12  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 12  
 
                    usAddr += TAB_RAM_LEN;
                    memset(Buf,0xff,TAB_RAM_LEN*2);
@@ -814,7 +814,7 @@ stmt  level    source
                        }
                    }
                    DBG_AFE_RAM("\n\rRead Ram_Tab1 is ok!");
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 13  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 13  
 
                    usAddr += TAB_RAM_LEN;
                    memset(Buf,0xff,TAB_RAM_LEN*2);
@@ -882,7 +882,7 @@ stmt  level    source
                    XSICKEN = 0;
                    AFECKEN = 0;
                }
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 14  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 14  
 
                #else
                #define Test_Afe_TabRam    /##/
@@ -950,7 +950,7 @@ stmt  level    source
                    DBG_AFE_RAM("\n\r\n\rWrite AccRam3 is start!");
                    usAddr = ACC_RAM_START_ADDR;
                    for (i = 0; i < ucLen; i++)
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 15  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 15  
 
                    {
                        usAddr++;
@@ -1018,7 +1018,7 @@ stmt  level    source
                    UINT16 i;
                    UINT16 ucLen;
                    UINT16 usAddr;
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 16  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 16  
 
                    UINT16 XRAM Buf[RPT_RAM_LEN];
                    
@@ -1086,7 +1086,7 @@ stmt  level    source
                *  Input:
                * Output:
                * Return:
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 17  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 17  
 
                *******************************************************************************/
                void Test_Afe_Ram()
@@ -1154,7 +1154,7 @@ stmt  level    source
                void DrvXbus_WriteLcd8(UINT16 usaddr,UINT8 usdata)
                {
                    while(((pLcdWrapRegs->lcd_regfile_ctrl) & (BITn(1))) == 0); //wait wr enable
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 18  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 18  
 
                    Xbus_ADDR8(usaddr) = usdata;
                }
@@ -1222,7 +1222,7 @@ stmt  level    source
                                }
                                DBG_LCD_REG("\r\n rddata = %02x ",DrvXbus_ReadLcd8(uc_addr+i));
                             #endif
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 19  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 19  
 
                            }
                            //DBG_BOOT("\r\nusPosend= %04x ",usPos); 
@@ -1291,7 +1291,7 @@ Module Information          Static   Overlayable
 ------------------------------------------------
   code size            =    ------     ------
   ecode size           =       467     ------
-C251 COMPILER V5.54.0.0,  Test_Reg                                                         16/06/17  17:19:13  PAGE 20  
+C251 COMPILER V5.54.0.0,  Test_Reg                                                         19/06/17  20:03:22  PAGE 20  
 
   data size            =    ------     ------
   idata size           =    ------     ------

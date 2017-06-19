@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    16/06/17  17:19:15  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    19/06/17  20:03:25  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_DebugOut
@@ -66,7 +66,7 @@ stmt  level    source
                  TEST_TP_VB_MODE_REQ    = 0x1A,
                  TEST_LCD_VB_MODE_ACK   = 0x1B,
                  TEST_LCD_LPF_MODE_EN   = 0x1C,
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    16/06/17  17:19:15  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    19/06/17  20:03:25  PAGE 2   
 
                  TEST_TP_LPF_MODE_REQ   = 0x1D,
                  TEST_LCD_LPF_MODE_ACK  = 0x1E,
@@ -134,7 +134,7 @@ stmt  level    source
                  TEST_SPI0_TEST_OUT6    = 0x5C,
                  TEST_SPI0_TEST_OUT7    = 0x5D,
                  TEST_SPI0_TEST_OUT8    = 0x5E,
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    16/06/17  17:19:15  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    19/06/17  20:03:25  PAGE 3   
 
                  TEST_SPI0_TEST_OUT9    = 0x5F,
                  TEST_SPI0_TEST_OUT10   = 0x60,
@@ -202,7 +202,7 @@ stmt  level    source
                *******************************************************************************/
                void Test_CLk32K(void)
                {
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    16/06/17  17:19:15  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    19/06/17  20:03:25  PAGE 4   
 
                  UINT8 ucDiv = 3;//分频系数.0,1,2为2分频;其他按实际配置分频
                  UINT8 ucSrc = 2;//3:32k_from_1m;2:32k_dig;1:32k osc;0:48m
@@ -270,7 +270,7 @@ stmt  level    source
                * Output:
                * Return:
                *******************************************************************************/
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    16/06/17  17:19:15  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    19/06/17  20:03:25  PAGE 5   
 
                void Test_CON1(ENUM_TEST_CON ucSignal)
                {
@@ -338,7 +338,7 @@ stmt  level    source
                        P0_6 = !P0_6;
                        DelayMs(10);
                    }
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    16/06/17  17:19:15  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    19/06/17  20:03:25  PAGE 6   
 
                #endif
                    Test_CON0(TEST_LCD_BUSY);   //从tp2pad_dsv_en6出信号

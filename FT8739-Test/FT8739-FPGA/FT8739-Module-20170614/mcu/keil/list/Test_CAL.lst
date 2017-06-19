@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_CAL
@@ -66,7 +66,7 @@ stmt  level    source
                SINT16 * XRAM T_tempOut;
                SINT16 * XRAM g_pAfeAram = (volatile SINT16*)ARAM_DATA_BASE_ADDR;
                /*******************************************************************************
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 2   
 
                 * 6.Static function prototypes
                 *******************************************************************************/
@@ -134,7 +134,7 @@ stmt  level    source
              -+ j),(SINT16)temp);
                                }
                                else
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 3   
 
                                {
                                    //DBG_CAL("\n\r%03dok   %04X,%04x",(i*RX_LOCAL_NUM + j),*(T_tempOut + i*RX_LOCAL_NUM 
@@ -202,7 +202,7 @@ stmt  level    source
              - + j),(SINT16)temp);
                                }
                            }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 4   
 
                        }
                        if (flag)
@@ -270,7 +270,7 @@ stmt  level    source
                        #ifdef TIMER0_CAL_INT
                        TIMERCKEN = 1;
                        TMOD = 0x02;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 5   
 
                        TH0 = 0;
                        TDIV = 0;
@@ -338,7 +338,7 @@ stmt  level    source
                            RTC_START = 1;
                            RTC_CNT_WKEN  = 1;  //RTC wake en
                            #endif
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 6   
 
                            
                            DrvCal_MatrixProc(&CalParam);
@@ -406,7 +406,7 @@ stmt  level    source
                
                    DBG_CAL("\n\nTest: Matrix sub");
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 7   
 
                    for (shift = 0; shift < 4; shift++)
                    {
@@ -474,7 +474,7 @@ stmt  level    source
                            DBG_CAL("\n\rCal SUB test is OK!");
                        }
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 8   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 8   
 
                
                        for (i=0; i<TX_ARAM_NUM; i++)
@@ -542,7 +542,7 @@ stmt  level    source
                        {
                            DBG_CAL("\n\rSubMax is  %04X =%04x",usSubMax,pCalRegs->rSubabsMax);    
                        }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 9   
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 9   
 
                        CALCKEN = 0;
                        if (flag)
@@ -610,7 +610,7 @@ stmt  level    source
                                    temp = (SINT16)(*(T_tempbuf1 + i*RX_LOCAL_NUM + j)) * mul;
                                    temp >>= shift;
                                    if (temp > 32767)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 10  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 10  
 
                                    {   
                                        temp = 32767;
@@ -678,7 +678,7 @@ stmt  level    source
                                    else
                                    {
                                        //DBG_CAL_DATA("\n\rok>>   %04x,%04x,%04x",*(T_tempbuf2 + i*RX_LOCAL_NUM + j),(SI
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 11  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 11  
 
              -NT16)temp,*(g_pAfeAram + i*RX_LOCAL_NUM + j));
                                    }
@@ -746,7 +746,7 @@ stmt  level    source
              -L_NUM + j))/Div,*(T_tempbuf2 + i*RX_LOCAL_NUM + j));
                            }
                            else
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 12  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 12  
 
                            {
                               // DBG_CAL_DATA("\n\r%03dOK->   Soft:%04X,Cal:%04x ",i*RX_LOCAL_NUM+j,(*(T_tempbuf1 + i*RX
@@ -814,7 +814,7 @@ stmt  level    source
                #endif
                
                #if TEST_CAL_MOV_EN
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 13  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 13  
 
                /*******************************************************************************
                 *   Name: Test_CAL_MaxtixMov
@@ -882,7 +882,7 @@ stmt  level    source
                        DBG_CAL("\nCal MOV test is OK!");
                    }
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 14  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 14  
 
                    for (i = 0; i < TX_ARAM_NUM; i++)
                    {
@@ -950,7 +950,7 @@ stmt  level    source
                    RTC_WKEN = 1;  // select rtc
                    #if 0
                    RTC_CNT_WKEN = 1;  // RTC wake en
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 15  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 15  
 
                    
                    IT0   = 0;   // 0:LOW level triggered 1:falling edge
@@ -1018,7 +1018,7 @@ stmt  level    source
                        DelayValue = (rand()%6000);
                        if (flag)
                        {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 16  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 16  
 
                            DBG_CAL("\nInt MOV Error, Delay:%d",DelayValue);
                        }
@@ -1086,7 +1086,7 @@ stmt  level    source
                            if (*(T_tempbuf2 + i*TX_LOCAL_NUM + j) != *(T_tempOut + i*TX_LOCAL_NUM + j))
                            {
                                flag = 1;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 17  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 17  
 
                                DBG_ERROR("\n\rERROR->%04x,%04x",*(T_tempbuf2 + i*TX_LOCAL_NUM + j),*(T_tempOut + i*TX_LO
              -CAL_NUM + j));
@@ -1154,7 +1154,7 @@ stmt  level    source
                        }
                    }
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 18  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 18  
 
                    if (flag)
                    {
@@ -1222,7 +1222,7 @@ stmt  level    source
                        DrvCal_MatrixMul2(&CalParam,MUL2_MODE_0);
                        //DrvCal_MatrixMul_PtoP1(&CalParam);
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 19  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 19  
 
                        flag = 0;
                        for (i = 0; i < CAL_TEST_TX; i++)
@@ -1290,7 +1290,7 @@ stmt  level    source
                            for (j = 0; j < CAL_TEST_RX; j++)
                            {
                                tmp = (((SINT16)*(T_tempbuf1 + i)) * ((SINT16)*(T_tempbuf2 + i*RX_LOCAL_NUM + j)));
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 20  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 20  
 
                                tmp >>= ucShift;
                                if (tmp > 32767)
@@ -1358,7 +1358,7 @@ stmt  level    source
                    
                            flag = 0;
                            for (i = 0; i < CAL_ARAM_TX; i++)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 21  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 21  
 
                            {
                                for (j = 0; j < CAL_ARAM_RX; j++)
@@ -1426,7 +1426,7 @@ stmt  level    source
                                    tmp >>= ucShift;
                                    if (tmp > 32767)
                                    {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 22  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 22  
 
                                        tmp = 32767;
                                    }
@@ -1494,7 +1494,7 @@ stmt  level    source
                        {
                            *(T_tempbuf1 + i*RX_LOCAL_NUM + j) = (SINT8)rand()>>2;//-200;
                            *(T_tempbuf2 + i*RX_LOCAL_NUM + j) = (SINT8)rand()>>2;//200
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 23  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 23  
 
                        }
                //      DBG_CAL_DATA("\n\r%04x,%04x",*(T_tempbuf1 + i*CAL_TEST_RX + j),*(T_tempbuf2 + i*CAL_TEST_RX + j))
@@ -1562,7 +1562,7 @@ stmt  level    source
                //      DBG_CAL_DATA("\n\r%04x,%04x",*(T_tempbuf1 + i*CAL_TEST_RX + j),*(T_tempbuf2 + i*CAL_TEST_RX + j))
              -;
                    }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 24  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 24  
 
                    for (ucShift = 0; ucShift < 16; ucShift++)
                    {
@@ -1630,7 +1630,7 @@ stmt  level    source
                 *******************************************************************************/
                BOOLEAN Test_CAL_MaxtixCom_1()
                {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 25  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 25  
 
                    UINT8 i,j;
                    BOOLEAN flag;
@@ -1698,7 +1698,7 @@ stmt  level    source
                                        flag = 1;
                                        DBG_ERROR("\n\rERROR->out=%04x,base=%04x,step=%04x",*(T_tempOut + i*RX_LOCAL_NUM 
              -+ j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j),step);
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 26  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 26  
 
                                    }
                                    else
@@ -1766,7 +1766,7 @@ stmt  level    source
                            *(T_tempbuf1 + i*RX_LOCAL_NUM + j) = (SINT16)rand()>>1;
                        }
                    }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 27  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 27  
 
                    for (i = 0; i < TX_LOCAL_NUM; i++)
                    {
@@ -1834,7 +1834,7 @@ stmt  level    source
                                        DBG_ERROR("\n\rERROR=->out=%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_
              -tempbuf1+ i*RX_LOCAL_NUM + j) - T_tempbuf2[i],i);
                                    }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 28  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 28  
 
                                    else
                                    {
@@ -1902,7 +1902,7 @@ stmt  level    source
                                        flag = 1;
                                        DBG_ERROR("\n\rERROR->out=%04x,%04x,%04x",*(T_tempOut + j*RX_LOCAL_NUM + i),*(T_t
              -empbuf1+ j*RX_LOCAL_NUM + i) - T_tempbuf2[i],i);
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 29  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 29  
 
                                    }
                                    else
@@ -1970,7 +1970,7 @@ stmt  level    source
                    ST_CalMcMatrixParam XRAM CalParam;
                
                   // x0 = 100;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 30  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 30  
 
                   // x1 = 56;
                
@@ -2038,7 +2038,7 @@ stmt  level    source
                 *   Name:
                 *  Brief: 用于产生两列座标间的距离point to point
                 *         resule[M*N] = sqrt((S1.x0-S2.x0)^2+(S1.y0-S2.y0)^2)+...+ sqrt((S1.xn-S2.xn)^2+(S1.yn-S2.yn)^2)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 31  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 31  
 
                 *        输入宽度为2*Tx与2*Rx的 坐标数组，生产Tx*Rx距离矩阵，CAL模块输出固定为Max = 11，即11*11矩阵
                 *        测试代码固定用11*11来测
@@ -2106,7 +2106,7 @@ stmt  level    source
                    DrvCal_MDS(&CalParam);
                
                    for (i=0; i<tx_len; i++)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 32  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 32  
 
                    {
                        for (j=0; j<rx_len; j++)
@@ -2174,7 +2174,7 @@ stmt  level    source
                        {
                
                            x0 = *(T_tempbuf1 + 2*j);
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 33  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 33  
 
                            y0 = *(T_tempbuf1 + 2*j+1);
                            x1 = *(T_tempbuf2 + 2*i);
@@ -2242,7 +2242,7 @@ stmt  level    source
                    {
                        min = 0x7FFF;
                        max = 0;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 34  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 34  
 
                        for (j = 0; j < CAL_TEST_TX; j++)
                        {
@@ -2310,7 +2310,7 @@ stmt  level    source
                         }
                         RxMax[i] = max - min;
                         if (RxMax[i] > max_all)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 35  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 35  
 
                         {
                             max_all = RxMax[i];
@@ -2378,7 +2378,7 @@ stmt  level    source
                        }
                        else if(bPram == CRC_SRC_DRAM)
                        {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 36  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 36  
 
                            cFcs ^= DRAM_ADDR16((addr+i*2));
                        }
@@ -2446,7 +2446,7 @@ stmt  level    source
                    else
                    {
                        DBG_CAL("\nOK");
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 37  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 37  
 
                    }
                #endif
@@ -2514,7 +2514,7 @@ stmt  level    source
                 * Return:
                 *******************************************************************************/
                UINT16 GetXorSum(UINT32 addr,UINT16 length,UINT8 bPram)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 38  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 38  
 
                {
                    UINT16 cFcs = 0;
@@ -2582,7 +2582,7 @@ stmt  level    source
                    DBG_CAL("\nCal Xorsum = %x",ResultCal);
                
                    ResultSoft = GetXorSum((UINT16)T_tempbuf1,CAL_TEST_TX*CAL_TEST_RX*2,0);
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 39  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 39  
 
                    DBG_CAL("\n\rSoft Xorsum = %x",ResultSoft);
                
@@ -2650,7 +2650,7 @@ stmt  level    source
                
                #if TEST_CAL_MAC_1_EN
                #define MAC_NOISE_THD   0
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 40  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 40  
 
                /*******************************************************************************
                 *   Name: Test_CAL_MAC_1
@@ -2718,7 +2718,7 @@ stmt  level    source
                                ulSum_tx += ((T_tempbuf1[i*RX_LOCAL_NUM + j] - MAC_NOISE_THD)*i);
                                ulSum_rx += ((T_tempbuf1[i*RX_LOCAL_NUM + j] - MAC_NOISE_THD)*j);
                            }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 41  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 41  
 
                #else   // MAC_MOD_1 绝对值>0不丢弃模式  
                            if ((T_tempbuf1[i*RX_LOCAL_NUM + j] - MAC_NOISE_THD) >= 0)
@@ -2786,7 +2786,7 @@ stmt  level    source
                    T_tempbuf1[4] = 0x100;
                    T_tempbuf1[5] = 0x200;
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 42  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 42  
 
                    T_tempbuf1[6] = 0x100;
                    T_tempbuf1[7] = 0x200;
@@ -2854,7 +2854,7 @@ stmt  level    source
                 *******************************************************************************/
                void Test_CAL_ID()
                {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 43  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 43  
 
                    UINT8 i;
                    UINT8 ucLastNum = 4;
@@ -2922,7 +2922,7 @@ stmt  level    source
                    }
                
                    for (i = 0; i < ucLastNum; i++)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 44  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 44  
 
                    {
                        g_stFrmData.LastIdPos[2*i]   = i*10;
@@ -2990,7 +2990,7 @@ stmt  level    source
                    T_tempbuf3[2*RX_LOCAL_NUM + 8] = 100;
                    T_tempbuf3[2*RX_LOCAL_NUM + 9] = 100;
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 45  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 45  
 
                    T_tempbuf3[3*RX_LOCAL_NUM + 7] = -250;
                    T_tempbuf3[3*RX_LOCAL_NUM + 8] = 800;
@@ -3058,7 +3058,7 @@ stmt  level    source
                
                    if (g_stPeakData.ucMcPosPeakNum > 0)
                    {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 46  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 46  
 
                        DBG_CAL("\npeak pos:%x--%x",2,g_stPeakData.ucMcPosPeakNum);
                        DBG_CAL("\npeak neg:%x--%x",2,g_stPeakData.ucMcNegPeakNum);
@@ -3126,7 +3126,7 @@ stmt  level    source
                        }
                        DBG_CAL("\n");
                    }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 47  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 47  
 
                    #endif
                    flag = 0;
@@ -3194,7 +3194,7 @@ stmt  level    source
                    {
                        DBG_CAL("\n\rAmov Aram to Mem OK");
                    }   
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 48  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 48  
 
                }
                #else
@@ -3262,7 +3262,7 @@ stmt  level    source
                            {
                                slSumDiff += *(T_tempbuf2 + TX_LOCAL_NUM + i);
                            }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 49  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 49  
 
                            else
                            {
@@ -3330,7 +3330,7 @@ stmt  level    source
                            {
                                slSumDiff += *(T_tempbuf2 + TX_LOCAL_NUM + i);
                            }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 50  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 50  
 
                            else
                            {
@@ -3398,7 +3398,7 @@ stmt  level    source
                            //DBG_CAL("%04d  ",*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
                        }
                            //DBG_CAL("\n");  
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 51  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 51  
 
                    }
                
@@ -3466,7 +3466,7 @@ stmt  level    source
                    {
                        DBG_CAL("\n\rTest CAL ORG AVG Rx is ERROR!");
                    }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 52  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 52  
 
                    else
                    {
@@ -3534,7 +3534,7 @@ stmt  level    source
                        DBG_ERROR("\n\rTest CAL ABS AVG Rx is ERROR!");
                    }
                    else
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 53  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 53  
 
                    {
                        DBG_CAL("\n\rTest CAL ABS AVG Rx is OK!");
@@ -3602,7 +3602,7 @@ stmt  level    source
                            {
                                slSumDiff +=  *(T_tempbuf2 + i);
                            }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 54  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 54  
 
                            else if (*(T_tempbuf1 + j*RX_LOCAL_NUM + i) < *(T_tempbuf2 + RX_LOCAL_NUM + i))
                            {
@@ -3670,7 +3670,7 @@ stmt  level    source
                                slSumDiff += *(T_tempbuf2 + i);
                            }
                            else if (abs(*(T_tempbuf1 + j*RX_LOCAL_NUM + i)) < *(T_tempbuf2 + RX_LOCAL_NUM + i))
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 55  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 55  
 
                            {
                                slSumDiff += *(T_tempbuf2 + RX_LOCAL_NUM + i);
@@ -3738,7 +3738,7 @@ stmt  level    source
                        {
                            *(T_tempbuf1 + i*RX_LOCAL_NUM + j) = (SINT16)rand();
                        }          
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 56  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 56  
 
                    }
                
@@ -3806,7 +3806,7 @@ stmt  level    source
                    {
                        DBG_CAL("\n\rTest CAL ORG AVG2 Tx is ERROR!");
                    }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 57  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 57  
 
                    else
                    {
@@ -3874,7 +3874,7 @@ stmt  level    source
                    }
                
                    if (flag)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 58  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 58  
 
                    {
                        DBG_CAL("\n\rTest CAL ABS AVG2 Tx is ERROR!");
@@ -3942,7 +3942,7 @@ stmt  level    source
                        for (j=0; j<CAL_TEST_TX; j++)
                        {
                            if (*(T_tempbuf1 + j*RX_LOCAL_NUM + i) > *(T_tempbuf2 + i))
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 59  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 59  
 
                            {
                                removalData++;
@@ -4010,7 +4010,7 @@ stmt  level    source
                    DrvCal_MatrixAvg(&CalParam,usAvgMode);
                    for (i=0; i<CAL_TEST_RX; i++)
                    {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 60  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 60  
 
                        slSumDiff = 0; 
                        removalData = 0;
@@ -4078,7 +4078,7 @@ stmt  level    source
                 *******************************************************************************/
                void Test_CAL_AVG_ARAM(void)
                {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 61  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 61  
 
                    UINT8 usAvgMode;
                    UINT8 i,j;
@@ -4146,7 +4146,7 @@ stmt  level    source
                    }
                
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 62  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 62  
 
                    flag = 0;
                    for (i = 0; i < CAL_ARAM_RX; i++)
@@ -4214,7 +4214,7 @@ stmt  level    source
                            {
                                removalData++;
                                continue;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 63  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 63  
 
                            }
                            else
@@ -4282,7 +4282,7 @@ stmt  level    source
                        for (j=0; j<RX_LOCAL_NUM; j++)
                        {
                            *(T_tempbuf1 + i*RX_LOCAL_NUM + j) = (SINT8)rand();
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 64  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 64  
 
                        }          
                    }
@@ -4350,7 +4350,7 @@ stmt  level    source
                        for (j=0; j<CAL_TEST_RX; j++)
                        {
                            if (abs(*(T_tempbuf1 + i*RX_LOCAL_NUM + j)) < slTemp)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 65  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 65  
 
                            {
                                slTemp = abs(*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
@@ -4418,7 +4418,7 @@ stmt  level    source
                                ssMinBuf[i] = *(g_pAfeAram + i*RX_ARAM_NUM + j);
                            }
                        }          
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 66  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 66  
 
                    }
                
@@ -4486,7 +4486,7 @@ stmt  level    source
                            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
                            flag = 1;
                        }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 67  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 67  
 
                        else
                        {
@@ -4554,7 +4554,7 @@ stmt  level    source
                            if (*(T_tempbuf1 + j*RX_LOCAL_NUM + i) < ssMinBuf[i])
                            {
                                ssMinBuf[i] = *(T_tempbuf1 + j*RX_LOCAL_NUM + i);
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 68  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 68  
 
                            }
                        }          
@@ -4622,7 +4622,7 @@ stmt  level    source
                            DBG_ERROR("\n\r%02dERROR->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
                            flag = 1;
                        }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 69  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 69  
 
                        else
                        {
@@ -4690,7 +4690,7 @@ stmt  level    source
                    else
                    {
                        DBG_CAL("\n\rTest CAL ORG Min Rx is OK!");
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 70  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 70  
 
                    }
                
@@ -4758,7 +4758,7 @@ stmt  level    source
                 *   Name: Test_CAL_MAX_TX
                 *  Brief: 行最大值算法
                 *  Input:
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 71  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 71  
 
                 * Output:
                 * Return: none
@@ -4826,7 +4826,7 @@ stmt  level    source
                    }
                    else
                    {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 72  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 72  
 
                        DBG_CAL("\n\rTest CAL ORG Max Tx is OK!");
                    }
@@ -4894,7 +4894,7 @@ stmt  level    source
                        }          
                    }
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 73  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 73  
 
                    CalParam.usSrc1Addr = ARAM_DATA_BASE_ADDR;
                    CalParam.usDstAddr  = CAL_TEST_A2;
@@ -4962,7 +4962,7 @@ stmt  level    source
                            {
                                slTemp = abs(*(g_pAfeAram + i*RX_ARAM_NUM + j));
                            }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 74  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 74  
 
                        }
                        if (slTemp > 0x7FFF)
@@ -5030,7 +5030,7 @@ stmt  level    source
                    CalParam.usSrc1Addr = CAL_TEST_A0;
                    CalParam.usDstAddr  = CAL_TEST_A2;
                    CalParam.ucTxLen    = CAL_TEST_TX;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 75  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 75  
 
                    CalParam.ucRxLen    = CAL_TEST_RX;  
                    CalParam.usCalCmd   = EX_OP_MAX;
@@ -5098,7 +5098,7 @@ stmt  level    source
                        }
                        if (slTemp > 0x7FFF)
                        {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 76  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 76  
 
                            ssMaxBuf[i] = 0x7FFF;
                        }
@@ -5166,7 +5166,7 @@ stmt  level    source
                    flag = 0;
                    for (i = 0; i < CAL_ARAM_RX; i++)
                    {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 77  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 77  
 
                        if (*(T_tempOut + i) != ssMaxBuf[i])
                        {
@@ -5234,7 +5234,7 @@ stmt  level    source
                    }
                    if (flag)
                    {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 78  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 78  
 
                        DBG_CAL("\n\rTest CAL ABS Max Rx is Error!");
                    }
@@ -5302,7 +5302,7 @@ stmt  level    source
                    DBG_CAL("\n\rSofCountNum:%d",SofCountNum);
                    
                    if(CalCountNum != SofCountNum)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 79  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 79  
 
                    {
                         flag = 1;
@@ -5370,7 +5370,7 @@ stmt  level    source
                #define Test_CAL_Count()   /##/
                #endif
                
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 80  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 80  
 
                #if TEST_CAL_SUBCONST_EN 
                /*******************************************************************************
@@ -5438,7 +5438,7 @@ stmt  level    source
                            else
                            {
                                //DBG_CAL_DATA("\n\rOK   ->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(UINT16)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 81  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 81  
 
              -temp);
                            }
@@ -5506,7 +5506,7 @@ stmt  level    source
                    {
                        DBG_CAL("\n\rCal Test SubConst Rx is OK!");
                    }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 82  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 82  
 
                
                
@@ -5574,7 +5574,7 @@ stmt  level    source
                
                    DBG_CAL("\n\rTest CAL SubConst Rx");
                    for (i=0; i<RX_ARAM_NUM; i++)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 83  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 83  
 
                    {
                        *(T_tempbuf2 + i) = (SINT8)rand();        
@@ -5642,7 +5642,7 @@ stmt  level    source
                *******************************************************************************/
                void Test_CAL_CMP(void)
                {
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 84  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 84  
 
                    UINT8 i,j;
                    UINT8 flag;
@@ -5710,7 +5710,7 @@ stmt  level    source
                                //DBG_CAL_DATA("\n\rOK   ->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),temp);
                            }
                        }
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 85  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 85  
 
                    }
                    
@@ -5778,7 +5778,7 @@ stmt  level    source
                            {
                
                                DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_ARAM_NUM + j),temp);
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 86  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 86  
 
                                flag = 1;
                            }
@@ -5846,7 +5846,7 @@ stmt  level    source
                        CalParam.usSrc2Addr = CAL_TEST_A1;
                        CalParam.usDstAddr  = CAL_TEST_A2;
                        CalParam.ucTxLen    = CAL_TEST_TX;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 87  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 87  
 
                        CalParam.ucRxLen    = CAL_TEST_RX;
                        CalParam.usCalCmd   = EX_OP_MUL3;
@@ -5914,7 +5914,7 @@ stmt  level    source
                            for (j = 0; j < CAL_TEST_RX; j++)
                            {
                                tmp = (*(g_pAfeAram + i)) * (*(T_tempbuf2 + j));
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 88  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 88  
 
                                tmp >>= ucShift;
                                if (tmp > 32767)
@@ -5982,7 +5982,7 @@ stmt  level    source
                 *   Name: CalAmovAramToMem
                 *  Brief:
                 *  Input:
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 89  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 89  
 
                 * Output:
                 * Return:
@@ -6050,7 +6050,7 @@ stmt  level    source
                 * Return:
                 *******************************************************************************/
                void Test_CAL(void)
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 90  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 90  
 
                {
                    BOOLEAN flag = TRUE;
@@ -6118,7 +6118,7 @@ stmt  level    source
                    T_tempbuf1 = CAL_TEST_A0;
                    T_tempbuf2 = CAL_TEST_A1;
                    T_tempOut  = CAL_TEST_A2;
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 91  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 91  
 
                    
                    T_tempbuf3 = CAL_TEST_PKS;
@@ -6186,7 +6186,7 @@ stmt  level    source
                 *   Name:
                 *  Brief:
                 *  Input:
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 92  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 92  
 
                 * Output:
                 * Return: INT0中断响应函数
@@ -6254,7 +6254,7 @@ stmt  level    source
                 *  Input:
                 * Output:
                 * Return: I2C STOP中断响应函数
-C251 COMPILER V5.54.0.0,  Test_CAL                                                         16/06/17  17:19:11  PAGE 93  
+C251 COMPILER V5.54.0.0,  Test_CAL                                                         19/06/17  20:03:21  PAGE 93  
 
                 *******************************************************************************/
                void I2C_STOP_ISR(void) interrupt 8

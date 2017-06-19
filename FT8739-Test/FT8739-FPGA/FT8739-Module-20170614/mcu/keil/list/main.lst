@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  main                                                             19/06/17  11:18:44  PAGE 1   
+C251 COMPILER V5.54.0.0,  main                                                             19/06/17  20:03:20  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55          *  Input:
    56          * Output:
    57          * Return:
-C251 COMPILER V5.54.0.0,  main                                                             19/06/17  11:18:44  PAGE 2   
+C251 COMPILER V5.54.0.0,  main                                                             19/06/17  20:03:20  PAGE 2   
 
    58          *******************************************************************************/
    59          void init_mcu(void)
@@ -134,7 +134,7 @@ stmt  level    source
   121   1          ESD_RST_EN = 1;  //发生esd，产生复位
   122   1      
   123   1          CNT_MASK = 4;
-C251 COMPILER V5.54.0.0,  main                                                             19/06/17  11:18:44  PAGE 3   
+C251 COMPILER V5.54.0.0,  main                                                             19/06/17  20:03:20  PAGE 3   
 
   124   1          cnt = CNT_STA;    
   125   1          DBG_FLOW("\n\rESDRST_CNT:%02x",cnt);
@@ -202,7 +202,7 @@ stmt  level    source
   187   1          unsigned char i=0;
   188   1      
   189   1       #if 0  
-C251 COMPILER V5.54.0.0,  main                                                             19/06/17  11:18:44  PAGE 4   
+C251 COMPILER V5.54.0.0,  main                                                             19/06/17  20:03:20  PAGE 4   
 
                    UINT8 buf[8]={0};
                    UINT16 crc=0;
@@ -271,7 +271,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-C251 COMPILER V5.54.0.0,  main                                                             19/06/17  11:18:44  PAGE 5   
+C251 COMPILER V5.54.0.0,  main                                                             19/06/17  20:03:20  PAGE 5   
 
   code size            =    ------     ------
   ecode size           =       698     ------
