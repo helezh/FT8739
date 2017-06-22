@@ -558,7 +558,7 @@ SBIT CLK_WP                 = CGUCON6^0; /* Only CGU0 need */
 
 /* CGUCON7 */
 /*CGUCON7[7:6] OSC_TEST_SEL            在gpio口测量osc32k和osc48m时钟时的选择信号.3:32k_from_1m;2:32k_dig;1:32K , 0:48M */
-/*CGUCON7[5:0] OSC_TEST_DIV            量测OSC48M或者32k OSC时钟时，分频洗漱配置*/
+/*CGUCON7[5:0] OSC_TEST_DIV            量测OSC48M或者32k OSC时钟时，分频系数配置*/
 
 SBIT SEL_32K_SRC            = CGUCON8^7; /* 32k时钟源选择.1:32k选择产生于模拟osc,0:32k来源于1m分频*/
 /* [6:0] fre_noadj_set. 数字32k时钟是否调整的容值. 1m时钟,48m来测,如果正好是32k,个数为1536.但是1m分频可能调整不到正好32k.

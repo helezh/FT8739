@@ -187,7 +187,7 @@ void Test_CLk48M(void)
 *******************************************************************************/
 void Test_CLk32K(void)
 {
-	UINT8 ucDiv = 3;//分频系数.0,1,2为2分频;其他按实际配置分频
+	UINT8 ucDiv = 0;//分频系数.0,1,2为2分频;其他按实际配置分频
 	UINT8 ucSrc = 2;//3:32k_from_1m;2:32k_dig;1:32k osc;0:48m
 	
     #if _UART_OUT_GPIO2
@@ -323,9 +323,9 @@ void Test_DebugOut(void)//AFE相关信号的测试放在AFE测试代码里面
     //Test_CON1(TEST_LCD_RUN);    //从led_pwm[0]出信号
     Test_CON2(TEST_LCD_VSTART); //当用SPI0时,从P0_0出信号,当用IIC时，从p0_2出信号
 
-#if 1    
-    Test_CON3(TEST_LCD_VMIN);   //从p0_6出信号
-# elif 0
+#if 0    
+    Test_CON3(TEST_TP_BUSY);   //从p0_6出信号
+#elif 0
     Test_CLk48M();              //从p0_6出信号
 #else
     Test_CLk32K();              //从p0_6出信号

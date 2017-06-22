@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_spi
@@ -66,7 +66,7 @@ stmt  level    source
                #define CMD_RD_JEDEC_ID     0x9F     // Read Manufacturer and Product ID
                #define CMD_RDID            0x90     // Read Manufacturer, Memory Type and Capacity
                #define CMD_SECTOR_ERASE    0x20     // Erase One Sector in Memory Array
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 2   
 
                #define CMD_BLOCK_ERASE     0xD8     // Erase One Block in Memory Array
                #define CMD_CHIP_ERASE      0x60     // Erase All Sectors in Memory Array
@@ -134,7 +134,7 @@ stmt  level    source
                    if(mode==1)
                    {
                        SPI1MODE_SELH   =0;
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 3   
 
                        SPI1MODE_SELL   =1;
                    }
@@ -202,7 +202,7 @@ stmt  level    source
                * Return:
                *******************************************************************************/
                void SPI_Init(void)
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 4   
 
                {
                
@@ -270,7 +270,7 @@ stmt  level    source
                    //SPI1RI  = 0;    
                    return SPI_BUF;
                }
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 5   
 
                
                /*******************************************************************************
@@ -338,7 +338,7 @@ stmt  level    source
                * Output:
                * Return:
                *******************************************************************************/
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 6   
 
                BOOLEAN SPIFlash_Busy(void)
                {
@@ -406,7 +406,7 @@ stmt  level    source
                        SPI1RI = 0;
                        //TEMP=SPI_BUF;
                    }
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 7   
 
                    SPI_SLVEL0 = 1;                  // ½ûÖ¹Ð¾Æ¬²Ù×÷
                    while (SPIFlash_Busy());         // µÈ´ýÐ¾Æ¬²»Ã¦
@@ -474,7 +474,7 @@ stmt  level    source
                    
                    SPI_WriteData(0x00);                   // dummy data to insert 8 dummy clocks
                    if(cmd==0)  //0x3b
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 8   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 8   
 
                    {
                        SPI1_Mode_Sel(SPI1_MODE_DUAL); 
@@ -542,7 +542,7 @@ stmt  level    source
                *******************************************************************************/
                BOOLEAN SPIFlash_FastRead(UINT32 addr, UINT8 far *pBuf, UINT32 len)
                {
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 9   
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 9   
 
                    SPIFlash_FastReadAddr(addr);
                    SPI_Read(pBuf,len);                     // ¶ÁÊý¾Ý     
@@ -610,7 +610,7 @@ stmt  level    source
                    SPI_SLVEL0 = 1;                   // ½ûÖ¹Ð¾Æ¬²Ù×÷
                    DBG_FLOW("\nWpInit 3");
                    while (SPIFlash_Busy());
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 10  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 10  
 
                    
                    SPI_SLVEL0 = 0;
@@ -678,7 +678,7 @@ stmt  level    source
                    SPI_SLVEL0 = 1;
                    
                    DBG_FLOW("\n 1 QUAD=%02x",ucTmp2);
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 11  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 11  
 
                    
                   
@@ -746,7 +746,7 @@ stmt  level    source
                    {
                        return FALSE;
                    }
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 12  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 12  
 
                    else
                    {
@@ -814,7 +814,7 @@ stmt  level    source
                    }
                    DBG_MODE("\n\rspi flash Test is end\n");
                    /********WritePage*******************/
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 13  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 13  
 
                    SPIFlash_WritePage(0,buf1,SPI_FLASH_LEN);
                    DelayMs(1000);
@@ -882,7 +882,7 @@ stmt  level    source
                    SPIFlashQUAD_EN(0);
                    DBG_MODE("\n spi QuadRead 1k  END \n");
                }
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 14  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 14  
 
                /*******************************************************************************
                * Name: test_readwirte_flash_to_dram
@@ -950,7 +950,7 @@ stmt  level    source
                        }
                        if (i%16 == 0)
                        {
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 15  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 15  
 
                            DBG_SPI("\n");
                        }
@@ -1018,7 +1018,7 @@ stmt  level    source
                
                
                #endif
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 16  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 16  
 
                   }
                
@@ -1086,7 +1086,7 @@ stmt  level    source
                        
                    DBG_SPI("\nSPI1CON == %02x",SPI1CON);    
                   
-C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  10:38:25  PAGE 17  
+C251 COMPILER V5.54.0.0,  Test_spi                                                         22/06/17  18:27:22  PAGE 17  
 
                
                #if 1

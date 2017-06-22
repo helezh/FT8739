@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  10:38:25  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  18:27:22  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_RTC
@@ -66,7 +66,7 @@ stmt  level    source
                #define STOP_MODE                         0         // 0:不进入stop   1:进入stop
                
                /*******************************************************************************
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  10:38:25  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  18:27:22  PAGE 2   
 
                * 3.Private enumerations, structures and unions using typedef
                *******************************************************************************/
@@ -134,7 +134,7 @@ stmt  level    source
                    //LCD Start mode
                #if (RTC_MODE == 2)
                    #if (LCD_START_SRC == 0)
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  10:38:25  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  18:27:22  PAGE 3   
 
                    RTCCON1 |= 0x00;
                    #elif (LCD_START_SRC == 1)
@@ -202,7 +202,7 @@ stmt  level    source
                    ET0 = 1;     // enable timer interrupt
                }
                
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  10:38:25  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  18:27:22  PAGE 4   
 
                /*******************************************************************************
                *   Name:
@@ -270,7 +270,7 @@ stmt  level    source
                    while(RTC_START_STA == 0);
                    RTC_WP  = 1;
                    RTC_CLR = 1;
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  10:38:25  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  18:27:22  PAGE 5   
 
                #endif
                
@@ -338,7 +338,7 @@ stmt  level    source
                        {
                            LCD_START_EN = 0;
                        }
-C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  10:38:25  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_RTC                                                         22/06/17  18:27:22  PAGE 6   
 
                        else if(m_usCnt = 20)
                        {

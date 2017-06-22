@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  10:38:23  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  18:27:20  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_gpio_wakeup
@@ -66,7 +66,7 @@ stmt  level    source
                /*******************************************************************************
                *   Name: ExternInt0Init()
                *  Brief:
-C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  10:38:23  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  18:27:20  PAGE 2   
 
                *  Input:
                * Output:
@@ -134,7 +134,7 @@ stmt  level    source
                        LCD_RELOAD_FLASH_WKEN = 1;
                #endif
                        g_bInt0Flag = FALSE;
-C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  10:38:23  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  18:27:20  PAGE 3   
 
                        //DrvSysPowerIdle();
                        //DrvSysPowerStandby();
@@ -204,7 +204,7 @@ Module Information          Static   Overlayable
   hconst size          =    ------     ------
 End of Module Information.
 
-C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  10:38:23  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_gpio_wakeup                                                 22/06/17  18:27:20  PAGE 4   
 
 
 C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

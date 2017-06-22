@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  10:38:26  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  18:27:23  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_RomEcc
@@ -66,7 +66,7 @@ stmt  level    source
                
                typedef union
                {
-C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  10:38:26  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  18:27:23  PAGE 2   
 
                    UINT16 ucData;
                    
@@ -134,7 +134,7 @@ stmt  level    source
                    for (i = 0; i < PROM_LENGTH; i++)
                    {
                        //*pRom = i;//0xffff;
-C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  10:38:26  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  18:27:23  PAGE 3   
 
                       ucRomTestBuf[i] = *pRom++;
                    }
@@ -202,7 +202,7 @@ stmt  level    source
                    resultH_out.bits.r24 = resultH_tmp.bits.r23^resultH_tmp.bits.r31;
                
                    resultH_out.bits.r23 = resultH_tmp.bits.r22;
-C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  10:38:26  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_RomEcc                                                      22/06/17  18:27:23  PAGE 4   
 
                
                    resultH_out.bits.r22 = resultH_tmp.bits.r21^resultH_tmp.bits.r31;

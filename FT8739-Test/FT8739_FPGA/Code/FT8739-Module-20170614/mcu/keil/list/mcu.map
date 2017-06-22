@@ -1,4 +1,4 @@
-L251 LINKER/LOCATER V4.65.0.0                                                           06/22/2017  10:59:17  PAGE 1
+L251 LINKER/LOCATER V4.65.0.0                                                           06/22/2017  18:27:26  PAGE 1
 
 
 L251 LINKER/LOCATER V4.65.0.0, INVOKED BY:
@@ -67,7 +67,7 @@ INPUT MODULES INCLUDED:
          COMMENT TYPE 0: C251 V5.54.0.0
   .\obj\Test_Uart.obj (Test_Uart)
          COMMENT TYPE 0: C251 V5.54.0.0
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 2
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 2
 
 
   .\obj\Test_SFT_RST.obj (Test_SFT_RST)
@@ -118,7 +118,7 @@ BASE        START       END         USED      MEMORY CLASS
 ==========================================================
 000000H     000020H     009FFFH     00069CH   EDATA
 000000H     000020H     009FFFH               HDATA
-000000H     FEE800H     FEFFFFH     00130BH   ECODE
+000000H     FEE800H     FEFFFFH     001306H   ECODE
             FF0000H     FFFFFFH                 
 000000H     FF0000H     FFFFFFH     0005D0H   HCONST
 FF0000H     FF0000H     FFFFFFH     00005DH   CODE
@@ -135,7 +135,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
 000008H.0 00001FH.7 000018H.0 ---    ---      **GAP**
 000020H.0 000020H.0 000000H.1 BIT    UNIT     BIT            ?BI?TEST_WRITERAMREG??TEST_REG
 000020H.1 000020H.1 000000H.1 BIT    UNIT     BIT            ?BI?TEST_AFEREGWRITE??TEST_REG
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 3
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 3
 
 
 000020H.2 000020H.2 000000H.1 BIT    UNIT     BIT            ?BI?CRCKRMIT
@@ -165,12 +165,12 @@ FEE9A0H   FEEE72H   0004D3H   BYTE   INSEG    ECODE          ?PR?DRV_CRC
 FEEE73H   FEF221H   0003AFH   BYTE   INSEG    ECODE          ?C?LIB_CODE?
 FEF222H   FEF443H   000222H   BYTE   INSEG    ECODE          ?PR?MAIN
 FEF444H   FEF616H   0001D3H   BYTE   INSEG    ECODE          ?PR?TEST_REG
-FEF617H   FEF7DEH   0001C8H   BYTE   INSEG    ECODE          ?PR?TEST_DEBUGOUT
-FEF7DFH   FEF936H   000158H   BYTE   INSEG    ECODE          ?PR?DRV_XSI
-FEF937H   FEFA37H   000101H   BYTE   INSEG    ECODE          ?PR?UART
-FEFA38H   FEFAD5H   00009EH   BYTE   INSEG    ECODE          ?PR?CRCKRMIT
-FEFAD6H   FEFB1DH   000048H   BYTE   INSEG    ECODE          ?PR?DRV_XBUS
-FEFB1EH   FEFFFFH   0004E2H   ---    ---      **GAP**
+FEF617H   FEF7D9H   0001C3H   BYTE   INSEG    ECODE          ?PR?TEST_DEBUGOUT
+FEF7DAH   FEF931H   000158H   BYTE   INSEG    ECODE          ?PR?DRV_XSI
+FEF932H   FEFA32H   000101H   BYTE   INSEG    ECODE          ?PR?UART
+FEFA33H   FEFAD0H   00009EH   BYTE   INSEG    ECODE          ?PR?CRCKRMIT
+FEFAD1H   FEFB18H   000048H   BYTE   INSEG    ECODE          ?PR?DRV_XBUS
+FEFB19H   FEFFFFH   0004E7H   ---    ---      **GAP**
 FF0000H   FF0002H   000003H   ---    OFFS..   CODE           ?CO?START251?4
 FF0003H   FF0006H   000004H   BYTE   INSEG    HCONST         ?HC?PRINTF
 FF0007H   FF0032H   00002CH   ---    ---      **GAP**
@@ -203,7 +203,7 @@ FUNCTION/MODULE                 EDATA_GROUP
 main?/main                      ----- -----
   +--> init_mcu?/main
   +--> Test_DebugOut?/Test_DebugOut
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 4
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 4
 
 
   +--> PRINTF?/PRINTF?
@@ -251,13 +251,14 @@ DelayUs?/Drv_mcu                ----- -----
 Test_DebugOut?/Test_DebugOut    ----- -----
   +--> Test_CON0?/Test_DebugOut
   +--> Test_CON2?/Test_DebugOut
-  +--> Test_CON3?/Test_DebugOut
+  +--> Test_CLk32K?/Test_DebugOut
 
 Test_CON0?/Test_DebugOut        ----- -----
 
 Test_CON2?/Test_DebugOut        ----- -----
 
-Test_CON3?/Test_DebugOut        ----- -----
+Test_CLk32K?/Test_DebugOut      ----- -----
+  +--> PRINTF?/PRINTF?
 
 *** NEW ROOT ******************
 
@@ -270,8 +271,8 @@ ISR_Uart?/uart                  ----- -----
 *** NEW ROOT ******************
 
 ?C_C51STARTUP?2                 ----- -----
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 5
 
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 5
 
 
 
@@ -338,10 +339,10 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 000000D8H.3 DATA     BIT       CCF3
 *SFR* 000000D8H.4 DATA     BIT       CCF4
 *SFR* 000000D8H   DATA     BYTE      CCON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 6
+
+
 *SFR* 00000090H.3 DATA     BIT       CEX0
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 6
-
-
 *SFR* 00000090H.4 DATA     BIT       CEX1
 *SFR* 00000090H.5 DATA     BIT       CEX2
 *SFR* 00000090H.6 DATA     BIT       CEX3
@@ -358,7 +359,7 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 000000BFH   DATA     BYTE      CGUCON8
 *SFR* 000000F9H   DATA     BYTE      CH
 *SFR* 000000E9H   DATA     BYTE      CL
-      00FEF94CH   ECODE    ---       CLK_DIV?
+      00FEF947H   ECODE    ---       CLK_DIV?
 *SFR* 000000CEH   DATA     BIT       CLK_WP
 *SFR* 000000CAH.7 DATA     BIT       CLKEN_500K
 *SFR* 000000D9H   DATA     BYTE      CMOD
@@ -373,7 +374,7 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
       00FEEAECH   ECODE    ---       CRC16_fun?
       00FEEB96H   ECODE    ---       CRC16_LCD?
       00FEEA16H   ECODE    ---       CRC16_mode_init?
-      00FEFA38H   ECODE    ---       crc_kermit?
+      00FEFA33H   ECODE    ---       crc_kermit?
       00000021H   EDATA    ---       Crc_mode
       00FEEBD9H   ECODE    ---       crc_sick?
       00FEEB57H   ECODE    ---       CRCKERMIT?
@@ -383,18 +384,18 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 00000083H   DATA     BYTE      DPH
 *SFR* 00000082H   DATA     BYTE      DPL
 *SFR* 00000084H   DATA     BYTE      DPXL
-      00FEFAD6H   ECODE    ---       Drv_XbusInit?
-      00FEF7DFH   ECODE    ---       Drv_XsiInit?
-      00FEF882H   ECODE    ---       Drv_XsiRead?
-      00FEF800H   ECODE    ---       Drv_XsiReadReg?
-      00FEF8D9H   ECODE    ---       Drv_XsiWrite?
-      00FEF841H   ECODE    ---       Drv_XsiWriteReg?
+      00FEFAD1H   ECODE    ---       Drv_XbusInit?
+      00FEF7DAH   ECODE    ---       Drv_XsiInit?
+      00FEF87DH   ECODE    ---       Drv_XsiRead?
+      00FEF7FBH   ECODE    ---       Drv_XsiReadReg?
+      00FEF8D4H   ECODE    ---       Drv_XsiWrite?
+      00FEF83CH   ECODE    ---       Drv_XsiWriteReg?
       00FEE80BH   ECODE    ---       DrvIOInit?
       00FEE800H   ECODE    ---       DrvSysClkInit?
       00FEE8C2H   ECODE    ---       DrvSysPowerMode?
-      00FEF9EEH   ECODE    ---       DrvUartInit?
-      00FEFADDH   ECODE    ---       DrvXbus_ReadLcd16?
-      00FEFB08H   ECODE    ---       DrvXbus_WriteLcd8?
+      00FEF9E9H   ECODE    ---       DrvUartInit?
+      00FEFAD8H   ECODE    ---       DrvXbus_ReadLcd16?
+      00FEFB03H   ECODE    ---       DrvXbus_WriteLcd8?
 *SFR* 000000DAH   DATA     BYTE      DSV_CON
 *SFR* 000000A8H.7 DATA     BIT       EA
 *SFR* 000000A8H.6 DATA     BIT       EC
@@ -406,10 +407,10 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 000000A8H.5 DATA     BIT       ET2
 *SFR* 000000A8H   DATA     BIT       EX0
 *SFR* 000000A8H.2 DATA     BIT       EX1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 7
+
+
 *SFR* 000000C8H.3 DATA     BIT       EXEN2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 7
-
-
 *SFR* 000000C8H.6 DATA     BIT       EXF2
 *SFR* 000000D0H.5 DATA     BIT       F0
 *SFR* 00000098H.7 DATA     BIT       FE
@@ -438,7 +439,7 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
       00FEE9C9H   ECODE    ---       InvertUint8?
 *SFR* 000000B7H   DATA     BYTE      IPH0
 *SFR* 000000B8H   DATA     BYTE      IPL0
-      00FEF9A8H   ECODE    ---       ISR_Uart?
+      00FEF9A3H   ECODE    ---       ISR_Uart?
 *SFR* 00000088H   DATA     BIT       IT0
 *SFR* 00000088H.2 DATA     BIT       IT1
 *SFR* 000000E5H   DATA     BYTE      IWKSTA
@@ -470,14 +471,14 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 000000EEH   DATA     BYTE      P1SEL
 *SFR* 000000A0H   DATA     BYTE      P2
 *SFR* 000000B0H   DATA     BYTE      P3
-      00FEF937H   ECODE    ---       ParityCheck?
+      00FEF932H   ECODE    ---       ParityCheck?
 *SFR* 00000087H   DATA     BYTE      PCON
       000005B0H   EDATA    ---       pLcdWrapRegs
 *SFR* 000000E6H   DATA     BYTE      POR_STA
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 8
+
+
 *SFR* 000000B8H.6 DATA     BIT       PPC
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 8
-
-
       00FEEECEH   ECODE    FAR LAB   printf?
 *SFR* 000000C9H.2 DATA     BIT       PROBE32K_DIG_EN
 *SFR* 000000C9H   DATA     BIT       PROBE32K_FROM1M_EN
@@ -487,7 +488,7 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 000000B8H.1 DATA     BIT       PT0
 *SFR* 000000B8H.3 DATA     BIT       PT1
 *SFR* 000000B8H.5 DATA     BIT       PT2
-      00FEF961H   ECODE    ---       putchar?
+      00FEF95CH   ECODE    ---       putchar?
 *SFR* 000000B8H   DATA     BIT       PX0
 *SFR* 000000B8H.2 DATA     BIT       PX1
       00000592H   EDATA    ---       pXSI0Regs
@@ -542,20 +543,20 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 00000098H.3 DATA     BIT       TB8
 *SFR* 000000C8H.4 DATA     BIT       TCLK
 *SFR* 00000088H   DATA     BYTE      TCON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 9
+
+
 *SFR* 0000009BH   DATA     BYTE      TDIV
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 9
-
-
       00FEF528H   ECODE    ---       Test_AfeRegWrite?
       00FEF6B8H   ECODE    ---       Test_CLk32K?
       00FEF617H   ECODE    ---       Test_CLk48M?
 *SFR* 000000BDH.2 DATA     BIT       TEST_CLK_EN
-      00FEF796H   ECODE    ---       Test_CON0?
-      00FEF79EH   ECODE    ---       Test_CON1?
-      00FEF7A6H   ECODE    ---       Test_CON2?
-      00FEF7BCH   ECODE    ---       Test_CON3?
+      00FEF795H   ECODE    ---       Test_CON0?
+      00FEF79DH   ECODE    ---       Test_CON1?
+      00FEF7A5H   ECODE    ---       Test_CON2?
+      00FEF7BBH   ECODE    ---       Test_CON3?
       00FEEE5EH   ECODE    ---       Test_CRC?
-      00FEF7C7H   ECODE    ---       Test_DebugOut?
+      00FEF7C6H   ECODE    ---       Test_DebugOut?
 *SFR* 000000E1H.7 DATA     BIT       TEST_OUT0_EN
 *SFR* 000000E2H.7 DATA     BIT       TEST_OUT1_EN
 *SFR* 000000E3H.7 DATA     BIT       TEST_OUT2_EN
@@ -592,8 +593,8 @@ PUBLIC SYMBOLS OF MODULE:  .\obj\mcu (main)
 *SFR* 000000AAH   DATA     BYTE      UARTBUF
 *SFR* 000000C8H.2 DATA     BIT       UARTCKEN
 *SFR* 000000A9H   DATA     BYTE      UARTCON
-      00FEFA7CH   ECODE    ---       update_crc_kermit?
-      00FEFA31H   ECODE    ---       wait_printf_done?
+      00FEFA77H   ECODE    ---       update_crc_kermit?
+      00FEFA2CH   ECODE    ---       wait_printf_done?
 *SFR* 00000099H   DATA     BYTE      WDTCON
 *SFR* 0000009AH   DATA     BYTE      WDTREL
 *SFR* 000000A6H   DATA     BYTE      WDTRST
@@ -610,10 +611,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
 
       VALUE       REP       CLASS    TYPE      SYMBOL NAME
       ====================================================
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 10
+
+
       ---         MODULE    ---      ---       main
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 10
-
-
       00FEF426H   PUBLIC    ECODE    ---       main?
       00FEF222H   PUBLIC    ECODE    ---       init_mcu?
       00FEE900H   PUBLIC    ECODE    ---       g_aucVerfication
@@ -678,10 +679,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B2H   SFRSYM    DATA     BYTE      SPI1CON4
       000000B1H   SFRSYM    DATA     BYTE      SPI1CON3
       000000A5H   SFRSYM    DATA     BYTE      SPI0CON3
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 11
+
+
       000000B4H   SFRSYM    DATA     BYTE      SPI1CON2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 11
-
-
       000000EAH   SFRSYM    DATA     BYTE      ANACON
       00000087H   SFRSYM    DATA     BYTE      PCON
       000000A3H   SFRSYM    DATA     BYTE      SPI0CON2
@@ -746,10 +747,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEF335H   LINE      ECODE    ---       #118
       00FEF338H   LINE      ECODE    ---       #119
       00FEF33BH   LINE      ECODE    ---       #120
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 12
+
+
       00FEF34DH   LINE      ECODE    ---       #122
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 12
-
-
       00FEF34FH   LINE      ECODE    ---       #124
       00FEF352H   LINE      ECODE    ---       #125
       00FEF355H   LINE      ECODE    ---       #126
@@ -814,10 +815,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000DEH   SFRSYM    DATA     BYTE      CCAPM4
       000000D8H   SFRSYM    DATA     BIT       CCF0
       000000D8H.1 SFRSYM    DATA     BIT       CCF1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 13
+
+
       000000D8H.2 SFRSYM    DATA     BIT       CCF2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 13
-
-
       000000D8H.3 SFRSYM    DATA     BIT       CCF3
       000000D8H.4 SFRSYM    DATA     BIT       CCF4
       000000D8H   SFRSYM    DATA     BYTE      CCON
@@ -882,10 +883,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000C8H.5 SFRSYM    DATA     BIT       RCLK
       000000B0H.7 SFRSYM    DATA     BIT       RD
       00000098H.4 SFRSYM    DATA     BIT       REN
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 14
+
+
       00000098H   SFRSYM    DATA     BIT       RI
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 14
-
-
       000000D0H.3 SFRSYM    DATA     BIT       RS0
       000000D0H.4 SFRSYM    DATA     BIT       RS1
       000000B0H   SFRSYM    DATA     BIT       RXD
@@ -950,8 +951,8 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FF0000H   BLOCK     CODE     NEAR LAB  LVL=0
       00FF0000H   LINE      CODE     ---       #183
       ---         BLOCKEND  ---      ---       LVL=0
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 15
 
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 15
 
 
       00FF0037H   BLOCK     CODE     NEAR LAB  LVL=0
@@ -1018,10 +1019,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       0000009EH   SFRSYM    DATA     BYTE      RTCCON
       000000FEH   SFRSYM    DATA     BYTE      LED_EN
       000000B9H   SFRSYM    DATA     BYTE      CNTCON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 16
+
+
       000000D7H   SFRSYM    DATA     BYTE      MEMBIST_FAIL2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 16
-
-
       000000D6H   SFRSYM    DATA     BYTE      MEMBIST_FAIL1
       000000D3H   SFRSYM    DATA     BYTE      MEMBIST_EN2
       000000D2H   SFRSYM    DATA     BYTE      MEMBIST_EN1
@@ -1086,10 +1087,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000080H   SFRSYM    DATA     BYTE      P0BUF
       000000E4H   SFRSYM    DATA     BYTE      TESTCON3
       000000E3H   SFRSYM    DATA     BYTE      TESTCON2
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 17
+
+
       000000E5H   SFRSYM    DATA     BYTE      IWKSTA
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 17
-
-
       0000009AH   SFRSYM    DATA     BYTE      WDTREL
       000000E2H   SFRSYM    DATA     BYTE      TESTCON1
       000000E1H   SFRSYM    DATA     BYTE      TESTCON0
@@ -1154,10 +1155,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000EEH   SFRSYM    DATA     BYTE      P1SEL
       000000C3H   SFRSYM    DATA     BYTE      ANACON3
       000000ECH   SFRSYM    DATA     BYTE      P0SEL
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 18
+
+
       000000C2H   SFRSYM    DATA     BYTE      ANACON2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 18
-
-
       000000C1H   SFRSYM    DATA     BYTE      ANACON1
       000000EDH   SFRSYM    DATA     BYTE      P1MOD
       00000098H   SFRSYM    DATA     BYTE      SYSCON
@@ -1222,10 +1223,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000CAH   SFRSYM    DATA     BYTE      CGUCON2
       000000C8H   SFRSYM    DATA     BYTE      CGUCON1
       000000C9H   SFRSYM    DATA     BYTE      CGUCON0
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 19
+
+
       000000D9H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 19
-
-
       000000D8H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP1
       000000B0H   SFRSYM    DATA     BYTE      ANACON9
       000000A0H   SFRSYM    DATA     BYTE      ANACON8
@@ -1290,8 +1291,8 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000093H   SFRSYM    DATA     BYTE      I2CSTOP
       000000B3H   SFRSYM    DATA     BYTE      SPI1CON
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 20
 
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 20
 
 
       ---         MODULE    ---      ---       Test_Dram
@@ -1358,10 +1359,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000095H   SFRSYM    DATA     BYTE      I2CSEL
       000000F5H   SFRSYM    DATA     BYTE      SSCG_CON0
       000000F7H   SFRSYM    DATA     BYTE      AIPH
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 21
+
+
       000000FDH   SFRSYM    DATA     BYTE      I2C_STATE
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 21
-
-
       00000090H   SFRSYM    DATA     BYTE      I2CCON
       000000A9H   SFRSYM    DATA     BYTE      UARTCON
       000000B8H   SFRSYM    DATA     BYTE      IPL0
@@ -1426,10 +1427,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000089H   SFRSYM    DATA     BYTE      TMOD
       000000A7H   SFRSYM    DATA     BYTE      SPI0CON5
       000000B2H   SFRSYM    DATA     BYTE      SPI1CON4
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 22
+
+
       000000B1H   SFRSYM    DATA     BYTE      SPI1CON3
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 22
-
-
       000000A5H   SFRSYM    DATA     BYTE      SPI0CON3
       000000B4H   SFRSYM    DATA     BYTE      SPI1CON2
       000000EAH   SFRSYM    DATA     BYTE      ANACON
@@ -1494,10 +1495,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000BDH   SFRSYM    DATA     BYTE      FT_EN_REG
       0000009EH   SFRSYM    DATA     BYTE      RTCCON
       000000FEH   SFRSYM    DATA     BYTE      LED_EN
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 23
+
+
       000000B9H   SFRSYM    DATA     BYTE      CNTCON
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 23
-
-
       000000D7H   SFRSYM    DATA     BYTE      MEMBIST_FAIL2
       000000D6H   SFRSYM    DATA     BYTE      MEMBIST_FAIL1
       000000D3H   SFRSYM    DATA     BYTE      MEMBIST_EN2
@@ -1562,10 +1563,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000094H   SFRSYM    DATA     BYTE      P1BUF
       00000080H   SFRSYM    DATA     BYTE      P0BUF
       000000E4H   SFRSYM    DATA     BYTE      TESTCON3
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 24
+
+
       000000E3H   SFRSYM    DATA     BYTE      TESTCON2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 24
-
-
       000000E5H   SFRSYM    DATA     BYTE      IWKSTA
       0000009AH   SFRSYM    DATA     BYTE      WDTREL
       000000E2H   SFRSYM    DATA     BYTE      TESTCON1
@@ -1630,10 +1631,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000E9H   SFRSYM    DATA     BYTE      SFTRST
       000000EEH   SFRSYM    DATA     BYTE      P1SEL
       000000C3H   SFRSYM    DATA     BYTE      ANACON3
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 25
+
+
       000000ECH   SFRSYM    DATA     BYTE      P0SEL
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 25
-
-
       000000C2H   SFRSYM    DATA     BYTE      ANACON2
       000000C1H   SFRSYM    DATA     BYTE      ANACON1
       000000EDH   SFRSYM    DATA     BYTE      P1MOD
@@ -1698,10 +1699,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000CBH   SFRSYM    DATA     BYTE      CGUCON3
       000000CAH   SFRSYM    DATA     BYTE      CGUCON2
       000000C8H   SFRSYM    DATA     BYTE      CGUCON1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 26
+
+
       000000C9H   SFRSYM    DATA     BYTE      CGUCON0
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 26
-
-
       000000D9H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP2
       000000D8H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP1
       000000B0H   SFRSYM    DATA     BYTE      ANACON9
@@ -1766,10 +1767,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000A8H   SFRSYM    DATA     BYTE      IEN0
       00000093H   SFRSYM    DATA     BYTE      I2CSTOP
       000000B3H   SFRSYM    DATA     BYTE      SPI1CON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 27
+
+
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 27
-
-
 
       ---         MODULE    ---      ---       Test_LED
       000000B6H   SFRSYM    DATA     BYTE      RTCCON1
@@ -1834,10 +1835,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000F8H   SFRSYM    DATA     BYTE      AIPL
       00000095H   SFRSYM    DATA     BYTE      I2CSEL
       000000F5H   SFRSYM    DATA     BYTE      SSCG_CON0
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 28
+
+
       000000F7H   SFRSYM    DATA     BYTE      AIPH
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 28
-
-
       000000FDH   SFRSYM    DATA     BYTE      I2C_STATE
       00000090H   SFRSYM    DATA     BYTE      I2CCON
       000000A9H   SFRSYM    DATA     BYTE      UARTCON
@@ -1902,10 +1903,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000088H   SFRSYM    DATA     BYTE      TCON
       00000089H   SFRSYM    DATA     BYTE      TMOD
       000000A7H   SFRSYM    DATA     BYTE      SPI0CON5
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 29
+
+
       000000B2H   SFRSYM    DATA     BYTE      SPI1CON4
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 29
-
-
       000000B1H   SFRSYM    DATA     BYTE      SPI1CON3
       000000A5H   SFRSYM    DATA     BYTE      SPI0CON3
       000000B4H   SFRSYM    DATA     BYTE      SPI1CON2
@@ -1970,10 +1971,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000E1H   SFRSYM    DATA     BYTE      TESTCON0
       00000099H   SFRSYM    DATA     BYTE      WDTCON
       000000C0H   SFRSYM    DATA     BYTE      AIF
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 30
+
+
       000000E8H   SFRSYM    DATA     BYTE      AIE
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 30
-
-
       000000BDH   SFRSYM    DATA     BYTE      FT_EN_REG
       0000009EH   SFRSYM    DATA     BYTE      RTCCON
       000000FEH   SFRSYM    DATA     BYTE      LED_EN
@@ -2038,10 +2039,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEF4A8H   LINE      ECODE    ---       #231
       00FEF4B9H   LINE      ECODE    ---       #232
       00FEF4C0H   LINE      ECODE    ---       #233
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 31
+
+
       00FEF4C6H   LINE      ECODE    ---       #235
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 31
-
-
       00FEF4CDH   LINE      ECODE    ---       #240
       00FEF4E9H   LINE      ECODE    ---       #242
       00FEF4EBH   LINE      ECODE    ---       #244
@@ -2106,10 +2107,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000D9H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP2
       000000D8H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP1
       000000B0H   SFRSYM    DATA     BYTE      ANACON9
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 32
+
+
       000000A0H   SFRSYM    DATA     BYTE      ANACON8
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 32
-
-
       000000D5H   SFRSYM    DATA     BYTE      MEMBIST_FINISH2
       000000C7H   SFRSYM    DATA     BYTE      ANACON7
       000000D4H   SFRSYM    DATA     BYTE      MEMBIST_FINISH1
@@ -2174,10 +2175,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
 
       ---         MODULE    ---      ---       Test_RTC
       000000B6H   SFRSYM    DATA     BYTE      RTCCON1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 33
+
+
       000000BFH   SFRSYM    DATA     BYTE      CGUCON8
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 33
-
-
       000000CEH   SFRSYM    DATA     BYTE      CGUCON6
       000000CDH   SFRSYM    DATA     BYTE      CGUCON5
       000000CCH   SFRSYM    DATA     BYTE      CGUCON4
@@ -2242,10 +2243,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000FDH   SFRSYM    DATA     BYTE      I2C_STATE
       00000090H   SFRSYM    DATA     BYTE      I2CCON
       000000A9H   SFRSYM    DATA     BYTE      UARTCON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 34
+
+
       000000B8H   SFRSYM    DATA     BYTE      IPL0
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 34
-
-
       000000F3H   SFRSYM    DATA     BYTE      ANACON10
       000000B7H   SFRSYM    DATA     BYTE      IPH0
       000000DFH   SFRSYM    DATA     BYTE      IEN1
@@ -2310,10 +2311,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B1H   SFRSYM    DATA     BYTE      SPI1CON3
       000000A5H   SFRSYM    DATA     BYTE      SPI0CON3
       000000B4H   SFRSYM    DATA     BYTE      SPI1CON2
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 35
+
+
       000000EAH   SFRSYM    DATA     BYTE      ANACON
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 35
-
-
       00000087H   SFRSYM    DATA     BYTE      PCON
       000000A3H   SFRSYM    DATA     BYTE      SPI0CON2
       000000DAH   SFRSYM    DATA     BYTE      DSV_CON
@@ -2378,10 +2379,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B9H   SFRSYM    DATA     BYTE      CNTCON
       000000D7H   SFRSYM    DATA     BYTE      MEMBIST_FAIL2
       000000D6H   SFRSYM    DATA     BYTE      MEMBIST_FAIL1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 36
+
+
       000000D3H   SFRSYM    DATA     BYTE      MEMBIST_EN2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 36
-
-
       000000D2H   SFRSYM    DATA     BYTE      MEMBIST_EN1
       0000009BH   SFRSYM    DATA     BYTE      TDIV
       000000EFH   SFRSYM    DATA     BYTE      XDP_STA
@@ -2446,10 +2447,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000E3H   SFRSYM    DATA     BYTE      TESTCON2
       000000E5H   SFRSYM    DATA     BYTE      IWKSTA
       0000009AH   SFRSYM    DATA     BYTE      WDTREL
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 37
+
+
       000000E2H   SFRSYM    DATA     BYTE      TESTCON1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 37
-
-
       000000E1H   SFRSYM    DATA     BYTE      TESTCON0
       00000099H   SFRSYM    DATA     BYTE      WDTCON
       000000C0H   SFRSYM    DATA     BYTE      AIF
@@ -2514,10 +2515,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000ECH   SFRSYM    DATA     BYTE      P0SEL
       000000C2H   SFRSYM    DATA     BYTE      ANACON2
       000000C1H   SFRSYM    DATA     BYTE      ANACON1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 38
+
+
       000000EDH   SFRSYM    DATA     BYTE      P1MOD
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 38
-
-
       00000098H   SFRSYM    DATA     BYTE      SYSCON
       000000ADH   SFRSYM    DATA     BYTE      P1DIR
       000000EBH   SFRSYM    DATA     BYTE      P0MOD
@@ -2582,10 +2583,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000C9H   SFRSYM    DATA     BYTE      CGUCON0
       000000D9H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP2
       000000D8H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 39
+
+
       000000B0H   SFRSYM    DATA     BYTE      ANACON9
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 39
-
-
       000000A0H   SFRSYM    DATA     BYTE      ANACON8
       000000D5H   SFRSYM    DATA     BYTE      MEMBIST_FINISH2
       000000C7H   SFRSYM    DATA     BYTE      ANACON7
@@ -2650,10 +2651,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
 
       ---         MODULE    ---      ---       Test_RomEcc
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 40
+
+
       000000B6H   SFRSYM    DATA     BYTE      RTCCON1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 40
-
-
       000000BFH   SFRSYM    DATA     BYTE      CGUCON8
       000000CEH   SFRSYM    DATA     BYTE      CGUCON6
       000000CDH   SFRSYM    DATA     BYTE      CGUCON5
@@ -2718,10 +2719,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000F7H   SFRSYM    DATA     BYTE      AIPH
       000000FDH   SFRSYM    DATA     BYTE      I2C_STATE
       00000090H   SFRSYM    DATA     BYTE      I2CCON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 41
+
+
       000000A9H   SFRSYM    DATA     BYTE      UARTCON
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 41
-
-
       000000B8H   SFRSYM    DATA     BYTE      IPL0
       000000F3H   SFRSYM    DATA     BYTE      ANACON10
       000000B7H   SFRSYM    DATA     BYTE      IPH0
@@ -2786,10 +2787,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B2H   SFRSYM    DATA     BYTE      SPI1CON4
       000000B1H   SFRSYM    DATA     BYTE      SPI1CON3
       000000A5H   SFRSYM    DATA     BYTE      SPI0CON3
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 42
+
+
       000000B4H   SFRSYM    DATA     BYTE      SPI1CON2
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 42
-
-
       000000EAH   SFRSYM    DATA     BYTE      ANACON
       00000087H   SFRSYM    DATA     BYTE      PCON
       000000A3H   SFRSYM    DATA     BYTE      SPI0CON2
@@ -2854,10 +2855,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000FEH   SFRSYM    DATA     BYTE      LED_EN
       000000B9H   SFRSYM    DATA     BYTE      CNTCON
       000000D7H   SFRSYM    DATA     BYTE      MEMBIST_FAIL2
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 43
+
+
       000000D6H   SFRSYM    DATA     BYTE      MEMBIST_FAIL1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 43
-
-
       000000D3H   SFRSYM    DATA     BYTE      MEMBIST_EN2
       000000D2H   SFRSYM    DATA     BYTE      MEMBIST_EN1
       0000009BH   SFRSYM    DATA     BYTE      TDIV
@@ -2922,10 +2923,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000E4H   SFRSYM    DATA     BYTE      TESTCON3
       000000E3H   SFRSYM    DATA     BYTE      TESTCON2
       000000E5H   SFRSYM    DATA     BYTE      IWKSTA
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 44
+
+
       0000009AH   SFRSYM    DATA     BYTE      WDTREL
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 44
-
-
       000000E2H   SFRSYM    DATA     BYTE      TESTCON1
       000000E1H   SFRSYM    DATA     BYTE      TESTCON0
       00000099H   SFRSYM    DATA     BYTE      WDTCON
@@ -2990,10 +2991,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000C3H   SFRSYM    DATA     BYTE      ANACON3
       000000ECH   SFRSYM    DATA     BYTE      P0SEL
       000000C2H   SFRSYM    DATA     BYTE      ANACON2
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 45
+
+
       000000C1H   SFRSYM    DATA     BYTE      ANACON1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 45
-
-
       000000EDH   SFRSYM    DATA     BYTE      P1MOD
       00000098H   SFRSYM    DATA     BYTE      SYSCON
       000000ADH   SFRSYM    DATA     BYTE      P1DIR
@@ -3058,10 +3059,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000C8H   SFRSYM    DATA     BYTE      CGUCON1
       000000C9H   SFRSYM    DATA     BYTE      CGUCON0
       000000D9H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP2
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 46
+
+
       000000D8H   SFRSYM    DATA     BYTE      MEMBIST_ERRMAP1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 46
-
-
       000000B0H   SFRSYM    DATA     BYTE      ANACON9
       000000A0H   SFRSYM    DATA     BYTE      ANACON8
       000000D5H   SFRSYM    DATA     BYTE      MEMBIST_FINISH2
@@ -3126,15 +3127,15 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B3H   SFRSYM    DATA     BYTE      SPI1CON
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
 
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 47
+
+
       ---         MODULE    ---      ---       Test_DebugOut
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 47
-
-
-      00FEF796H   PUBLIC    ECODE    ---       Test_CON0?
-      00FEF79EH   PUBLIC    ECODE    ---       Test_CON1?
-      00FEF7A6H   PUBLIC    ECODE    ---       Test_CON2?
-      00FEF7BCH   PUBLIC    ECODE    ---       Test_CON3?
-      00FEF7C7H   PUBLIC    ECODE    ---       Test_DebugOut?
+      00FEF795H   PUBLIC    ECODE    ---       Test_CON0?
+      00FEF79DH   PUBLIC    ECODE    ---       Test_CON1?
+      00FEF7A5H   PUBLIC    ECODE    ---       Test_CON2?
+      00FEF7BBH   PUBLIC    ECODE    ---       Test_CON3?
+      00FEF7C6H   PUBLIC    ECODE    ---       Test_DebugOut?
       00FEF6B8H   PUBLIC    ECODE    ---       Test_CLk32K?
       00FEF617H   PUBLIC    ECODE    ---       Test_CLk48M?
       000000DAH.6 SFRSYM    DATA     BIT       UART_INH
@@ -3194,10 +3195,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000BFH.7 SFRSYM    DATA     BIT       SEL_32K_SRC
       000000D3H   SFRSYM    DATA     BYTE      MEMBIST_EN2
       000000D2H   SFRSYM    DATA     BYTE      MEMBIST_EN1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 48
+
+
       0000009BH   SFRSYM    DATA     BYTE      TDIV
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 48
-
-
       000000EFH   SFRSYM    DATA     BYTE      XDP_STA
       00000088H   SFRSYM    DATA     BYTE      TCON
       00000089H   SFRSYM    DATA     BYTE      TMOD
@@ -3262,88 +3263,88 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       ---         BLOCKEND  ---      ---       LVL=1
       00FEF6B8H   LINE      ECODE    ---       #188
       00FEF6BAH   LINE      ECODE    ---       #189
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 49
+
+
       00FEF6BAH   LINE      ECODE    ---       #190
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 49
-
-
-      00FEF6BDH   LINE      ECODE    ---       #191
-      00FEF6C0H   LINE      ECODE    ---       #198
-      00FEF6C8H   LINE      ECODE    ---       #200
-      00FEF6D4H   LINE      ECODE    ---       #201
-      00FEF6D7H   LINE      ECODE    ---       #202
-      00FEF6DAH   LINE      ECODE    ---       #203
-      00FEF6DAH   LINE      ECODE    ---       #205
-      00FEF6DDH   LINE      ECODE    ---       #206
-      00FEF6E0H   LINE      ECODE    ---       #207
-      00FEF6E3H   LINE      ECODE    ---       #208
-      00FEF6E6H   LINE      ECODE    ---       #210
-      00FEF6EBH   LINE      ECODE    ---       #212
-      00FEF6EEH   LINE      ECODE    ---       #213
-      00FEF6F0H   LINE      ECODE    ---       #214
-      00FEF6F5H   LINE      ECODE    ---       #216
-      00FEF6F8H   LINE      ECODE    ---       #217
-      00FEF6FAH   LINE      ECODE    ---       #218
-      00FEF6FFH   LINE      ECODE    ---       #220
-      00FEF702H   LINE      ECODE    ---       #221
-      00FEF705H   LINE      ECODE    ---       #222
-      00FEF705H   LINE      ECODE    ---       #224
-      00FEF70FH   LINE      ECODE    ---       #226
-      00FEF723H   LINE      ECODE    ---       #227
-      00FEF737H   LINE      ECODE    ---       #228
-      00FEF74BH   LINE      ECODE    ---       #229
-      00FEF75FH   LINE      ECODE    ---       #230
-      00FEF773H   LINE      ECODE    ---       #231
-      00FEF787H   LINE      ECODE    ---       #232
-      00FEF793H   LINE      ECODE    ---       #233
+      00FEF6BCH   LINE      ECODE    ---       #191
+      00FEF6BFH   LINE      ECODE    ---       #198
+      00FEF6C7H   LINE      ECODE    ---       #200
+      00FEF6D3H   LINE      ECODE    ---       #201
+      00FEF6D6H   LINE      ECODE    ---       #202
+      00FEF6D9H   LINE      ECODE    ---       #203
+      00FEF6D9H   LINE      ECODE    ---       #205
+      00FEF6DCH   LINE      ECODE    ---       #206
+      00FEF6DFH   LINE      ECODE    ---       #207
+      00FEF6E2H   LINE      ECODE    ---       #208
+      00FEF6E5H   LINE      ECODE    ---       #210
+      00FEF6EAH   LINE      ECODE    ---       #212
+      00FEF6EDH   LINE      ECODE    ---       #213
+      00FEF6EFH   LINE      ECODE    ---       #214
+      00FEF6F4H   LINE      ECODE    ---       #216
+      00FEF6F7H   LINE      ECODE    ---       #217
+      00FEF6F9H   LINE      ECODE    ---       #218
+      00FEF6FEH   LINE      ECODE    ---       #220
+      00FEF701H   LINE      ECODE    ---       #221
+      00FEF704H   LINE      ECODE    ---       #222
+      00FEF704H   LINE      ECODE    ---       #224
+      00FEF70EH   LINE      ECODE    ---       #226
+      00FEF722H   LINE      ECODE    ---       #227
+      00FEF736H   LINE      ECODE    ---       #228
+      00FEF74AH   LINE      ECODE    ---       #229
+      00FEF75EH   LINE      ECODE    ---       #230
+      00FEF772H   LINE      ECODE    ---       #231
+      00FEF786H   LINE      ECODE    ---       #232
+      00FEF792H   LINE      ECODE    ---       #233
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF796H   BLOCK     ECODE    ---       LVL=0
+      00FEF795H   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      INT       ucSignal
-      00FEF796H   LINE      ECODE    ---       #242
-      00FEF796H   LINE      ECODE    ---       #244
-      00FEF799H   LINE      ECODE    ---       #246
-      00FEF79DH   LINE      ECODE    ---       #247
+      00FEF795H   LINE      ECODE    ---       #242
+      00FEF795H   LINE      ECODE    ---       #244
+      00FEF798H   LINE      ECODE    ---       #246
+      00FEF79CH   LINE      ECODE    ---       #247
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF79EH   BLOCK     ECODE    ---       LVL=0
+      00FEF79DH   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      INT       ucSignal
-      00FEF79EH   LINE      ECODE    ---       #256
-      00FEF79EH   LINE      ECODE    ---       #258
-      00FEF7A1H   LINE      ECODE    ---       #260
-      00FEF7A5H   LINE      ECODE    ---       #261
+      00FEF79DH   LINE      ECODE    ---       #256
+      00FEF79DH   LINE      ECODE    ---       #258
+      00FEF7A0H   LINE      ECODE    ---       #260
+      00FEF7A4H   LINE      ECODE    ---       #261
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF7A6H   BLOCK     ECODE    ---       LVL=0
+      00FEF7A5H   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      INT       ucSignal
-      00FEF7A6H   LINE      ECODE    ---       #270
-      00FEF7A6H   LINE      ECODE    ---       #272
-      00FEF7A9H   LINE      ECODE    ---       #274
-      00FEF7ACH   LINE      ECODE    ---       #275
-      00FEF7AEH   LINE      ECODE    ---       #278
-      00FEF7B1H   LINE      ECODE    ---       #279
-      00FEF7B4H   LINE      ECODE    ---       #280
-      00FEF7B4H   LINE      ECODE    ---       #282
-      00FEF7B7H   LINE      ECODE    ---       #284
-      00FEF7BBH   LINE      ECODE    ---       #285
+      00FEF7A5H   LINE      ECODE    ---       #270
+      00FEF7A5H   LINE      ECODE    ---       #272
+      00FEF7A8H   LINE      ECODE    ---       #274
+      00FEF7ABH   LINE      ECODE    ---       #275
+      00FEF7ADH   LINE      ECODE    ---       #278
+      00FEF7B0H   LINE      ECODE    ---       #279
+      00FEF7B3H   LINE      ECODE    ---       #280
+      00FEF7B3H   LINE      ECODE    ---       #282
+      00FEF7B6H   LINE      ECODE    ---       #284
+      00FEF7BAH   LINE      ECODE    ---       #285
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF7BCH   BLOCK     ECODE    ---       LVL=0
+      00FEF7BBH   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      INT       ucSignal
-      00FEF7BCH   LINE      ECODE    ---       #294
-      00FEF7BCH   LINE      ECODE    ---       #297
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 50
+      00FEF7BBH   LINE      ECODE    ---       #294
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 50
 
 
-      00FEF7BFH   LINE      ECODE    ---       #299
-      00FEF7C2H   LINE      ECODE    ---       #301
-      00FEF7C6H   LINE      ECODE    ---       #302
+      00FEF7BBH   LINE      ECODE    ---       #297
+      00FEF7BEH   LINE      ECODE    ---       #299
+      00FEF7C1H   LINE      ECODE    ---       #301
+      00FEF7C5H   LINE      ECODE    ---       #302
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF7C7H   BLOCK     ECODE    ---       LVL=0
-      00FEF7C7H   LINE      ECODE    ---       #312
-      00FEF7C7H   LINE      ECODE    ---       #322
-      00FEF7CFH   LINE      ECODE    ---       #324
-      00FEF7D7H   LINE      ECODE    ---       #327
+      00FEF7C6H   BLOCK     ECODE    ---       LVL=0
+      00FEF7C6H   LINE      ECODE    ---       #312
+      00FEF7C6H   LINE      ECODE    ---       #322
+      00FEF7CEH   LINE      ECODE    ---       #324
+      00FEF7D6H   LINE      ECODE    ---       #331
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       Test_Reset
@@ -3398,10 +3399,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000088H   SFRSYM    DATA     BYTE      TCON
       00000089H   SFRSYM    DATA     BYTE      TMOD
       000000A7H   SFRSYM    DATA     BYTE      SPI0CON5
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 51
+
+
       000000B2H   SFRSYM    DATA     BYTE      SPI1CON4
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 51
-
-
       000000B1H   SFRSYM    DATA     BYTE      SPI1CON3
       000000A5H   SFRSYM    DATA     BYTE      SPI0CON3
       000000B4H   SFRSYM    DATA     BYTE      SPI1CON2
@@ -3466,10 +3467,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000E8H   SFRSYM    DATA     BYTE      AIE
       000000BDH   SFRSYM    DATA     BYTE      FT_EN_REG
       0000009EH   SFRSYM    DATA     BYTE      RTCCON
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 52
+
+
       000000FEH   SFRSYM    DATA     BYTE      LED_EN
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 52
-
-
       000000B9H   SFRSYM    DATA     BYTE      CNTCON
       000000D7H   SFRSYM    DATA     BYTE      MEMBIST_FAIL2
       000000D6H   SFRSYM    DATA     BYTE      MEMBIST_FAIL1
@@ -3534,10 +3535,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000ECH   SFRSYM    DATA     BYTE      P0SEL
       000000C2H   SFRSYM    DATA     BYTE      ANACON2
       000000C1H   SFRSYM    DATA     BYTE      ANACON1
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 53
+
+
       000000EDH   SFRSYM    DATA     BYTE      P1MOD
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 53
-
-
       000000CEH   SFRSYM    DATA     BIT       CLK_WP
       00000098H   SFRSYM    DATA     BYTE      SYSCON
       000000ADH   SFRSYM    DATA     BYTE      P1DIR
@@ -3602,10 +3603,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEE800H   BLOCK     ECODE    ---       LVL=0
       R11         REGSYM    ---      BYTE      ucDiv
       00FEE800H   LINE      ECODE    ---       #53
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 54
+
+
       00FEE800H   LINE      ECODE    ---       #55
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 54
-
-
       00FEE805H   LINE      ECODE    ---       #57
       00FEE807H   LINE      ECODE    ---       #58
       00FEE807H   LINE      ECODE    ---       #60
@@ -3670,10 +3671,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEE890H   LINE      ECODE    ---       #146
       00FEE891H   LINE      ECODE    ---       #147
       00FEE892H   LINE      ECODE    ---       #149
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 55
+
+
       00FEE893H   LINE      ECODE    ---       #150
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 55
-
-
       00FEE894H   LINE      ECODE    ---       #151
       00FEE895H   LINE      ECODE    ---       #152
       00FEE896H   LINE      ECODE    ---       #154
@@ -3724,11 +3725,11 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       Drv_XSI
-      00FEF882H   PUBLIC    ECODE    ---       Drv_XsiRead?
-      00FEF8D9H   PUBLIC    ECODE    ---       Drv_XsiWrite?
-      00FEF7DFH   PUBLIC    ECODE    ---       Drv_XsiInit?
-      00FEF800H   PUBLIC    ECODE    ---       Drv_XsiReadReg?
-      00FEF841H   PUBLIC    ECODE    ---       Drv_XsiWriteReg?
+      00FEF87DH   PUBLIC    ECODE    ---       Drv_XsiRead?
+      00FEF8D4H   PUBLIC    ECODE    ---       Drv_XsiWrite?
+      00FEF7DAH   PUBLIC    ECODE    ---       Drv_XsiInit?
+      00FEF7FBH   PUBLIC    ECODE    ---       Drv_XsiReadReg?
+      00FEF83CH   PUBLIC    ECODE    ---       Drv_XsiWriteReg?
       00000592H   PUBLIC    EDATA    ---       pXSI0Regs
       00000596H   PUBLIC    EDATA    ---       pXSI1Regs
       0000059CH   PUBLIC    EDATA    BYTE      ?Drv_XsiRead??BYTE
@@ -3738,10 +3739,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000CEH   SFRSYM    DATA     BYTE      CGUCON6
       000000CDH   SFRSYM    DATA     BYTE      CGUCON5
       000000CCH   SFRSYM    DATA     BYTE      CGUCON4
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 56
+
+
       000000CBH   SFRSYM    DATA     BYTE      CGUCON3
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 56
-
-
       000000CAH   SFRSYM    DATA     BYTE      CGUCON2
       000000C8H   SFRSYM    DATA     BYTE      CGUCON1
       000000C9H   SFRSYM    DATA     BYTE      CGUCON0
@@ -3806,10 +3807,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000A9H   SFRSYM    DATA     BYTE      UARTCON
       000000C8H.5 SFRSYM    DATA     BIT       XSICKEN
       000000B8H   SFRSYM    DATA     BYTE      IPL0
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 57
+
+
       000000F3H   SFRSYM    DATA     BYTE      ANACON10
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 57
-
-
       000000B7H   SFRSYM    DATA     BYTE      IPH0
       000000DFH   SFRSYM    DATA     BYTE      IEN1
       000000A8H   SFRSYM    DATA     BYTE      IEN0
@@ -3818,114 +3819,114 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B3H   SFRSYM    DATA     BYTE      SPI1CON
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
 
-      00FEF7DFH   BLOCK     ECODE    ---       LVL=0
-      00FEF7DFH   LINE      ECODE    ---       #53
-      00FEF7DFH   LINE      ECODE    ---       #55
-      00FEF7E2H   LINE      ECODE    ---       #56
-      00FEF7E4H   LINE      ECODE    ---       #58
-      00FEF7E7H   LINE      ECODE    ---       #59
-      00FEF7EBH   LINE      ECODE    ---       #62
-      00FEF7F7H   LINE      ECODE    ---       #63
-      00FEF7FFH   LINE      ECODE    ---       #65
+      00FEF7DAH   BLOCK     ECODE    ---       LVL=0
+      00FEF7DAH   LINE      ECODE    ---       #53
+      00FEF7DAH   LINE      ECODE    ---       #55
+      00FEF7DDH   LINE      ECODE    ---       #56
+      00FEF7DFH   LINE      ECODE    ---       #58
+      00FEF7E2H   LINE      ECODE    ---       #59
+      00FEF7E6H   LINE      ECODE    ---       #62
+      00FEF7F2H   LINE      ECODE    ---       #63
+      00FEF7FAH   LINE      ECODE    ---       #65
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF800H   BLOCK     ECODE    ---       LVL=0
+      00FEF7FBH   BLOCK     ECODE    ---       LVL=0
       REG=0       REGSYM    ---      ---       pXSIRegs
       WR4         REGSYM    ---      WORD      usAddr
       R11         REGSYM    ---      BYTE      flag
-      00FEF802H   BLOCK     ECODE    NEAR LAB  LVL=1
+      00FEF7FDH   BLOCK     ECODE    NEAR LAB  LVL=1
       WR6         REGSYM    ---      WORD      tmp
       ---         BLOCKEND  ---      ---       LVL=1
-      00FEF800H   LINE      ECODE    ---       #74
-      00FEF802H   LINE      ECODE    ---       #75
-      00FEF802H   LINE      ECODE    ---       #77
-      00FEF805H   LINE      ECODE    ---       #82
-      00FEF814H   LINE      ECODE    ---       #83
-      00FEF81CH   LINE      ECODE    ---       #85
-      00FEF821H   LINE      ECODE    ---       #86
-      00FEF829H   LINE      ECODE    ---       #88
-      00FEF82DH   LINE      ECODE    ---       #89
-      00FEF835H   LINE      ECODE    ---       #90
-      00FEF83DH   LINE      ECODE    ---       #91
-      00FEF840H   LINE      ECODE    ---       #93
-      00FEF840H   LINE      ECODE    ---       #94
+      00FEF7FBH   LINE      ECODE    ---       #74
+      00FEF7FDH   LINE      ECODE    ---       #75
+      00FEF7FDH   LINE      ECODE    ---       #77
+      00FEF800H   LINE      ECODE    ---       #82
+      00FEF80FH   LINE      ECODE    ---       #83
+      00FEF817H   LINE      ECODE    ---       #85
+      00FEF81CH   LINE      ECODE    ---       #86
+      00FEF824H   LINE      ECODE    ---       #88
+      00FEF828H   LINE      ECODE    ---       #89
+      00FEF830H   LINE      ECODE    ---       #90
+      00FEF838H   LINE      ECODE    ---       #91
+      00FEF83BH   LINE      ECODE    ---       #93
+      00FEF83BH   LINE      ECODE    ---       #94
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF841H   BLOCK     ECODE    ---       LVL=0
+      00FEF83CH   BLOCK     ECODE    ---       LVL=0
       REG=0       REGSYM    ---      ---       pXSIRegs
       WR10        REGSYM    ---      WORD      usAddr
       WR4         REGSYM    ---      WORD      usData
       R9          REGSYM    ---      BYTE      flag
-      00FEF841H   LINE      ECODE    ---       #103
-      00FEF845H   LINE      ECODE    ---       #105
-      00FEF848H   LINE      ECODE    ---       #110
-      00FEF85BH   LINE      ECODE    ---       #111
-      00FEF863H   LINE      ECODE    ---       #113
-      00FEF866H   LINE      ECODE    ---       #114
-      00FEF86EH   LINE      ECODE    ---       #115
-      00FEF876H   LINE      ECODE    ---       #116
-      00FEF87EH   LINE      ECODE    ---       #117
-      00FEF881H   LINE      ECODE    ---       #118
+      00FEF83CH   LINE      ECODE    ---       #103
+      00FEF840H   LINE      ECODE    ---       #105
+      00FEF843H   LINE      ECODE    ---       #110
+      00FEF856H   LINE      ECODE    ---       #111
+      00FEF85EH   LINE      ECODE    ---       #113
+      00FEF861H   LINE      ECODE    ---       #114
+      00FEF869H   LINE      ECODE    ---       #115
+      00FEF871H   LINE      ECODE    ---       #116
+      00FEF879H   LINE      ECODE    ---       #117
+      00FEF87CH   LINE      ECODE    ---       #118
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF882H   BLOCK     ECODE    ---       LVL=0
+      00FEF87DH   BLOCK     ECODE    ---       LVL=0
       REG=0       REGSYM    ---      ---       pXSIRegs
       WR30        REGSYM    ---      WORD      usAddr
       REG=1       REGSYM    ---      ---       pBuf
       WR8         REGSYM    ---      WORD      len
       R11         REGSYM    ---      BYTE      flag
-      00FEF88AH   BLOCK     ECODE    NEAR LAB  LVL=1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 58
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 58
 
 
+      00FEF885H   BLOCK     ECODE    NEAR LAB  LVL=1
       R11         REGSYM    ---      BYTE      i
       ---         BLOCKEND  ---      ---       LVL=1
-      00FEF882H   LINE      ECODE    ---       #127
-      00FEF88AH   LINE      ECODE    ---       #128
-      00FEF88AH   LINE      ECODE    ---       #131
-      00FEF88DH   LINE      ECODE    ---       #135
-      00FEF89DH   LINE      ECODE    ---       #136
-      00FEF8A5H   LINE      ECODE    ---       #138
-      00FEF8A8H   LINE      ECODE    ---       #140
-      00FEF8ADH   LINE      ECODE    ---       #141
-      00FEF8B5H   LINE      ECODE    ---       #143
-      00FEF8BEH   LINE      ECODE    ---       #144
-      00FEF8C5H   LINE      ECODE    ---       #146
-      00FEF8CDH   LINE      ECODE    ---       #147
-      00FEF8D5H   LINE      ECODE    ---       #148
-      00FEF8D8H   LINE      ECODE    ---       #149
+      00FEF87DH   LINE      ECODE    ---       #127
+      00FEF885H   LINE      ECODE    ---       #128
+      00FEF885H   LINE      ECODE    ---       #131
+      00FEF888H   LINE      ECODE    ---       #135
+      00FEF898H   LINE      ECODE    ---       #136
+      00FEF8A0H   LINE      ECODE    ---       #138
+      00FEF8A3H   LINE      ECODE    ---       #140
+      00FEF8A8H   LINE      ECODE    ---       #141
+      00FEF8B0H   LINE      ECODE    ---       #143
+      00FEF8B9H   LINE      ECODE    ---       #144
+      00FEF8C0H   LINE      ECODE    ---       #146
+      00FEF8C8H   LINE      ECODE    ---       #147
+      00FEF8D0H   LINE      ECODE    ---       #148
+      00FEF8D3H   LINE      ECODE    ---       #149
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF8D9H   BLOCK     ECODE    ---       LVL=0
+      00FEF8D4H   BLOCK     ECODE    ---       LVL=0
       REG=0       REGSYM    ---      ---       pXSIRegs
       WR30        REGSYM    ---      WORD      usAddr
       REG=1       REGSYM    ---      ---       pBuf
       WR10        REGSYM    ---      WORD      len
       R9          REGSYM    ---      BYTE      flag
-      00FEF8E3H   BLOCK     ECODE    NEAR LAB  LVL=1
+      00FEF8DEH   BLOCK     ECODE    NEAR LAB  LVL=1
       WR8         REGSYM    ---      WORD      i
       ---         BLOCKEND  ---      ---       LVL=1
-      00FEF8D9H   LINE      ECODE    ---       #158
-      00FEF8E3H   LINE      ECODE    ---       #159
-      00FEF8E3H   LINE      ECODE    ---       #162
-      00FEF8E6H   LINE      ECODE    ---       #163
-      00FEF8EAH   LINE      ECODE    ---       #167
-      00FEF8FDH   LINE      ECODE    ---       #168
-      00FEF905H   LINE      ECODE    ---       #170
-      00FEF909H   LINE      ECODE    ---       #172
-      00FEF911H   LINE      ECODE    ---       #173
-      00FEF919H   LINE      ECODE    ---       #174
-      00FEF91FH   LINE      ECODE    ---       #176
-      00FEF927H   LINE      ECODE    ---       #177
-      00FEF92FH   LINE      ECODE    ---       #179
-      00FEF932H   LINE      ECODE    ---       #180
-      00FEF936H   LINE      ECODE    ---       #181
+      00FEF8D4H   LINE      ECODE    ---       #158
+      00FEF8DEH   LINE      ECODE    ---       #159
+      00FEF8DEH   LINE      ECODE    ---       #162
+      00FEF8E1H   LINE      ECODE    ---       #163
+      00FEF8E5H   LINE      ECODE    ---       #167
+      00FEF8F8H   LINE      ECODE    ---       #168
+      00FEF900H   LINE      ECODE    ---       #170
+      00FEF904H   LINE      ECODE    ---       #172
+      00FEF90CH   LINE      ECODE    ---       #173
+      00FEF914H   LINE      ECODE    ---       #174
+      00FEF91AH   LINE      ECODE    ---       #176
+      00FEF922H   LINE      ECODE    ---       #177
+      00FEF92AH   LINE      ECODE    ---       #179
+      00FEF92DH   LINE      ECODE    ---       #180
+      00FEF931H   LINE      ECODE    ---       #181
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       Drv_XBUS
-      00FEFB08H   PUBLIC    ECODE    ---       DrvXbus_WriteLcd8?
-      00FEFADDH   PUBLIC    ECODE    ---       DrvXbus_ReadLcd16?
-      00FEFAD6H   PUBLIC    ECODE    ---       Drv_XbusInit?
+      00FEFB03H   PUBLIC    ECODE    ---       DrvXbus_WriteLcd8?
+      00FEFAD8H   PUBLIC    ECODE    ---       DrvXbus_ReadLcd16?
+      00FEFAD1H   PUBLIC    ECODE    ---       Drv_XbusInit?
       000005B0H   PUBLIC    EDATA    ---       pLcdWrapRegs
       000000B6H   SFRSYM    DATA     BYTE      RTCCON1
       000000BFH   SFRSYM    DATA     BYTE      CGUCON8
@@ -3942,10 +3943,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000A0H   SFRSYM    DATA     BYTE      ANACON8
       000000D5H   SFRSYM    DATA     BYTE      MEMBIST_FINISH2
       000000C7H   SFRSYM    DATA     BYTE      ANACON7
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 59
+
+
       000000D4H   SFRSYM    DATA     BYTE      MEMBIST_FINISH1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 59
-
-
       000000E9H   SFRSYM    DATA     BYTE      SFTRST
       000000EEH   SFRSYM    DATA     BYTE      P1SEL
       000000CBH.3 SFRSYM    DATA     BIT       XBUSCKEN
@@ -4007,40 +4008,40 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B3H   SFRSYM    DATA     BYTE      SPI1CON
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
 
-      00FEFAD6H   BLOCK     ECODE    ---       LVL=0
-      00FEFAD6H   LINE      ECODE    ---       #61
-      00FEFAD6H   LINE      ECODE    ---       #63
-      00FEFAD9H   LINE      ECODE    ---       #64
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 60
+      00FEFAD1H   BLOCK     ECODE    ---       LVL=0
+      00FEFAD1H   LINE      ECODE    ---       #61
+      00FEFAD1H   LINE      ECODE    ---       #63
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 60
 
 
-      00FEFADCH   LINE      ECODE    ---       #66
+      00FEFAD4H   LINE      ECODE    ---       #64
+      00FEFAD7H   LINE      ECODE    ---       #66
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEFADDH   BLOCK     ECODE    ---       LVL=0
+      00FEFAD8H   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      WORD      usaddr
       000005BCH   SYMBOL    EDATA    BYTE      Dummy
-      00FEFADDH   LINE      ECODE    ---       #77
-      00FEFADDH   LINE      ECODE    ---       #78
-      00FEFADDH   LINE      ECODE    ---       #80
-      00FEFAEBH   LINE      ECODE    ---       #81
-      00FEFAF6H   LINE      ECODE    ---       #82
-      00FEFB04H   LINE      ECODE    ---       #84
-      00FEFB07H   LINE      ECODE    ---       #86
+      00FEFAD8H   LINE      ECODE    ---       #77
+      00FEFAD8H   LINE      ECODE    ---       #78
+      00FEFAD8H   LINE      ECODE    ---       #80
+      00FEFAE6H   LINE      ECODE    ---       #81
+      00FEFAF1H   LINE      ECODE    ---       #82
+      00FEFAFFH   LINE      ECODE    ---       #84
+      00FEFB02H   LINE      ECODE    ---       #86
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEFB08H   BLOCK     ECODE    ---       LVL=0
+      00FEFB03H   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      WORD      usaddr
       R11         REGSYM    ---      BYTE      usdata
-      00FEFB08H   LINE      ECODE    ---       #97
-      00FEFB08H   LINE      ECODE    ---       #99
-      00FEFB16H   LINE      ECODE    ---       #100
-      00FEFB1DH   LINE      ECODE    ---       #101
+      00FEFB03H   LINE      ECODE    ---       #97
+      00FEFB03H   LINE      ECODE    ---       #99
+      00FEFB11H   LINE      ECODE    ---       #100
+      00FEFB18H   LINE      ECODE    ---       #101
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       crckrmit
-      00FEFA7CH   PUBLIC    ECODE    ---       update_crc_kermit?
-      00FEFA38H   PUBLIC    ECODE    ---       crc_kermit?
+      00FEFA77H   PUBLIC    ECODE    ---       update_crc_kermit?
+      00FEFA33H   PUBLIC    ECODE    ---       crc_kermit?
       000000B6H   SFRSYM    DATA     BYTE      RTCCON1
       000000BFH   SFRSYM    DATA     BYTE      CGUCON8
       000000CEH   SFRSYM    DATA     BYTE      CGUCON6
@@ -4078,10 +4079,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000E1H   SFRSYM    DATA     BYTE      TESTCON0
       00000099H   SFRSYM    DATA     BYTE      WDTCON
       000000C0H   SFRSYM    DATA     BYTE      AIF
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 61
+
+
       000000E8H   SFRSYM    DATA     BYTE      AIE
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 61
-
-
       000000BDH   SFRSYM    DATA     BYTE      FT_EN_REG
       0000009EH   SFRSYM    DATA     BYTE      RTCCON
       000000FEH   SFRSYM    DATA     BYTE      LED_EN
@@ -4118,72 +4119,72 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000093H   SFRSYM    DATA     BYTE      I2CSTOP
       000000B3H   SFRSYM    DATA     BYTE      SPI1CON
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
-      00FEFA9DH   SYMBOL    ECODE    ---       init_crc_tab
+      00FEFA98H   SYMBOL    ECODE    ---       init_crc_tab
       00000229H   SYMBOL    EDATA    ---       crc_tab
       00000020H.2 SYMBOL    BIT      BIT       crc_tab_init
 
-      00FEFA38H   BLOCK     ECODE    ---       LVL=0
+      00FEFA33H   BLOCK     ECODE    ---       LVL=0
       000005B4H   SYMBOL    EDATA    ---       input_str
       WR12        REGSYM    ---      WORD      num_bytes
-      00FEFA40H   BLOCK     ECODE    NEAR LAB  LVL=1
+      00FEFA3BH   BLOCK     ECODE    NEAR LAB  LVL=1
       WR14        REGSYM    ---      WORD      crc
       WR10        REGSYM    ---      WORD      tmp
       WR0         REGSYM    ---      WORD      short_c
       REG=1       REGSYM    ---      ---       ptr
       WR2         REGSYM    ---      WORD      a
       ---         BLOCKEND  ---      ---       LVL=1
-      00FEFA38H   LINE      ECODE    ---       #50
-      00FEFA40H   LINE      ECODE    ---       #51
-      00FEFA40H   LINE      ECODE    ---       #61
-      00FEFA46H   LINE      ECODE    ---       #63
-      00FEFA4AH   LINE      ECODE    ---       #64
-      00FEFA4EH   LINE      ECODE    ---       #66
-      00FEFA58H   LINE      ECODE    ---       #68
-      00FEFA5DH   LINE      ECODE    ---       #69
-      00FEFA61H   LINE      ECODE    ---       #70
-      00FEFA6FH   LINE      ECODE    ---       #72
-      00FEFA71H   LINE      ECODE    ---       #73
-      00FEFA77H   LINE      ECODE    ---       #79
-      00FEFA79H   LINE      ECODE    ---       #81
+      00FEFA33H   LINE      ECODE    ---       #50
+      00FEFA3BH   LINE      ECODE    ---       #51
+      00FEFA3BH   LINE      ECODE    ---       #61
+      00FEFA41H   LINE      ECODE    ---       #63
+      00FEFA45H   LINE      ECODE    ---       #64
+      00FEFA49H   LINE      ECODE    ---       #66
+      00FEFA53H   LINE      ECODE    ---       #68
+      00FEFA58H   LINE      ECODE    ---       #69
+      00FEFA5CH   LINE      ECODE    ---       #70
+      00FEFA6AH   LINE      ECODE    ---       #72
+      00FEFA6CH   LINE      ECODE    ---       #73
+      00FEFA72H   LINE      ECODE    ---       #79
+      00FEFA74H   LINE      ECODE    ---       #81
       ---         BLOCKEND  ---      ---       LVL=0
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 62
 
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 62
 
 
-      00FEFA7CH   BLOCK     ECODE    ---       LVL=0
+      00FEFA77H   BLOCK     ECODE    ---       LVL=0
       WR14        REGSYM    ---      WORD      crc
       R11         REGSYM    ---      BYTE      c
-      00FEFA80H   BLOCK     ECODE    NEAR LAB  LVL=1
+      00FEFA7BH   BLOCK     ECODE    NEAR LAB  LVL=1
       WR6         REGSYM    ---      WORD      tmp
       WR12        REGSYM    ---      WORD      short_c
       ---         BLOCKEND  ---      ---       LVL=1
-      00FEFA7CH   LINE      ECODE    ---       #90
-      00FEFA80H   LINE      ECODE    ---       #95
-      00FEFA82H   LINE      ECODE    ---       #97
-      00FEFA88H   LINE      ECODE    ---       #99
-      00FEFA8CH   LINE      ECODE    ---       #100
-      00FEFA98H   LINE      ECODE    ---       #102
-      00FEFA9AH   LINE      ECODE    ---       #104
+      00FEFA77H   LINE      ECODE    ---       #90
+      00FEFA7BH   LINE      ECODE    ---       #95
+      00FEFA7DH   LINE      ECODE    ---       #97
+      00FEFA83H   LINE      ECODE    ---       #99
+      00FEFA87H   LINE      ECODE    ---       #100
+      00FEFA93H   LINE      ECODE    ---       #102
+      00FEFA95H   LINE      ECODE    ---       #104
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEFA9DH   BLOCK     ECODE    ---       LVL=0
+      00FEFA98H   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      WORD      i
       WR0         REGSYM    ---      WORD      j
       WR4         REGSYM    ---      WORD      crc
       WR2         REGSYM    ---      WORD      c
-      00FEFA9DH   LINE      ECODE    ---       #115
-      00FEFA9DH   LINE      ECODE    ---       #122
-      00FEFA9FH   LINE      ECODE    ---       #124
-      00FEFAA1H   LINE      ECODE    ---       #125
-      00FEFAA3H   LINE      ECODE    ---       #127
-      00FEFAA5H   LINE      ECODE    ---       #129
-      00FEFAB7H   LINE      ECODE    ---       #130
-      00FEFAB9H   LINE      ECODE    ---       #132
-      00FEFABBH   LINE      ECODE    ---       #133
-      00FEFAC3H   LINE      ECODE    ---       #135
-      00FEFACBH   LINE      ECODE    ---       #136
-      00FEFAD3H   LINE      ECODE    ---       #138
-      00FEFAD5H   LINE      ECODE    ---       #140
+      00FEFA98H   LINE      ECODE    ---       #115
+      00FEFA98H   LINE      ECODE    ---       #122
+      00FEFA9AH   LINE      ECODE    ---       #124
+      00FEFA9CH   LINE      ECODE    ---       #125
+      00FEFA9EH   LINE      ECODE    ---       #127
+      00FEFAA0H   LINE      ECODE    ---       #129
+      00FEFAB2H   LINE      ECODE    ---       #130
+      00FEFAB4H   LINE      ECODE    ---       #132
+      00FEFAB6H   LINE      ECODE    ---       #133
+      00FEFABEH   LINE      ECODE    ---       #135
+      00FEFAC6H   LINE      ECODE    ---       #136
+      00FEFACEH   LINE      ECODE    ---       #138
+      00FEFAD0H   LINE      ECODE    ---       #140
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       Drv_CRC
@@ -4214,10 +4215,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000A0H   SFRSYM    DATA     BYTE      ANACON8
       000000D5H   SFRSYM    DATA     BYTE      MEMBIST_FINISH2
       000000C7H   SFRSYM    DATA     BYTE      ANACON7
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 63
+
+
       000000D4H   SFRSYM    DATA     BYTE      MEMBIST_FINISH1
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 63
-
-
       000000E9H   SFRSYM    DATA     BYTE      SFTRST
       000000EEH   SFRSYM    DATA     BYTE      P1SEL
       000000C3H   SFRSYM    DATA     BYTE      ANACON3
@@ -4282,10 +4283,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00000029H   SYMBOL    EDATA    ---       wCRCTable
 
       00FEE9A0H   BLOCK     ECODE    ---       LVL=0
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 64
+
+
       REG=0       REGSYM    ---      ---       nData
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 64
-
-
       WR4         REGSYM    ---      WORD      wLength
       00FEE9A2H   BLOCK     ECODE    NEAR LAB  LVL=1
       R10         REGSYM    ---      BYTE      nTemp
@@ -4350,10 +4351,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEEA3FH   LINE      ECODE    ---       #174
       00FEEA41H   LINE      ECODE    ---       #175
       00FEEA41H   LINE      ECODE    ---       #176
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 65
+
+
       00FEEA47H   LINE      ECODE    ---       #177
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 65
-
-
       00FEEA4EH   LINE      ECODE    ---       #178
       00FEEA54H   LINE      ECODE    ---       #179
       00FEEA58H   LINE      ECODE    ---       #180
@@ -4418,10 +4419,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEEAFEH   LINE      ECODE    ---       #238
       00FEEAFEH   LINE      ECODE    ---       #261
       00FEEB06H   LINE      ECODE    ---       #262
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 66
+
+
       00FEEB08H   LINE      ECODE    ---       #264
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 66
-
-
       00FEEB0FH   LINE      ECODE    ---       #267
       00FEEB15H   LINE      ECODE    ---       #268
       00FEEB1DH   LINE      ECODE    ---       #270
@@ -4486,10 +4487,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEEBCEH   LINE      ECODE    ---       #340
       00FEEBD6H   LINE      ECODE    ---       #342
       00FEEBD6H   LINE      ECODE    ---       #344
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 67
+
+
       ---         BLOCKEND  ---      ---       LVL=0
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 67
-
-
 
       00FEEBD9H   BLOCK     ECODE    ---       LVL=0
       REG=0       REGSYM    ---      ---       input_str
@@ -4554,10 +4555,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       00FEEDA7H   LINE      ECODE    ---       #429
       00FEEDB7H   LINE      ECODE    ---       #431
       00FEEDC3H   LINE      ECODE    ---       #432
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 68
+
+
       00FEEDE3H   LINE      ECODE    ---       #433
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 68
-
-
       00FEEDF3H   LINE      ECODE    ---       #435
       00FEEE03H   LINE      ECODE    ---       #436
       00FEEE13H   LINE      ECODE    ---       #440
@@ -4582,12 +4583,12 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       uart
-      00FEF94CH   PUBLIC    ECODE    ---       CLK_DIV?
-      00FEFA31H   PUBLIC    ECODE    ---       wait_printf_done?
-      00FEF937H   PUBLIC    ECODE    ---       ParityCheck?
-      00FEF9EEH   PUBLIC    ECODE    ---       DrvUartInit?
-      00FEF9A8H   PUBLIC    ECODE    ---       ISR_Uart?
-      00FEF961H   PUBLIC    ECODE    ---       putchar?
+      00FEF947H   PUBLIC    ECODE    ---       CLK_DIV?
+      00FEFA2CH   PUBLIC    ECODE    ---       wait_printf_done?
+      00FEF932H   PUBLIC    ECODE    ---       ParityCheck?
+      00FEF9E9H   PUBLIC    ECODE    ---       DrvUartInit?
+      00FEF9A3H   PUBLIC    ECODE    ---       ISR_Uart?
+      00FEF95CH   PUBLIC    ECODE    ---       putchar?
       00000429H   PUBLIC    EDATA    ---       s_aucUartOutBuf
       00000523H   PUBLIC    EDATA    BYTE      s_ucUartTxStore
       00000524H   PUBLIC    EDATA    BYTE      s_ucUartTxLen
@@ -4622,10 +4623,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000ADH   SFRSYM    DATA     BYTE      P1DIR
       000000EBH   SFRSYM    DATA     BYTE      P0MOD
       000000ACH   SFRSYM    DATA     BYTE      P0DIR
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 69
+
+
       000000C8H.2 SFRSYM    DATA     BIT       UARTCKEN
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 69
-
-
       000000B7H.6 SFRSYM    DATA     BIT       Uart_IPH
       00000094H   SFRSYM    DATA     BYTE      P1BUF
       00000080H   SFRSYM    DATA     BYTE      P0BUF
@@ -4680,101 +4681,101 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
       000000B3H   SFRSYM    DATA     BYTE      SPI1CON
       000000A2H   SFRSYM    DATA     BYTE      SPI0CON
 
-      00FEF937H   BLOCK     ECODE    ---       LVL=0
+      00FEF932H   BLOCK     ECODE    ---       LVL=0
       R7          REGSYM    ---      BYTE      x
-      00FEF939H   BLOCK     ECODE    NEAR LAB  LVL=1
+      00FEF934H   BLOCK     ECODE    NEAR LAB  LVL=1
       R10         REGSYM    ---      BYTE      val
       ---         BLOCKEND  ---      ---       LVL=1
-      00FEF937H   LINE      ECODE    ---       #73
-      00FEF939H   LINE      ECODE    ---       #74
-      00FEF939H   LINE      ECODE    ---       #75
-      00FEF93BH   LINE      ECODE    ---       #76
-      00FEF93DH   LINE      ECODE    ---       #78
-      00FEF93FH   LINE      ECODE    ---       #79
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 70
+      00FEF932H   LINE      ECODE    ---       #73
+      00FEF934H   LINE      ECODE    ---       #74
+      00FEF934H   LINE      ECODE    ---       #75
+      00FEF936H   LINE      ECODE    ---       #76
+      00FEF938H   LINE      ECODE    ---       #78
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 70
 
 
-      00FEF941H   LINE      ECODE    ---       #80
-      00FEF945H   LINE      ECODE    ---       #81
-      00FEF94BH   LINE      ECODE    ---       #82
+      00FEF93AH   LINE      ECODE    ---       #79
+      00FEF93CH   LINE      ECODE    ---       #80
+      00FEF940H   LINE      ECODE    ---       #81
+      00FEF946H   LINE      ECODE    ---       #82
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF94CH   BLOCK     ECODE    ---       LVL=0
+      00FEF947H   BLOCK     ECODE    ---       LVL=0
       R11         REGSYM    ---      BYTE      div
-      00FEF94CH   LINE      ECODE    ---       #91
-      00FEF94CH   LINE      ECODE    ---       #93
-      00FEF955H   LINE      ECODE    ---       #95
-      00FEF955H   LINE      ECODE    ---       #96
-      00FEF958H   LINE      ECODE    ---       #97
-      00FEF958H   LINE      ECODE    ---       #98
-      00FEF95BH   LINE      ECODE    ---       #99
-      00FEF95BH   LINE      ECODE    ---       #100
-      00FEF95EH   LINE      ECODE    ---       #101
-      00FEF95EH   LINE      ECODE    ---       #102
-      00FEF960H   LINE      ECODE    ---       #103
-      00FEF960H   LINE      ECODE    ---       #105
-      00FEF960H   LINE      ECODE    ---       #106
+      00FEF947H   LINE      ECODE    ---       #91
+      00FEF947H   LINE      ECODE    ---       #93
+      00FEF950H   LINE      ECODE    ---       #95
+      00FEF950H   LINE      ECODE    ---       #96
+      00FEF953H   LINE      ECODE    ---       #97
+      00FEF953H   LINE      ECODE    ---       #98
+      00FEF956H   LINE      ECODE    ---       #99
+      00FEF956H   LINE      ECODE    ---       #100
+      00FEF959H   LINE      ECODE    ---       #101
+      00FEF959H   LINE      ECODE    ---       #102
+      00FEF95BH   LINE      ECODE    ---       #103
+      00FEF95BH   LINE      ECODE    ---       #105
+      00FEF95BH   LINE      ECODE    ---       #106
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF961H   BLOCK     ECODE    ---       LVL=0
+      00FEF95CH   BLOCK     ECODE    ---       LVL=0
       R10         REGSYM    ---      CHAR      ch
-      00FEF961H   LINE      ECODE    ---       #115
-      00FEF963H   LINE      ECODE    ---       #117
-      00FEF965H   LINE      ECODE    ---       #118
-      00FEF96EH   LINE      ECODE    ---       #120
-      00FEF970H   LINE      ECODE    ---       #121
-      00FEF979H   LINE      ECODE    ---       #122
-      00FEF980H   LINE      ECODE    ---       #124
-      00FEF983H   LINE      ECODE    ---       #125
-      00FEF985H   LINE      ECODE    ---       #128
-      00FEF996H   LINE      ECODE    ---       #129
-      00FEF99FH   LINE      ECODE    ---       #131
-      00FEF9A4H   LINE      ECODE    ---       #132
-      00FEF9A4H   LINE      ECODE    ---       #134
-      00FEF9A6H   LINE      ECODE    ---       #135
-      00FEF9A7H   LINE      ECODE    ---       #136
+      00FEF95CH   LINE      ECODE    ---       #115
+      00FEF95EH   LINE      ECODE    ---       #117
+      00FEF960H   LINE      ECODE    ---       #118
+      00FEF969H   LINE      ECODE    ---       #120
+      00FEF96BH   LINE      ECODE    ---       #121
+      00FEF974H   LINE      ECODE    ---       #122
+      00FEF97BH   LINE      ECODE    ---       #124
+      00FEF97EH   LINE      ECODE    ---       #125
+      00FEF980H   LINE      ECODE    ---       #128
+      00FEF991H   LINE      ECODE    ---       #129
+      00FEF99AH   LINE      ECODE    ---       #131
+      00FEF99FH   LINE      ECODE    ---       #132
+      00FEF99FH   LINE      ECODE    ---       #134
+      00FEF9A1H   LINE      ECODE    ---       #135
+      00FEF9A2H   LINE      ECODE    ---       #136
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF9A8H   BLOCK     ECODE    ---       LVL=0
-      00FEF9A8H   LINE      ECODE    ---       #178
-      00FEF9ACH   LINE      ECODE    ---       #202
-      00FEF9B0H   LINE      ECODE    ---       #204
-      00FEF9B3H   LINE      ECODE    ---       #205
-      00FEF9B9H   LINE      ECODE    ---       #207
-      00FEF9C2H   LINE      ECODE    ---       #208
-      00FEF9C8H   LINE      ECODE    ---       #216
-      00FEF9DBH   LINE      ECODE    ---       #217
-      00FEF9E4H   LINE      ECODE    ---       #219
-      00FEF9E9H   LINE      ECODE    ---       #220
-      00FEF9E9H   LINE      ECODE    ---       #222
-      00FEF9E9H   LINE      ECODE    ---       #223
-      00FEF9E9H   LINE      ECODE    ---       #224
+      00FEF9A3H   BLOCK     ECODE    ---       LVL=0
+      00FEF9A3H   LINE      ECODE    ---       #178
+      00FEF9A7H   LINE      ECODE    ---       #202
+      00FEF9ABH   LINE      ECODE    ---       #204
+      00FEF9AEH   LINE      ECODE    ---       #205
+      00FEF9B4H   LINE      ECODE    ---       #207
+      00FEF9BDH   LINE      ECODE    ---       #208
+      00FEF9C3H   LINE      ECODE    ---       #216
+      00FEF9D6H   LINE      ECODE    ---       #217
+      00FEF9DFH   LINE      ECODE    ---       #219
+      00FEF9E4H   LINE      ECODE    ---       #220
+      00FEF9E4H   LINE      ECODE    ---       #222
+      00FEF9E4H   LINE      ECODE    ---       #223
+      00FEF9E4H   LINE      ECODE    ---       #224
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEF9EEH   BLOCK     ECODE    ---       LVL=0
+      00FEF9E9H   BLOCK     ECODE    ---       LVL=0
       WR6         REGSYM    ---      WORD      cnt
-      00FEF9EEH   LINE      ECODE    ---       #235
-      00FEF9EEH   LINE      ECODE    ---       #236
-      00FEF9EEH   LINE      ECODE    ---       #240
-      00FEF9F0H   LINE      ECODE    ---       #241
-      00FEF9F2H   LINE      ECODE    ---       #242
-      00FEF9F5H   LINE      ECODE    ---       #280
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 71
+      00FEF9E9H   LINE      ECODE    ---       #235
+      00FEF9E9H   LINE      ECODE    ---       #236
+      00FEF9E9H   LINE      ECODE    ---       #240
+      00FEF9EBH   LINE      ECODE    ---       #241
+      00FEF9EDH   LINE      ECODE    ---       #242
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 71
 
 
-      00FEF9F8H   LINE      ECODE    ---       #281
-      00FEF9FAH   LINE      ECODE    ---       #283
-      00FEF9FCH   LINE      ECODE    ---       #289
-      00FEF9FFH   LINE      ECODE    ---       #292
-      00FEFA28H   LINE      ECODE    ---       #293
-      00FEFA2CH   LINE      ECODE    ---       #294
-      00FEFA30H   LINE      ECODE    ---       #296
+      00FEF9F0H   LINE      ECODE    ---       #280
+      00FEF9F3H   LINE      ECODE    ---       #281
+      00FEF9F5H   LINE      ECODE    ---       #283
+      00FEF9F7H   LINE      ECODE    ---       #289
+      00FEF9FAH   LINE      ECODE    ---       #292
+      00FEFA23H   LINE      ECODE    ---       #293
+      00FEFA27H   LINE      ECODE    ---       #294
+      00FEFA2BH   LINE      ECODE    ---       #296
       ---         BLOCKEND  ---      ---       LVL=0
 
-      00FEFA31H   BLOCK     ECODE    ---       LVL=0
-      00FEFA31H   LINE      ECODE    ---       #297
-      00FEFA31H   LINE      ECODE    ---       #299
-      00FEFA37H   LINE      ECODE    ---       #301
+      00FEFA2CH   BLOCK     ECODE    ---       LVL=0
+      00FEFA2CH   LINE      ECODE    ---       #297
+      00FEFA2CH   LINE      ECODE    ---       #299
+      00FEFA32H   LINE      ECODE    ---       #301
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       ?C?INITEDATA
@@ -4813,10 +4814,10 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
     NAME:    Test_CLk48M?/Test_DebugOut
 
 *** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
-    NAME:    Test_CLk32K?/Test_DebugOut
+    NAME:    Test_CON1?/Test_DebugOut
 
 *** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
-    NAME:    Test_CON1?/Test_DebugOut
+    NAME:    Test_CON3?/Test_DebugOut
 
 *** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
     NAME:    DrvSysPowerMode?/Drv_mcu
@@ -4826,8 +4827,8 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
 
 *** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
     NAME:    Drv_XsiRead?/Drv_XSI
+L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  18:27:26  PAGE 72
 
-L251 LINKER/LOCATER V4.65.0.0                                                         06/22/2017  10:59:17  PAGE 72
 
 
 *** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
@@ -4860,5 +4861,5 @@ SYMBOL TABLE OF MODULE:  .\obj\mcu (main)
 *** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
     NAME:    wait_printf_done?/uart
 
-Program Size: data=8.3 edata+hdata=1692 xdata=0 const=1488 code=4968
+Program Size: data=8.3 edata+hdata=1692 xdata=0 const=1488 code=4963
 L251 RUN COMPLETE.  18 WARNING(S),  0 ERROR(S)

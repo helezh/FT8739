@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  10:38:29  PAGE 1   
+C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  18:27:25  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE crckrmit
@@ -66,7 +66,7 @@ stmt  level    source
    55   1        unsigned short short_c;
    56   1        unsigned short low_byte;
    57   1        unsigned short high_byte;
-C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  10:38:29  PAGE 2   
+C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  18:27:25  PAGE 2   
 
    58   1        const unsigned char *ptr;
    59   1        unsigned short a;
@@ -134,7 +134,7 @@ stmt  level    source
   119   1        unsigned short crc;
   120   1        unsigned short c;
   121   1      
-C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  10:38:29  PAGE 3   
+C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  18:27:25  PAGE 3   
 
   122   1        for (i=0; i<256; i++) {
   123   2      

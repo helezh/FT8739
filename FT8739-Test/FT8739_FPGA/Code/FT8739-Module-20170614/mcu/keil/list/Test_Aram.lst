@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  10:38:22  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  18:27:20  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Aram
@@ -66,7 +66,7 @@ stmt  level    source
                * 5.Global variable or extern global variabls/functions
                *******************************************************************************/
                
-C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  10:38:22  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  18:27:20  PAGE 2   
 
                /*******************************************************************************
                * 6.Static function prototypes
@@ -134,7 +134,7 @@ stmt  level    source
                        if (!(i&0x01))
                        {
                            if (usReadAram !=  TEST_ARAM3)
-C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  10:38:22  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  18:27:20  PAGE 3   
 
                            {
                                DBG_ERROR("\n\r%04x Error",usReadAram);
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
-C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  10:38:22  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_Aram                                                        22/06/17  18:27:20  PAGE 4   
 
   bit size             =    ------     ------
   ebit size            =    ------     ------

@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 1   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Drv_Cal
@@ -66,7 +66,7 @@ stmt  level    source
                *   Name: DrvCal_Init
                *  Brief: Config DMALENGTH,TxNum/RxNum and CalMask/AmoveMask for Cal-modules
                *  Input:TxNum,RxNum,CalMask,AmoveMask
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 2   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 2   
 
                * Output:
                * Return: None
@@ -134,7 +134,7 @@ stmt  level    source
                
                    pCalRegs->rS1Addr  = pMcMP->usSrc1Addr;
                    pCalRegs->rS2Addr  = pMcMP->usSrc2Addr;
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 3   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 3   
 
                    pCalRegs->rOutAddr = pMcMP->usDstAddr;
                    pCalRegs->rSize    = (pMcMP->ucTxLen<<8) + pMcMP->ucRxLen;
@@ -202,7 +202,7 @@ stmt  level    source
                *         M2 : K*N
                *         OUT: M*N
                *         Out[i][j] = sum(S1[i][0...(K-1)]*S2[0...(k-1)[j]])
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 4   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 4   
 
                *  Input: ST_CalMcMatrixParam *pMcMP =>
                *
@@ -270,7 +270,7 @@ stmt  level    source
                    
                    CALCKEN = 0;
                }
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 5   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 5   
 
                
                /*******************************************************************************
@@ -338,7 +338,7 @@ stmt  level    source
                    DrvCal_Cmd(OP_MDS);
                
                    for (i = 0; i < pKmIDParm->ucLastPoint; i++)
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 6   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 6   
 
                    {
                        for (j = 0; j < pKmIDParm->ucCurrPoint; j++)
@@ -406,7 +406,7 @@ stmt  level    source
                    //clk
                    CALCKEN = 1;
                          
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 7   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 7   
 
                    //cfg
                    pCalRegs->rS1Addr = usSrc1Addr;
@@ -474,7 +474,7 @@ stmt  level    source
                    pCalRegs->rS1Addr  = pMcMP->usSrc1Addr;
                    pCalRegs->rS2Addr  = pMcMP->usSrc2Addr;
                    pCalRegs->rOutAddr = pMcMP->usDstAddr;
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 8   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 8   
 
                    pCalRegs->rSize    = (pMcMP->ucTxLen<<8) + pMcMP->ucRxLen;
                    pCalRegs->rPThd   = pMcMP->ucShift;
@@ -542,7 +542,7 @@ stmt  level    source
                *           if CalReg->Int.bit13 == 0:        //°´ÁÐ³Ë¹Ì¶¨Êý
                *           {
                *              S1 : M*N
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 9   
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 9   
 
                *              S2 : M*1
                *              OUT: M*N
@@ -610,7 +610,7 @@ stmt  level    source
                    {
                        pCalRegs->rInt&=(~(1<<14));
                    }
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 10  
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 10  
 
                    else if(pMcMP->ucCfg == COM_CFG_1) 
                    {
@@ -678,7 +678,7 @@ stmt  level    source
                
                    pCalRegs->rCmd  = 0;
                    // comÐÂÄ£Ê½°´ÐÐÁÐ¼ÆËãÑ¡Ôñ: 0: °´ÐÐ¼ÆËã, 1: °´ÁÐ¼ÆËã
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 11  
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 11  
 
                    pCalRegs->rCmd |= (mode<<10);  
                    //Æô¶¯
@@ -746,7 +746,7 @@ stmt  level    source
                      
                    CALCKEN = FALSE;
                }
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 12  
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 12  
 
                
                /*******************************************************************************
@@ -814,7 +814,7 @@ stmt  level    source
                *         UINT8  Tx
                *         UINT8  Rx
                * Output: None
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 13  
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 13  
 
                * Return: Get Max of value,which is sub value of max-min in the same column
                *******************************************************************************/
@@ -882,7 +882,7 @@ stmt  level    source
                
                /*******************************************************************************
                *  Name: DrvCal_MatrixAvg
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 14  
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 14  
 
                *  Brief: 
                *  1.°´ÐÐ°´ÁÐÇóÈ¡Ô´¾ØÕóµÄÆ½¾ùÖµ£¬Src1Addr´æ·ÅµÄÊÇÔ´Êý¾Ý¾ØÕó£¬Src2Addr´æ·ÅµÄÊÇ¸÷ÐÐ
@@ -950,7 +950,7 @@ stmt  level    source
                * Return:
                *******************************************************************************/
                UINT16 DrvCal_MatrixCount(ST_CalMcMatrixParam *pMcMP, SINT16 ssMin,SINT16 ssMax)
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 15  
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 15  
 
                {
                    UINT16 usNum = 0;
@@ -1018,7 +1018,7 @@ stmt  level    source
                    pCalRegs->rS2Addr = pMcMP->usSrc2Addr;
                    pCalRegs->rOutAddr = pMcMP->usDstAddr;   
                    pCalRegs->rSize   = (pMcMP->ucTxLen<<8) + pMcMP->ucRxLen;
-C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  10:38:28  PAGE 16  
+C251 COMPILER V5.54.0.0,  Drv_Cal                                                          22/06/17  18:27:25  PAGE 16  
 
                    pCalRegs->rInt &= (~(1<<14));
                    pCalRegs->rInt |= (pMcMP->ucDataType<<14);                                //ucDataTypeÅäÖÃÊÇÈ¡×î´óÖµ»

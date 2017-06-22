@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  10:38:28  PAGE 1   
+C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  18:27:25  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Drv_mcu
@@ -66,7 +66,7 @@ stmt  level    source
    55   1          if (ucDiv < 4)
    56   1          {
    57   2              CGUCON4 = ucDiv;
-C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  10:38:28  PAGE 2   
+C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  18:27:25  PAGE 2   
 
    58   2          }
    59   1              
@@ -134,7 +134,7 @@ stmt  level    source
   121   2              _nop_();
   122   2              _nop_();
   123   2              _nop_();
-C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  10:38:28  PAGE 3   
+C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  18:27:25  PAGE 3   
 
   124   2              _nop_();
   125   2      
@@ -202,7 +202,7 @@ stmt  level    source
   187          * Return: None
   188          *******************************************************************************/
   189          void DrvSysPowerMode(UINT8 pmode)
-C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  10:38:28  PAGE 4   
+C251 COMPILER V5.54.0.0,  Drv_mcu                                                          22/06/17  18:27:25  PAGE 4   
 
   190          {
   191   1          /* IDLE mode */

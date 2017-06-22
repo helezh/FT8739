@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  18:27:24  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Reset
@@ -66,7 +66,7 @@ stmt  level    source
                *******************************************************************************/
                
                
-C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  18:27:24  PAGE 2   
 
                /*******************************************************************************
                * 4.Static variables
@@ -134,7 +134,7 @@ stmt  level    source
                    {
                        DBG_FLOW("\nCNT_EXT = %d",CNT_STA);
                        DelayMs(1000);
-C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  18:27:24  PAGE 3   
 
                    }
                #endif
@@ -202,7 +202,7 @@ stmt  level    source
                        ESD_FLAG = 0;
                        LVD_FLAG = 0;
                        
-C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  18:27:24  PAGE 4   
 
                        while(1)
                        {

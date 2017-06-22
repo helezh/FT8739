@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_SFR
@@ -66,7 +66,7 @@ stmt  level    source
                        case   0x80:
                            return  SFR_80H;
                        case   0x81:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 2   
 
                            return  SFR_81H;
                        case   0x82:
@@ -134,7 +134,7 @@ stmt  level    source
                        case   0xA1:
                            return  SFR_A1H;
                        case   0xA2:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 3   
 
                            return  SFR_A2H;
                        case   0xA3:
@@ -202,7 +202,7 @@ stmt  level    source
                        case   0xC2:
                            return  SFR_C2H;
                        case   0xC3:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 4   
 
                            return  SFR_C3H;
                        case   0xC4:
@@ -270,7 +270,7 @@ stmt  level    source
                        case   0xE3:
                            return  SFR_E3H;
                        case   0xE4:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 5   
 
                            return  SFR_E4H;
                        case   0xE5:
@@ -338,7 +338,7 @@ stmt  level    source
                *  Brief:
                *  Input:
                * Output:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 6   
 
                * Return:
                *******************************************************************************/
@@ -406,7 +406,7 @@ stmt  level    source
                            SFR_92H = ucData;
                            break;
                        case 0x93:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 7   
 
                            SFR_93H = ucData;
                            break;
@@ -474,7 +474,7 @@ stmt  level    source
                            SFR_A8H = ucData;
                            break;
                        case 0xA9:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 8   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 8   
 
                            SFR_A9H = ucData;
                            break;
@@ -542,7 +542,7 @@ stmt  level    source
                            SFR_BEH = ucData;
                            break;
                        case 0xBF:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 9   
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 9   
 
                            SFR_BFH = ucData;
                            break;
@@ -610,7 +610,7 @@ stmt  level    source
                            SFR_D4H = ucData;
                            break;
                        case 0xD5:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 10  
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 10  
 
                            SFR_D5H = ucData;
                            break;
@@ -678,7 +678,7 @@ stmt  level    source
                            SFR_EAH = ucData;
                            break;
                        case 0xEB:
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 11  
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 11  
 
                            SFR_EBH = ucData;
                            break;
@@ -746,7 +746,7 @@ stmt  level    source
                            break;
                    }
                }
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 12  
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 12  
 
                
                /*******************************************************************************
@@ -814,7 +814,7 @@ stmt  level    source
                        cnt_back = cnt;
                        cnt &= mask0;
                        cnt |= mask1;
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 13  
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 13  
 
                        CLK_WP = 1;
                        SFRWriteRegMapDataNormal(0xC9,(UINT8)cnt);
@@ -882,7 +882,7 @@ stmt  level    source
                    Test_WriteSFR(0xAE,0x03,0x00);//UARTRELH
                    Test_WriteSFR(0xAF,0xFF,0x00);//UARTSDA
                
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 14  
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 14  
 
                    DBG_SFR("\n\r\n\rRTC:");
                    Test_WriteSFR(0x9C,0xFF,0x00);//RTCIVL
@@ -950,7 +950,7 @@ stmt  level    source
                    //Test_WriteSFR(0x92,0xFE,0x00);//I2CADDR  I2CADDR写进去以后读出来是0
                    Test_WriteSFR(0x93,0xF7,0x00);//I2CSTOP
                    Test_WriteSFR(0x95,0x10,0x00);//I2CSEL
-C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  10:38:25  PAGE 15  
+C251 COMPILER V5.54.0.0,  Test_SFR                                                         22/06/17  18:27:22  PAGE 15  
 
                    
                    DBG_SFR("\n\r\n\rWDT");

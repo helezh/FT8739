@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  10:38:23  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  18:27:20  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_counter
@@ -66,7 +66,7 @@ stmt  level    source
                *******************************************************************************/
                /*******************************************************************************
                * Name: DrvSysTimerInit
-C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  10:38:23  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  18:27:20  PAGE 2   
 
                * Brief:  系统定时器初始化
                * Input:
@@ -134,7 +134,7 @@ stmt  level    source
                /*******************************************************************************
                *   Name:
                *  Brief:
-C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  10:38:23  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  18:27:20  PAGE 3   
 
                *  Input:
                * Output:
@@ -202,7 +202,7 @@ stmt  level    source
                #else
                    // 设置CNT计数时间
                    cnt = COUNT_MS*500;         // COUNT_MS = cnt *2us/1000
-C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  10:38:23  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  18:27:20  PAGE 4   
 
                    CNTIVH = cnt>>16;
                    CNTIVM = cnt>>8;
@@ -270,7 +270,7 @@ stmt  level    source
                        DBG_CNT("\n\rCNTIVH=%d",Temp[0]);   
                        DBG_CNT("\n\rCNTIVM=%d",Temp[1]);   
                        DBG_CNT("\n\rCNTIVL=%d\n",Temp[2]);     // clear后的0值
-C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  10:38:23  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  18:27:20  PAGE 5   
 
                        
                        DelayMs(6);
@@ -339,7 +339,7 @@ Module Information          Static   Overlayable
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
-C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  10:38:23  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_counter                                                     22/06/17  18:27:20  PAGE 6   
 
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------

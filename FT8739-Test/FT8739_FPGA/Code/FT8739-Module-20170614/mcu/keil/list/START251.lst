@@ -1,4 +1,4 @@
-A251 MACRO ASSEMBLER  START251                                                              21/06/17 10:31:05 PAGE     1
+A251 MACRO ASSEMBLER  START251                                                              22/06/17 17:52:31 PAGE     1
 
 
 MACRO ASSEMBLER A251 V4.65.0.0
@@ -65,7 +65,7 @@ LOC    OBJ             LINE     SOURCE
                          55     ; INTR       Val  Description
                          56     ; ----       ---  -----------
  0001                    57     INTR EQU 1  ; 1 = Interrupt pushes 4 bytes onto the stack (PC & PSW1)
-A251 MACRO ASSEMBLER  START251                                                              21/06/17 10:31:05 PAGE     2
+A251 MACRO ASSEMBLER  START251                                                              22/06/17 17:52:31 PAGE     2
 
                          58     ;           ; 0 = Interrupt pushes 2 bytes onto the stack (PCL & PCH only)
                          59     ;
@@ -133,7 +133,7 @@ LOC    OBJ             LINE     SOURCE
                         121     ;  The following EQU statements define the stack pointer for reentrant
                         122     ;  functions and initialized it:
                         123     ;
-A251 MACRO ASSEMBLER  START251                                                              21/06/17 10:31:05 PAGE     3
+A251 MACRO ASSEMBLER  START251                                                              22/06/17 17:52:31 PAGE     3
 
                         124     ;  Stack Space for reentrant functions in the SMALL model.
  0000                   125     IBPSTACK        EQU     0       ; set to 1 if small reentrant is used.
@@ -201,7 +201,7 @@ LOC    OBJ             LINE     SOURCE
                         328     
 ------                  329                     RSEG    ?C_C51STARTUP
                         330     
-A251 MACRO ASSEMBLER  START251                                                              21/06/17 10:31:05 PAGE     4
+A251 MACRO ASSEMBLER  START251                                                              22/06/17 17:52:31 PAGE     4
 
 000000                  331     STARTUP1:
 000000 758400     E     332                     MOV     DPXL,#?C?XDATASEG
@@ -257,7 +257,7 @@ LOC    OBJ             LINE     SOURCE
 000000 8A000000   E     382                     JMP     FAR MAIN?
                         383     
                         384                     END
-A251 MACRO ASSEMBLER  START251                                                              21/06/17 10:31:05 PAGE     5
+A251 MACRO ASSEMBLER  START251                                                              22/06/17 17:52:31 PAGE     5
 
 SYMBOL TABLE LISTING
 ------ ----- -------

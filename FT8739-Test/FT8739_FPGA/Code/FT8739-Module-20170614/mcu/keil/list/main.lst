@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  main                                                             22/06/17  10:38:22  PAGE 1   
+C251 COMPILER V5.54.0.0,  main                                                             22/06/17  18:27:19  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    55          *  Input:
    56          * Output:
    57          * Return:
-C251 COMPILER V5.54.0.0,  main                                                             22/06/17  10:38:22  PAGE 2   
+C251 COMPILER V5.54.0.0,  main                                                             22/06/17  18:27:19  PAGE 2   
 
    58          *******************************************************************************/
    59          void init_mcu(void)
@@ -134,7 +134,7 @@ stmt  level    source
   121   1          
   122   1          ESD_RST_EN = 0;  //发生esd，产生复位
   123   1      
-C251 COMPILER V5.54.0.0,  main                                                             22/06/17  10:38:22  PAGE 3   
+C251 COMPILER V5.54.0.0,  main                                                             22/06/17  18:27:19  PAGE 3   
 
   124   1          CNT_MASK = 4;
   125   1          cnt = CNT_STA;    
@@ -202,7 +202,7 @@ stmt  level    source
   187          *  Brief:
   188          *  Input:
   189          * Output:
-C251 COMPILER V5.54.0.0,  main                                                             22/06/17  10:38:22  PAGE 4   
+C251 COMPILER V5.54.0.0,  main                                                             22/06/17  18:27:19  PAGE 4   
 
   190          * Return:
   191          *******************************************************************************/
@@ -270,7 +270,7 @@ stmt  level    source
   253   1          while (1)
   254   1          {
   255   2              DBG_FLOW("\nMODULE TEST");
-C251 COMPILER V5.54.0.0,  main                                                             22/06/17  10:38:22  PAGE 5   
+C251 COMPILER V5.54.0.0,  main                                                             22/06/17  18:27:19  PAGE 5   
 
   256   2              DelayMs(2000);
   257   2          }

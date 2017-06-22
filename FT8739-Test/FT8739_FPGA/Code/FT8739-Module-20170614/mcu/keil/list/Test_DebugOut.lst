@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  10:59:17  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  18:27:24  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_DebugOut
@@ -66,7 +66,7 @@ stmt  level    source
    55            TEST_TP_VB_MODE_REQ    = 0x1A,
    56            TEST_LCD_VB_MODE_ACK   = 0x1B,
    57            TEST_LCD_LPF_MODE_EN   = 0x1C,
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  10:59:17  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  18:27:24  PAGE 2   
 
    58            TEST_TP_LPF_MODE_REQ   = 0x1D,
    59            TEST_LCD_LPF_MODE_ACK  = 0x1E,
@@ -134,7 +134,7 @@ stmt  level    source
   121            TEST_SPI0_TEST_OUT6    = 0x5C,
   122            TEST_SPI0_TEST_OUT7    = 0x5D,
   123            TEST_SPI0_TEST_OUT8    = 0x5E,
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  10:59:17  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  18:27:24  PAGE 3   
 
   124            TEST_SPI0_TEST_OUT9    = 0x5F,
   125            TEST_SPI0_TEST_OUT10   = 0x60,
@@ -202,9 +202,9 @@ stmt  level    source
   187          *******************************************************************************/
   188          void Test_CLk32K(void)
   189          {
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  10:59:17  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  18:27:24  PAGE 4   
 
-  190   1        UINT8 ucDiv = 3;//分频系数.0,1,2为2分频;其他按实际配置分频
+  190   1        UINT8 ucDiv = 0;//分频系数.0,1,2为2分频;其他按实际配置分频
   191   1        UINT8 ucSrc = 2;//3:32k_from_1m;2:32k_dig;1:32k osc;0:48m
   192   1        
   193   1          #if _UART_OUT_GPIO2
@@ -270,7 +270,7 @@ stmt  level    source
   253          * Output:
   254          * Return:
   255          *******************************************************************************/
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  10:59:17  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  18:27:24  PAGE 5   
 
   256          void Test_CON1(ENUM_TEST_CON ucSignal)
   257          {
@@ -338,19 +338,19 @@ stmt  level    source
                        DelayMs(10);
                    }
                #endif
-C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  10:59:17  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_DebugOut                                                    22/06/17  18:27:24  PAGE 6   
 
   322   1          Test_CON0(TEST_LCD_BUSY);   //从tp2pad_dsv_en6出信号
   323   1          //Test_CON1(TEST_LCD_RUN);    //从led_pwm[0]出信号
   324   1          Test_CON2(TEST_LCD_VSTART); //当用SPI0时,从P0_0出信号,当用IIC时，从p0_2出信号
   325   1      
-  326   1      #if 1    
-  327   1          Test_CON3(TEST_LCD_VMIN);   //从p0_6出信号
-  328   1      # elif 0
+  326   1      #if 0    
+                   Test_CON3(TEST_TP_BUSY);   //从p0_6出信号
+               #elif 0
                    Test_CLk48M();              //从p0_6出信号
                #else
-                   Test_CLk32K();              //从p0_6出信号
-               #endif
+  331   1          Test_CLk32K();              //从p0_6出信号
+  332   1      #endif
   333   1      
   334   1      }
   335          #endif
@@ -360,7 +360,7 @@ stmt  level    source
 Module Information          Static   Overlayable
 ------------------------------------------------
   code size            =    ------     ------
-  ecode size           =       456     ------
+  ecode size           =       451     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------

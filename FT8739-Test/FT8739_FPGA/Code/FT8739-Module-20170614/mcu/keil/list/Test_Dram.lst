@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  10:38:23  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  18:27:20  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Dram
@@ -66,7 +66,7 @@ stmt  level    source
                #endif
                
                /*******************************************************************************
-C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  10:38:23  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  18:27:20  PAGE 2   
 
                * 3.Private enumerations, structures and unions using typedef
                *******************************************************************************/
@@ -134,7 +134,7 @@ stmt  level    source
                
                #if _TEST_XRAM_BYTE
                    DBG_MODE("\n\rread XRAM by byte start: ");
-C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  10:38:23  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  18:27:20  PAGE 3   
 
                    for (i = 0; i < XRAM_LENGTH_BYTE; i++)
                    {
@@ -202,7 +202,7 @@ stmt  level    source
                        {
                            if (usReadBack !=  TEST_PATTERN4)
                            {
-C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  10:38:23  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  18:27:20  PAGE 4   
 
                                DBG_ERROR("%04x ",usReadBack);
                                break;
@@ -271,7 +271,7 @@ Module Information          Static   Overlayable
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  10:38:23  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_Dram                                                        22/06/17  18:27:20  PAGE 5   
 
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------

@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  10:38:27  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  18:27:24  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_spi0_wakeup
@@ -66,7 +66,7 @@ stmt  level    source
                * Output:
                * Return:
                *******************************************************************************/
-C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  10:38:27  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  18:27:24  PAGE 2   
 
                void ExternInt0Init(void)
                {
@@ -134,7 +134,7 @@ stmt  level    source
                    SPI0_WKEN = 0;
                
                    SPI0_EI = 1;
-C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  10:38:27  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  18:27:24  PAGE 3   
 
                }
                
@@ -202,7 +202,7 @@ stmt  level    source
                            DelayMs(100);
                            if(g_wkup_stop == 1)
                            {
-C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  10:38:27  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  18:27:24  PAGE 4   
 
                                DBG_SPI0WK("\n\rSPI0_STATE = %02x",g_CMDbuff[0]);
                                DBG_SPI0WK("\n\rSPI0_CMD0 = %02x",g_CMDbuff[1]);
@@ -270,7 +270,7 @@ stmt  level    source
                {    
                    
                    if(SPI0_STOP)
-C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  10:38:27  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_spi0_wakeup                                                 22/06/17  18:27:24  PAGE 5   
 
                    {
                        DBG_SPI0WK("\n%02x",SPI0CON5);

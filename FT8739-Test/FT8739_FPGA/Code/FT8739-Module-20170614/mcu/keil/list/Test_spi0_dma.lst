@@ -1,4 +1,4 @@
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 1   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 1   
 
 
 C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_spi0_dma
@@ -66,7 +66,7 @@ stmt  level    source
                #define SPI1_DMA_EN         1
                #define FPGA_BUS_SEL        1
                #define NUM_B   1024UL//1280UL//256UL//128UL
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 2   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 2   
 
                
                
@@ -134,7 +134,7 @@ stmt  level    source
                void SPI1_CLK_SET(UINT8 val)
                {
                    //SPI分频配置000:4分频;001:6分频;010:8分频;011:12分频;100:16分频;101:18分频;110:20分频;111:24分频*/
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 3   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 3   
 
                    switch(val)
                    {
@@ -202,7 +202,7 @@ stmt  level    source
                    SPI1PO = 0;
                
                    //SPI分频配置000:4分频;001:6分频;010:8分频;011:12分频;100:16分频;101:18分频;110:20分频;111:24分频*/
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 4   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 4   
 
                    //SPI1CKH  = 0;
                    //SPI1CKM  = 0;
@@ -270,7 +270,7 @@ stmt  level    source
                UINT8 SPI1_RW_Byte(UINT8 val)
                {
                    SPI1BUF = val;                        // Dummy write to output serial clock
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 5   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 5   
 
                    while (!SPI1RI);                    // Wait for the value to be read
                    //SPI1RI  = 0;    
@@ -338,7 +338,7 @@ stmt  level    source
                    SPI1BUF  = 0;
                    for (i = 0; i < (len-1); i++)
                    {
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 6   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 6   
 
                        
                        while (!SPI1RI);
@@ -406,7 +406,7 @@ stmt  level    source
                {    
                    while(pSpi1_DmaRegs->dma_ctrl & BIT_DMA_EN);    
                }
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 7   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 7   
 
                /*******************************************************************************
                *   Name: SPI0_DMA_SetAddr
@@ -474,7 +474,7 @@ stmt  level    source
                    P0MOD |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
                    //P0SEL |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
                    
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 8   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 8   
 
                    //P0DIR |= BITn(4)+BITn(3) + BITn(2);
                    //P0DIR &= ~ BITn(5);
@@ -542,7 +542,7 @@ stmt  level    source
                *******************************************************************************/
                void SPI0_DMA_Wait_Done(void)
                {    
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 9   
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 9   
 
                    while(pSpi0_DmaRegs->dma_ctrl & BIT_DMA_EN);    
                }
@@ -610,7 +610,7 @@ stmt  level    source
                    SPI0_REG_Init(); 
                  /******************************************/
                    ISP_STOP_EI = 1;
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 10  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 10  
 
                    DMA_END_EI  =0;
                
@@ -678,7 +678,7 @@ stmt  level    source
                
                 #if 1       
                        SPI0_DMA_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_WD|
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 11  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 11  
 
                        DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN));
                        
@@ -746,7 +746,7 @@ stmt  level    source
                    SPI1_Init();
                    SPI0_REG_Init();
                    SPI0_EDGE_SEL =1;
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 12  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 12  
 
                    DBG_SPI("\nTest_SPI1DRAM_SPI0_ARAM");
                  /******************************************/
@@ -814,7 +814,7 @@ stmt  level    source
                
                
                 #if 1       
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 13  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 13  
 
                        SPI0_DMA_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_WD|
                        DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN));
@@ -882,7 +882,7 @@ stmt  level    source
                                HOLD;
                            }
                            if (i%16 == 0)
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 14  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 14  
 
                            {
                            //    DBG_SPI("\n");
@@ -950,7 +950,7 @@ stmt  level    source
                        //    DBG_SPI("\n");
                        }
                        //DBG_SPI("PRAM=%02x ",PRAM2_ADDR8(i));
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 15  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 15  
 
                
                    }
@@ -1018,7 +1018,7 @@ stmt  level    source
                        for (i = 0; i < NUM_B; i++)
                        {
                            //if (DRAMBUF[i] != *(ucpAsmram+i))
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 16  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 16  
 
                            if (PRAM2_ADDR8(i) != *(ucpAsmram+i))    
                            {
@@ -1086,7 +1086,7 @@ stmt  level    source
                * Return:
                *******************************************************************************/
                void Test_SPI1DMA_SPI0DMA(void)
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 17  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 17  
 
                {
                    volatile UINT8  far *ucpAsmram;
@@ -1154,7 +1154,7 @@ stmt  level    source
                
                     //   CRCCCITT(ucpAsmram,6,&wCRC);
                
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 18  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 18  
 
                     //   DBG_SPI("\n1  wCRC=%04x ",wCRC);
                        DBG_SPI("\n test SPI1DMA SPI0 dma write aram");
@@ -1222,7 +1222,7 @@ stmt  level    source
                        #endif
                        wait_printf_done();
                
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 19  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 19  
 
                #endif
                //#else 
@@ -1290,7 +1290,7 @@ stmt  level    source
                {
                    UINT8 i=0;
                
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 20  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 20  
 
                    while(1)
                    {
@@ -1359,7 +1359,7 @@ Module Information          Static   Overlayable
   huge data size       =    ------     ------
   const size           =    ------     ------
   hconst size          =    ------     ------
-C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  10:38:27  PAGE 21  
+C251 COMPILER V5.54.0.0,  Test_spi0_dma                                                    22/06/17  18:27:24  PAGE 21  
 
 End of Module Information.
 
