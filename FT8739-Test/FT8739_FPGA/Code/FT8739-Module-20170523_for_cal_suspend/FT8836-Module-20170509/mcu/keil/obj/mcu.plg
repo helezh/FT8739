@@ -1,0 +1,751 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\keil\FT8836_test.uvproj
+Project File Date:  04/18/2017
+
+<h2>Output:</h2>
+Build target 'FT8836_test'
+compiling Test_CAL.c...
+..\..\src\source\task\Test_CAL.c(84): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(325): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(277): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(484): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(654): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1098): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1177): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1042): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1466): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1414): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1611): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1743): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1973): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2158): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2560): warning C47: 'j': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3281): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3487): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3856): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4066): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4500): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4794): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5085): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5373): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5657): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5800): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6120): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6334): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6823): warning C47: 'i': unreferenced local variable
+compiling Test_wdt.c...
+linking...
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    RtcInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LcdIntInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    I2cInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Init?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Feed?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_WriteRamReg?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_AfeRegWrite?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvCal_MatrixMul?/Drv_Cal
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvSysPowerMode?/Drv_mcu
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XsiRead?/Drv_XSI
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XbusInit?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_ReadLcd16?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_WriteLcd8?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvWriteLcdInitCode?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    srand??/RAND?
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ?C_C51STARTUP?3
+    CALLER2: ISR_LcdRun_IRQHandler?/Test_CAL
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ISR_LcdRun_IRQHandler?/Test_CAL
+    CALLER2: DrvScanCtrl_IRQHandler?/Test_CAL
+Program Size: data=9.0 edata+hdata=19250 xdata=0 const=5018 code=33165
+creating hex file from ".\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+已复制         1 个文件。
+找不到 E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output\*.i
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>HEX.exe
+hex2bin v2.3, Copyright (C) 2016 Jacques Pelletier & contributors
+Allocate_Memory_and_Rewind:
+Lowest address:   00FEE800
+Highest address:  00FF7D80
+Starting address: 00FEE800
+Max Length:       38273
+Binary file start = 00FEE800
+Records start     = 00FEE800
+Highest address   = 00FF7D80
+Pad Byte          = FF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+BootId:FFFF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+Flash-SPI = Divff; Flash-SYS = ffM; Lcd-XSI = Div1
+Lcd-Reload = 1, Len:0x0000
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+bin_merge(FT8836) version is 1.9: project_code=, customer_code=, app_binary_size = 38274 byte,fw_version = 0xff, I2C_SALVE_ADDR = 0x70, IO_VOLTAGE = 1.8V, VEDNOR_ID=0xff
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>copy .\*.bin .\bin\ 
+.\module_20170523_all.bin
+.\module_20170523_app.bin
+已复制         2 个文件。
+".\obj\mcu" - 0 Error(s), 45 Warning(s).
+Build target 'FT8836_test'
+compiling Test_CAL.c...
+..\..\src\source\task\Test_CAL.c(84): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(325): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(277): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(484): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(654): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1098): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1177): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1042): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1466): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1414): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1611): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1743): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1973): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2158): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2560): warning C47: 'j': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3281): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3487): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3856): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4066): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4500): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4794): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5085): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5373): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5657): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5800): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6120): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6334): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6823): warning C47: 'i': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    RtcInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LcdIntInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    I2cInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Init?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Feed?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_WriteRamReg?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_AfeRegWrite?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvCal_MatrixMul?/Drv_Cal
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvSysPowerMode?/Drv_mcu
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XsiRead?/Drv_XSI
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XbusInit?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_ReadLcd16?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_WriteLcd8?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvWriteLcdInitCode?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    srand??/RAND?
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ?C_C51STARTUP?3
+    CALLER2: ISR_LcdRun_IRQHandler?/Test_CAL
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ISR_LcdRun_IRQHandler?/Test_CAL
+    CALLER2: DrvScanCtrl_IRQHandler?/Test_CAL
+Program Size: data=9.0 edata+hdata=19250 xdata=0 const=5018 code=33167
+creating hex file from ".\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+已复制         1 个文件。
+找不到 E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output\*.i
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>HEX.exe
+hex2bin v2.3, Copyright (C) 2016 Jacques Pelletier & contributors
+Allocate_Memory_and_Rewind:
+Lowest address:   00FEE800
+Highest address:  00FF7D82
+Starting address: 00FEE800
+Max Length:       38275
+Binary file start = 00FEE800
+Records start     = 00FEE800
+Highest address   = 00FF7D82
+Pad Byte          = FF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+BootId:FFFF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+Flash-SPI = Divff; Flash-SYS = ffM; Lcd-XSI = Div1
+Lcd-Reload = 1, Len:0x0000
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+bin_merge(FT8836) version is 1.9: project_code=, customer_code=, app_binary_size = 38276 byte,fw_version = 0xff, I2C_SALVE_ADDR = 0x70, IO_VOLTAGE = 1.8V, VEDNOR_ID=0xff
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>copy .\*.bin .\bin\ 
+.\module_20170523_all.bin
+.\module_20170523_app.bin
+已复制         2 个文件。
+".\obj\mcu" - 0 Error(s), 45 Warning(s).
+Build target 'FT8836_test'
+compiling Test_CAL.c...
+..\..\src\source\task\Test_CAL.c(84): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(325): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(277): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(484): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(654): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1098): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1177): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1042): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1466): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1414): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1611): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1743): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1973): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2158): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2560): warning C47: 'j': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3281): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3487): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3856): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4066): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4500): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4794): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5085): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5373): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5657): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5800): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6120): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6334): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6823): warning C47: 'i': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    RtcInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LcdIntInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    I2cInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Init?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Feed?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_WriteRamReg?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_AfeRegWrite?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvCal_MatrixMul?/Drv_Cal
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvSysPowerMode?/Drv_mcu
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XsiRead?/Drv_XSI
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XbusInit?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_ReadLcd16?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_WriteLcd8?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvWriteLcdInitCode?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    srand??/RAND?
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ?C_C51STARTUP?3
+    CALLER2: ISR_LcdRun_IRQHandler?/Test_CAL
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ISR_LcdRun_IRQHandler?/Test_CAL
+    CALLER2: DrvScanCtrl_IRQHandler?/Test_CAL
+Program Size: data=9.0 edata+hdata=19250 xdata=0 const=5018 code=33175
+creating hex file from ".\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+已复制         1 个文件。
+找不到 E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output\*.i
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>HEX.exe
+hex2bin v2.3, Copyright (C) 2016 Jacques Pelletier & contributors
+Allocate_Memory_and_Rewind:
+Lowest address:   00FEE800
+Highest address:  00FF7D8A
+Starting address: 00FEE800
+Max Length:       38283
+Binary file start = 00FEE800
+Records start     = 00FEE800
+Highest address   = 00FF7D8A
+Pad Byte          = FF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+BootId:FFFF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+Flash-SPI = Divff; Flash-SYS = ffM; Lcd-XSI = Div1
+Lcd-Reload = 1, Len:0x0000
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+bin_merge(FT8836) version is 1.9: project_code=, customer_code=, app_binary_size = 38284 byte,fw_version = 0xff, I2C_SALVE_ADDR = 0x70, IO_VOLTAGE = 1.8V, VEDNOR_ID=0xff
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>copy .\*.bin .\bin\ 
+.\module_20170523_all.bin
+.\module_20170523_app.bin
+已复制         2 个文件。
+".\obj\mcu" - 0 Error(s), 45 Warning(s).
+Build target 'FT8836_test'
+compiling Test_CAL.c...
+..\..\src\source\task\Test_CAL.c(84): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(325): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(277): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(484): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(654): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1098): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1177): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1042): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1466): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1414): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1611): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1743): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1973): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2158): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2560): warning C47: 'j': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3281): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3487): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3856): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4066): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4500): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4794): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5085): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5373): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5657): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5800): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6120): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6334): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6823): warning C47: 'i': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    RtcInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LcdIntInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    I2cInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Init?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Feed?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_WriteRamReg?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_AfeRegWrite?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvCal_MatrixMul?/Drv_Cal
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvSysPowerMode?/Drv_mcu
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XsiRead?/Drv_XSI
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XbusInit?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_ReadLcd16?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_WriteLcd8?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvWriteLcdInitCode?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    srand??/RAND?
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ?C_C51STARTUP?3
+    CALLER2: ISR_LcdRun_IRQHandler?/Test_CAL
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ISR_LcdRun_IRQHandler?/Test_CAL
+    CALLER2: DrvScanCtrl_IRQHandler?/Test_CAL
+Program Size: data=9.0 edata+hdata=19250 xdata=0 const=5018 code=33173
+creating hex file from ".\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+已复制         1 个文件。
+找不到 E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output\*.i
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>HEX.exe
+hex2bin v2.3, Copyright (C) 2016 Jacques Pelletier & contributors
+Allocate_Memory_and_Rewind:
+Lowest address:   00FEE800
+Highest address:  00FF7D88
+Starting address: 00FEE800
+Max Length:       38281
+Binary file start = 00FEE800
+Records start     = 00FEE800
+Highest address   = 00FF7D88
+Pad Byte          = FF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+BootId:FFFF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+Flash-SPI = Divff; Flash-SYS = ffM; Lcd-XSI = Div1
+Lcd-Reload = 1, Len:0x0000
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+bin_merge(FT8836) version is 1.9: project_code=, customer_code=, app_binary_size = 38282 byte,fw_version = 0xff, I2C_SALVE_ADDR = 0x70, IO_VOLTAGE = 1.8V, VEDNOR_ID=0xff
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>copy .\*.bin .\bin\ 
+.\module_20170523_all.bin
+.\module_20170523_app.bin
+已复制         2 个文件。
+".\obj\mcu" - 0 Error(s), 45 Warning(s).
+Build target 'FT8836_test'
+compiling Drv_Cal.c...
+linking...
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    RtcInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LcdIntInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    I2cInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Init?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Feed?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_WriteRamReg?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_AfeRegWrite?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvCal_MatrixMul?/Drv_Cal
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvSysPowerMode?/Drv_mcu
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XsiRead?/Drv_XSI
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XbusInit?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_ReadLcd16?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_WriteLcd8?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvWriteLcdInitCode?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    srand??/RAND?
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ?C_C51STARTUP?3
+    CALLER2: ISR_LcdRun_IRQHandler?/Test_CAL
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ISR_LcdRun_IRQHandler?/Test_CAL
+    CALLER2: DrvScanCtrl_IRQHandler?/Test_CAL
+Program Size: data=9.0 edata+hdata=19250 xdata=0 const=5018 code=33173
+creating hex file from ".\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+已复制         1 个文件。
+找不到 E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output\*.i
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>HEX.exe
+hex2bin v2.3, Copyright (C) 2016 Jacques Pelletier & contributors
+Allocate_Memory_and_Rewind:
+Lowest address:   00FEE800
+Highest address:  00FF7D88
+Starting address: 00FEE800
+Max Length:       38281
+Binary file start = 00FEE800
+Records start     = 00FEE800
+Highest address   = 00FF7D88
+Pad Byte          = FF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+BootId:FFFF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+Flash-SPI = Divff; Flash-SYS = ffM; Lcd-XSI = Div1
+Lcd-Reload = 1, Len:0x0000
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+bin_merge(FT8836) version is 1.9: project_code=, customer_code=, app_binary_size = 38282 byte,fw_version = 0xff, I2C_SALVE_ADDR = 0x70, IO_VOLTAGE = 1.8V, VEDNOR_ID=0xff
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>copy .\*.bin .\bin\ 
+.\module_20170523_all.bin
+.\module_20170523_app.bin
+已复制         2 个文件。
+".\obj\mcu" - 0 Error(s), 17 Warning(s).
+Build target 'FT8836_test'
+compiling Test_CAL.c...
+..\..\src\source\task\Test_CAL.c(84): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(325): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(277): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(484): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(654): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1098): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1177): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1042): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1466): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1414): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1611): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1743): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1973): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2158): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2560): warning C47: 'j': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3281): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3487): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3856): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4066): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4500): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4794): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5085): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5373): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5657): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5800): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6120): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6334): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6823): warning C47: 'i': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    RtcInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LcdIntInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    I2cInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Init?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Feed?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_WriteRamReg?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_AfeRegWrite?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvCal_MatrixMul?/Drv_Cal
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvSysPowerMode?/Drv_mcu
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XsiRead?/Drv_XSI
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XbusInit?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_ReadLcd16?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_WriteLcd8?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvWriteLcdInitCode?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    srand??/RAND?
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ?C_C51STARTUP?3
+    CALLER2: ISR_LcdRun_IRQHandler?/Test_CAL
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ISR_LcdRun_IRQHandler?/Test_CAL
+    CALLER2: DrvScanCtrl_IRQHandler?/Test_CAL
+Program Size: data=9.0 edata+hdata=19250 xdata=0 const=5018 code=33165
+creating hex file from ".\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+已复制         1 个文件。
+找不到 E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output\*.i
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>HEX.exe
+hex2bin v2.3, Copyright (C) 2016 Jacques Pelletier & contributors
+Allocate_Memory_and_Rewind:
+Lowest address:   00FEE800
+Highest address:  00FF7D80
+Starting address: 00FEE800
+Max Length:       38273
+Binary file start = 00FEE800
+Records start     = 00FEE800
+Highest address   = 00FF7D80
+Pad Byte          = FF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+BootId:FFFF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+Flash-SPI = Divff; Flash-SYS = ffM; Lcd-XSI = Div1
+Lcd-Reload = 1, Len:0x0000
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+bin_merge(FT8836) version is 1.9: project_code=, customer_code=, app_binary_size = 38274 byte,fw_version = 0xff, I2C_SALVE_ADDR = 0x70, IO_VOLTAGE = 1.8V, VEDNOR_ID=0xff
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>copy .\*.bin .\bin\ 
+.\module_20170523_all.bin
+.\module_20170523_app.bin
+已复制         2 个文件。
+".\obj\mcu" - 0 Error(s), 45 Warning(s).
+Build target 'FT8836_test'
+compiling main.c...
+compiling Test_Afe.c...
+compiling Test_Aram.c...
+compiling Test_CAL.c...
+..\..\src\source\task\Test_CAL.c(84): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(325): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(277): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(484): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(654): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1098): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1177): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1042): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1466): warning C188: 'constant': value truncated
+..\..\src\source\task\Test_CAL.c(1414): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1611): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1743): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(1973): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2158): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(2560): warning C47: 'j': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3281): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3487): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(3856): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4066): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4500): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(4794): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5085): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5373): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5657): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(5800): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6120): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6334): warning C47: 'flag': unreferenced local variable
+..\..\src\source\task\Test_CAL.c(6823): warning C47: 'i': unreferenced local variable
+compiling Test_counter.c...
+compiling Test_Dram.c...
+compiling Test_GPIO.c...
+compiling Test_gpio_wakeup.c...
+compiling Test_i2c.c...
+compiling Test_i2c_wakeup.c...
+compiling Test_int_nest.c...
+compiling Test_LED.c...
+compiling Test_Prom.c...
+compiling Test_Reg.c...
+compiling Test_romboot.c...
+compiling Test_SFR.c...
+compiling Test_spi.c...
+compiling Test_timer.c...
+compiling Test_wdt.c...
+compiling Test_Xbus.c...
+compiling Test_RomEcc.c...
+compiling Test_Uart.c...
+compiling Test_SFT_RST.c...
+compiling Test_spi0.c...
+compiling Test_spi0_dma.c...
+compiling Test_RTC.c...
+compiling Test_DebugOut.c...
+compiling Drv_Cal.c...
+compiling Drv_mcu.c...
+compiling Drv_XSI.c...
+compiling Drv_XBUS.c...
+compiling uart.c...
+linking...
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LcdIntInit?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Init?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    WDT_Feed?/Test_CAL
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_WriteRamReg?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Test_AfeRegWrite?/Test_Reg
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvCal_MatrixMul?/Drv_Cal
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvSysPowerMode?/Drv_mcu
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XsiRead?/Drv_XSI
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    Drv_XbusInit?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_ReadLcd16?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvXbus_WriteLcd8?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    DrvWriteLcdInitCode?/Drv_XBUS
+*** WARNING L16: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    srand??/RAND?
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ?C_C51STARTUP?3
+    CALLER2: ISR_LcdRun_IRQHandler?/Test_CAL
+*** WARNING L15: MULTIPLE CALL TO FUNCTION
+    NAME:    PRINTF?/PRINTF?
+    CALLER1: ISR_LcdRun_IRQHandler?/Test_CAL
+    CALLER2: DrvScanCtrl_IRQHandler?/Test_CAL
+Program Size: data=9.0 edata+hdata=19250 xdata=0 const=5018 code=33175
+creating hex file from ".\obj\mcu"...
+User command #1: ..\output\post_build.BAT
+已复制         1 个文件。
+找不到 E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output\*.i
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>HEX.exe
+hex2bin v2.3, Copyright (C) 2016 Jacques Pelletier & contributors
+Allocate_Memory_and_Rewind:
+Lowest address:   00FEE800
+Highest address:  00FF7D8A
+Starting address: 00FEE800
+Max Length:       38283
+Binary file start = 00FEE800
+Records start     = 00FEE800
+Highest address   = 00FF7D8A
+Pad Byte          = FF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+BootId:FFFF
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+binmerge: can't open file ../../src/include/config/CfgSystem.h
+Flash-SPI = Divff; Flash-SYS = ffM; Lcd-XSI = Div1
+Lcd-Reload = 1, Len:0x0000
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+binmerge: can't open file ../../src/include/config/CfgPanelPara.h
+bin_merge(FT8836) version is 1.9: project_code=, customer_code=, app_binary_size = 38284 byte,fw_version = 0xff, I2C_SALVE_ADDR = 0x70, IO_VOLTAGE = 1.8V, VEDNOR_ID=0xff
+E:\work space\FT8836 SVN\CAL打断测试\FT8836-Module-20170523_for_cal_suspend\FT8836-Module-20170509\mcu\output>copy .\*.bin .\bin\ 
+.\module_20170523_all.bin
+.\module_20170523_app.bin
+已复制         2 个文件。
+".\obj\mcu" - 0 Error(s), 43 Warning(s).

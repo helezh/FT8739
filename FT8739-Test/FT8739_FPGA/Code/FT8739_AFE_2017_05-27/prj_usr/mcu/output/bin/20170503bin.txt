@@ -1,0 +1,3 @@
+1、Mcap_ScanNum20_20170503_app是扫描次数20次的bin，有20组正常ADC数据
+2、Mcap_ScanNum30_20170503_app是扫描次数30次的bin，有30组正常ADC数据
+3、Mcap_20170503_app_v1是滤波器全关，扫描次数15次，设置SumStart=0，SumNum=120，报key_err_flag的bin

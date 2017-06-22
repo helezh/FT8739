@@ -1,0 +1,1 @@
+"..\..\src\source\task\Test_counter.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEFINE (_FT8836_) DEBUG CODE LISTINCLUDE SYMBOLS PRINT(.\list\Test_counter.lst) PREPRINT(.\list\Test_counter.i) OBJECT(.\obj\Test_counter.obj)

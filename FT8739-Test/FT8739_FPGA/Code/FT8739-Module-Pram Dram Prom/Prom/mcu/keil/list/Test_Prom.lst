@@ -1,0 +1,290 @@
+C251 COMPILER V5.54.0.0,  Test_Prom                                                        16/06/17  11:47:17  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Prom
+OBJECT MODULE PLACED IN .\obj\Test_Prom.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\source\task\Test_Prom.c XSMALL ROM(HUGE) OP
+                    -TIMIZE(9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\
+                    -..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\Test_Prom.lst) TABS(2) OBJECT(.\obj\Test_Prom.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2013, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: Test_Prom.c
+    5          *
+    6          *    Author: xinkunpeng
+    7          *
+    8          *   Created: 2013-04-22
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference: test PROM introduction:
+   13          * Version:
+   14          * 0.1:
+   15          *
+   16          *******************************************************************************/
+   17          
+   18          /*******************************************************************************
+   19          * 1.Included header files
+   20          *******************************************************************************/
+   21          #include "Test_Prom.h"
+   22          
+   23          #if _TEST_PROM_EN
+   24          /*******************************************************************************
+   25          * 2.Private constant and macro definitions using #define
+   26          *******************************************************************************/
+   27          #define PROM_START_ADDRESS      0xFD0000   //Prom start address
+   28          #define PROM_END_ADDRESS        0xFD0FFF   //Prom end address
+   29          #define PROM_LENGTH             1024*4     ///2  //0x80
+   30          
+   31          //UINT16 XRAM ucRomTestBuf[PROM_LENGTH];
+   32          
+   33          UINT8 XRAM ucRomTestBuf[PROM_LENGTH];
+   34          
+   35          /*******************************************************************************
+   36          * 3.Private enumerations, structures and unions using typedef
+   37          *******************************************************************************/
+   38          
+   39          /*******************************************************************************
+   40          * 4.Static variables
+   41          *******************************************************************************/
+   42          
+   43          /*******************************************************************************
+   44          * 5.Global variable or extern global variabls/functions
+   45          *******************************************************************************/
+   46          
+   47          /*******************************************************************************
+   48          * 6.Static function prototypes
+   49          *******************************************************************************/
+   50          
+   51          /*******************************************************************************
+   52          *   Name:
+   53          *  Brief:
+   54          *  Input:
+   55          * Output:
+   56          * Return:
+   57          *******************************************************************************/
+C251 COMPILER V5.54.0.0,  Test_Prom                                                        16/06/17  11:47:17  PAGE 2   
+
+   58          void Test_Prom(void)
+   59          {
+   60   1          UINT16 i;
+   61   1          UINT8 t = 0;
+   62   1          UINT8  ucLoopValue;
+   63   1          UINT16 usLoopValue;
+   64   1          UINT32 ulLoopValue;
+   65   1          UINT8 far *pRom;
+   66   1          UINT8 far *ucpRom;
+   67   1          UINT16 far *uspRom;
+   68   1          UINT32 far *ulpRom;    
+   69   1      
+   70   1          DBG_MODE("\nprom test is start");
+   71   1      
+   72   1          //I2C_DEBUG往PROM写数据，然后Pram程序打印Prom中的内容比较
+   73   1          pRom = PROM_START_ADDRESS;
+   74   1          for (i = 0; i < PROM_LENGTH; i++)
+   75   1          {
+   76   2              ucRomTestBuf[i] = *pRom++;
+   77   2          }
+   78   1          for (i = 0; i < PROM_LENGTH; i++)
+   79   1          {
+   80   2              if (t%16 == 0)
+   81   2              {
+   82   3                  t = 0;
+   83   3                  DBG_PROM("\n\r");
+   84   3              }
+   85   2              t++;
+   86   2              DBG_PROM("%02X ",ucRomTestBuf[i]);
+   87   2              DelayMs(20);
+   88   2          }
+   89   1          DBG_MODE("\n\rprom test is end\n");
+   90   1      
+   91   1          //Pram程序往Prom中写数据，用I2C_DEBUG读出来比较
+   92   1          pRom = PROM_START_ADDRESS;
+   93   1          for (i = 0; i < PROM_LENGTH; i++)
+   94   1          {
+   95   2              *(pRom+i) = 0x5a;
+   96   2          }
+   97   1      
+   98   1          #if 0
+                   //Pram程序往Prom中写数据，烤机测试
+                   while (1)
+                   {
+                       //one byte write and read
+                       for (ucLoopValue = 0; ucLoopValue < 0xff; ucLoopValue++)
+                       {
+                           ucpRom = PROM_START_ADDRESS;
+                           for (i = 0; i < PROM_LENGTH; i++)
+                           {
+                               *ucpRom++ = ucLoopValue;
+                           }
+                           ucpRom = PROM_START_ADDRESS;
+                           for (i = 0; i < PROM_LENGTH; i++)
+                           {
+                               if (*ucpRom++ == ucLoopValue)
+                               {
+                                   P0_2 = !P0_2;
+                               }
+                               else
+                               {
+                                   P0_2 = 0;
+                                   DBG_ERROR("uci=%04x",i);                    
+                                   while (1);
+                               }
+                           }
+C251 COMPILER V5.54.0.0,  Test_Prom                                                        16/06/17  11:47:17  PAGE 3   
+
+                       }
+                       ucpRom = PROM_START_ADDRESS;
+                       for (i = 0; i < PROM_LENGTH; i++)
+                       {
+                           *ucpRom++ = 0xff;
+                       }
+                       ucpRom = PROM_START_ADDRESS;
+                       for (i = 0; i < PROM_LENGTH; i++)
+                       {
+                           if (*ucpRom++ == 0xff)
+                           {
+                               P0_2 = !P0_2;
+                           }
+                           else
+                           {
+                               P0_2 = 0;
+                               DBG_ERROR("uci=%04x",i);                    
+                               while (1);
+                           }
+                       }        
+               
+                       //two bytes write and read
+                       for (usLoopValue = 0; usLoopValue < 0xffff; usLoopValue++)
+                       {
+                           uspRom = PROM_START_ADDRESS;
+                           for (i = 0; i < (PROM_LENGTH >> 1); i++)
+                           {
+                               *uspRom++ = usLoopValue;
+                           }
+                           uspRom = PROM_START_ADDRESS;
+                           for (i = 0; i < (PROM_LENGTH >> 1); i++)
+                           {
+                               if (*uspRom++ == usLoopValue)
+                               {
+                                   P0_3 = !P0_3;
+                                   if ((*uspRom == 0x1234) && (i == 5))
+                                   {
+                                       DBG_PROM("*uspRom = %04x",*uspRom);
+                                   }
+                               }
+                               else
+                               {
+                                   P0_3 = 0;
+                                   DBG_ERROR("usi=%04x",i);
+                                   while (1);
+                               }
+                           }
+                       }  
+                       uspRom = PROM_START_ADDRESS;
+                       for (i = 0; i < (PROM_LENGTH >> 1); i++)
+                       {
+                           *uspRom++ = 0xffff;
+                       }
+                       uspRom = PROM_START_ADDRESS;
+                       for (i = 0; i < (PROM_LENGTH >> 1); i++)
+                       {
+                           if (*uspRom++ == 0xffff)
+                           {
+                               P0_3 = !P0_3;
+                           }
+                           else
+                           {
+                               P0_3 = 0;
+                               DBG_ERROR("usi=%04x",i);
+                               while (1);
+                           }
+C251 COMPILER V5.54.0.0,  Test_Prom                                                        16/06/17  11:47:17  PAGE 4   
+
+                       }
+               
+                       //four bytes write and read
+                       for (ulLoopValue = 0; ulLoopValue < 0xffffffff; ulLoopValue++)
+                       {
+                           ulpRom = (UINT32 *)PROM_START_ADDRESS;
+                           for (i = 0; i < (PROM_LENGTH >> 2); i++)
+                           {
+                               *ulpRom++ = ulLoopValue;
+                           }
+                           ulpRom = (UINT32 *)PROM_START_ADDRESS;
+                           for (i = 0; i < (PROM_LENGTH >> 2); i++)
+                           {
+                               if (*ulpRom++ == ulLoopValue)
+                               {
+                                   P0_4 = !P0_4;
+                                   if ((*uspRom == 0x12345678) && (i == 5))
+                                   {
+                                       DBG_PROM("*ulpRom = %08x",*ulpRom);
+                                   }
+                               }
+                               else
+                               {
+                                   P0_4 = 0;
+                                   DBG_ERROR("uli=%04x",i);
+                                   while (1);
+                               }
+                           }           
+                       }  
+                       ulpRom = (UINT32 *)PROM_START_ADDRESS;
+                       for (i = 0; i < (PROM_LENGTH >> 2); i++)
+                       {
+                           *ulpRom++ = 0xffffffff;
+                       }
+                       for (i = 0; i < (PROM_LENGTH >> 2); i++)
+                       {
+                           if (*ulpRom++ == 0xffffffff)
+                           {
+                               P0_4 = !P0_4;
+                           }
+                           else
+                           {
+                               P0_4 = 0;
+                               DBG_ERROR("uli=%04x",i);
+                               while (1);
+                           }
+                       }         
+                   } 
+                   #endif
+  239   1      }
+*** WARNING C47 IN LINE 62 OF ..\..\src\source\task\Test_Prom.c: 'ucLoopValue': unreferenced local variable
+*** WARNING C47 IN LINE 63 OF ..\..\src\source\task\Test_Prom.c: 'usLoopValue': unreferenced local variable
+*** WARNING C47 IN LINE 64 OF ..\..\src\source\task\Test_Prom.c: 'ulLoopValue': unreferenced local variable
+*** WARNING C47 IN LINE 66 OF ..\..\src\source\task\Test_Prom.c: 'ucpRom': unreferenced local variable
+*** WARNING C47 IN LINE 67 OF ..\..\src\source\task\Test_Prom.c: 'uspRom': unreferenced local variable
+*** WARNING C47 IN LINE 68 OF ..\..\src\source\task\Test_Prom.c: 'ulpRom': unreferenced local variable
+  240          #endif
+  241          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =       210     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+C251 COMPILER V5.54.0.0,  Test_Prom                                                        16/06/17  11:47:17  PAGE 5   
+
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =      4096          3
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        49     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  6 WARNING(S),  0 ERROR(S)

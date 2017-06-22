@@ -1,0 +1,6 @@
+$40000000  DrvIOInit?
+$08000000  DrvUartInit?
+$3FFF0FFF  init_mcu?
+$18000CC0  ISR_Uart?
+$3FFF0FFF  MAIN?
+$18000CC0  putchar?

@@ -1,0 +1,1 @@
+"..\..\src\source\task\Test_Aram.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\Test_Aram.lst) TABS (2) OBJECT(.\obj\Test_Aram.obj)

@@ -1,0 +1,1 @@
+"..\..\src\source\task\Test_int_nest.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEFINE (_FT8836_) DEBUG CODE LISTINCLUDE SYMBOLS PRINT(.\list\Test_int_nest.lst) PREPRINT(.\list\Test_int_nest.i) OBJECT(.\obj\Test_int_nest.obj)

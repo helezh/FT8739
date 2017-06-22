@@ -1,0 +1,10 @@
+1.boot启动后进入app，立刻清零TMOD，不做delay，3条指令后改TMOD为repeat mode，Timer0定时1ms，在Timer0中断中翻转P0_2；
+2.用逻辑分析仪发现有1/3的概率首次中断时间比预订时间少270us；
+3.若在刚进入app，清零TMOD后做20us delay，则上述问题不存在。
+4.若在刚进入app，不清零TMOD只做20us delay，则100%有270us误差
+
+
+
+
+Sim结论：
+

@@ -1,0 +1,10 @@
+---- P0_2 Matches (10 in 4 files) ----
+FT8836.h (include\drv):SBIT P0_2               = P0BUF^2;
+Main.c (source):    P0_2 = 0;
+Test_counter.c (source\task):        P0_2 = 0;
+Test_counter.c (source\task):    P0_2 = 0;
+Test_counter.c (source\task):    P0_2 = 1;
+Test_timer.c (source\task):    P0_2 = 1;
+Test_timer.c (source\task):    P0_2 = 0;
+Test_timer.c (source\task):    P0_2 = 1;
+Test_timer.c (source\task):    P0_2 = !P0_2;

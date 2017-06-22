@@ -1,0 +1,1 @@
+"..\..\src\source\task\Test_i2c.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\Test_i2c.lst) TABS (2) OBJECT(.\obj\Test_i2c.obj)

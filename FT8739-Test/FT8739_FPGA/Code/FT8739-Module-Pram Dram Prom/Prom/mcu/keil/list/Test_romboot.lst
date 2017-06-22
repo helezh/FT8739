@@ -1,0 +1,245 @@
+C251 COMPILER V5.54.0.0,  Test_romboot                                                     16/06/17  11:20:15  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_romboot
+OBJECT MODULE PLACED IN .\obj\Test_romboot.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\source\task\Test_romboot.c XSMALL ROM(HUGE)
+                    - OPTIMIZE(9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;
+                    -..\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\Test_romboot.lst) TABS(2) OBJECT(.\obj\Test_romboot.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2014, FocalTech Systems (R)£¬All Rights Reserved.
+    3          *
+    4          * File Name: Test_romboot.c
+    5          *
+    6          *    Author: xinkunpeng
+    7          *
+    8          *   Created: 2014-05-07
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference:
+   13          *
+   14          *******************************************************************************/
+   15          
+   16          /*******************************************************************************
+   17          * 1.Included header files
+   18          *******************************************************************************/
+   19          #include "Test_romboot.h"
+   20          
+   21          #if _TEST_ROMBOOT_EN
+               /*******************************************************************************
+               * 2.Private constant and macro definitions using #define
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 3.Private enumerations, structures and unions using typedef
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 4.Static variables
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 5.Global variable or extern global variabls/functions
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               *   Name: TestClrMemEccRun()
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void TestClrMemEccRun()
+               {
+                   //clear app-ecc
+                   PRAM_ADDR16(ADDR_PART1_ECC) = 0x00;
+                   PRAM_ADDR16(ADDR_PART2_ECC) = 0x00;
+                   while (1);
+               }
+               
+               /*******************************************************************************
+               *   Name: TestClrMemEccSoftRST()
+               *  Brief:
+               *  Input:
+               * Output:
+C251 COMPILER V5.54.0.0,  Test_romboot                                                     16/06/17  11:20:15  PAGE 2   
+
+               * Return:
+               *******************************************************************************/
+               void TestClrMemEccSoftRST()
+               {
+                   //clear app-ecc
+                   PRAM_ADDR16(ADDR_PART1_ECC) = 0x00;
+                   PRAM_ADDR16(ADDR_PART2_ECC) = 0x00;
+                   DelayMs(1000);
+                   //reset
+                   SFTRST = 0xFF;
+               }
+               
+               /*******************************************************************************
+               *   Name: TestClrMemEccWDTRST()
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void TestClrMemEccWDTRST()
+               {
+                   //clear app-ecc
+                   PRAM_ADDR16(ADDR_PART1_ECC) = 0x00;
+                   PRAM_ADDR16(ADDR_PART2_ECC) = 0x00;
+                   //DelayMs(1000);
+                   WDTREL     = 0x3B;   
+                   WDTSTARTEN = 1;
+                   WDT  = 1;
+                   SWDT = 1;
+                   while (1);
+               }
+               
+               /*******************************************************************************
+               *   Name: TestOnlyClrMemEcc()
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void TestOnlyClrMemEcc()
+               {
+                   //clear app-ecc
+                   PRAM_ADDR16(ADDR_PART1_ECC) = 0x00;
+                   PRAM_ADDR16(ADDR_PART2_ECC) = 0x00;
+               }
+               
+               /*******************************************************************************
+               *   Name: TestSoftRST()
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void TestSoftRST()
+               {
+                   DelayMs(2000);
+                   SFTRST = 0xFF;
+               }
+               
+               /*******************************************************************************
+               *   Name: TestWDTRST()
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+C251 COMPILER V5.54.0.0,  Test_romboot                                                     16/06/17  11:20:15  PAGE 3   
+
+               void TestWDTRST()
+               {
+                   DelayMs(2000);
+                   WDTREL     = 0x7B;  // Over time = 12.096 + (0x7F-0x2F)*12.288 = 955.136ms
+                   WDTSTARTEN = 1;
+                   WDT  = 1;
+                   SWDT = 1;
+                   while (1);
+               }
+               
+               /*******************************************************************************
+               *   Name: TestUpdateRST()
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void TestUpdateRST()
+               {
+                   DelayMs(2000);
+                   RST_STA = RST_VALUE_UPGRADE;
+                   SFTRST  = 0xFF;
+               }
+               
+               /*******************************************************************************
+               *   Name: Test_romboot()
+               *  Brief:
+               *  Input:
+               * Output:
+               * Return:
+               *******************************************************************************/
+               void Test_romboot()
+               {
+                   UINT8 g_ucRomboot;
+               
+                   DBG_FLOW("\nTest_romboot\n");
+                   DelayMs(3000);
+                   g_ucRomboot = 0x02;//5;// 2;
+                   switch (g_ucRomboot)
+                   {
+                       case 0x01:
+                       {
+                           TestClrMemEccRun();
+                           break;
+                       }
+                       case 0x02:
+                       {
+                           TestClrMemEccSoftRST();
+                           break;
+                       }
+                       case 0x03:
+                       {
+                           TestClrMemEccWDTRST();
+                           break;
+                       }
+                       case 0x04:
+                       {
+                           TestOnlyClrMemEcc();
+                           break;
+                       }
+                       case 0x05:
+                       {
+                           TestSoftRST();
+                           break;
+                       }
+                       case 0x06:
+C251 COMPILER V5.54.0.0,  Test_romboot                                                     16/06/17  11:20:15  PAGE 4   
+
+                       {
+                           TestWDTRST();
+                           break;
+                       }
+                       case 0x07:
+                       {
+                           TestUpdateRST();
+                           break;
+                       }
+                       default:
+                           break;
+                   }
+               }
+               #endif
+  204          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

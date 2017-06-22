@@ -1,0 +1,258 @@
+C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  16:01:41  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE uart
+OBJECT MODULE PLACED IN ..\output\obj\uart.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\source\Debug\uart.c SMALL HPTR INTR2 ROM(HUGE) OPT
+                    -IMIZE(9,SPEED) REGFILE(..\output\obj\mcu.ORC) BROWSE INCDIR(..\source;..\source\debug;..\source\Drv;..\source\task) STRI
+                    -NG(FAR) DEBUG PRINT(.\list\uart.lst) TABS(2) OBJECT(..\output\obj\uart.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2013, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: uart.c
+    5          *
+    6          *    Author: linjianjun
+    7          *
+    8          *   Created: 2013-06-05
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference:
+   13          *
+   14          *******************************************************************************/
+   15          
+   16          /*******************************************************************************
+   17          * 1.Included header files
+   18          *******************************************************************************/
+   19          #include <string.h>
+   20          #include "uart.h"
+   21          #include "Drv_mcu.h"
+   22          
+   23          #if _BLK_DBG_EN
+   24          /*******************************************************************************
+   25          * 2.Private constant and macro definitions using #define
+   26          *******************************************************************************/
+   27          #define CHAR_NOF      0x00
+   28          
+   29          #define U1_ON         (EC = 1)
+   30          #define U1_OFF        (EC = 0)
+   31          
+   32          #define UBUF_OUT_LEN   250        //size of serial transimit buffer
+   33          #define UBUF_IN_LEN    32         //size of serial receiving buffer 
+   34          
+   35          #define UART_CLK       (48000000/16)
+   36          /*******************************************************************************
+   37          * 3.Private enumerations, structures and unions using typedef
+   38          *******************************************************************************/
+   39          
+   40          /*******************************************************************************
+   41          * 4.Static variables
+   42          *******************************************************************************/
+   43          UINT8 XRAM s_aucUartOutBuf[UBUF_OUT_LEN];  // transmit buffer
+   44          
+   45          UINT8 XRAM s_ucUartTxPos = 0;              // transmit current pos
+   46          volatile UINT8 XRAM s_ucUartTxStore = 0;   // mcu store
+   47          volatile UINT8 XRAM s_ucUartTxLen = 0;     // length of transmit
+   48          
+   49          #if _UART_RECEIVE_EN
+               UINT8 XRAM s_aucUartInBuf[UBUF_IN_LEN];    // receiving buffer
+               
+               UINT8 XRAM s_ucUartRxPos = 0;              // receive current pos
+               volatile UINT8 XRAM s_ucUartRxStore = 0;   // host store
+               volatile UINT8 XRAM s_ucUartRxLen = 0;     // length of receive
+               #endif
+   56          
+   57          /*******************************************************************************
+C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  16:01:41  PAGE 2   
+
+   58          * 5.Global variable or extern global variabls/functions
+   59          *******************************************************************************/
+   60          
+   61          /*******************************************************************************
+   62          * 6.Static function prototypes
+   63          *******************************************************************************/
+   64          
+   65          /*******************************************************************************
+   66          *   Name: putchar
+   67          *  Brief:
+   68          *  Input:
+   69          * Output: None
+   70          * Return: None
+   71          *******************************************************************************/
+   72          SINT8 putchar(SINT8 ch)
+   73          {
+   74   1          U1_ON;
+   75   1          while (s_ucUartTxLen >= UBUF_OUT_LEN)     //缓冲区满时，等待
+   76   1          {
+   77   2          }
+   78   1          U1_OFF; //暂停串行输出中断，以免数据比较时出错
+   79   1      
+   80   1      
+   81   1          s_ucUartTxLen++;                          //长度+1
+   82   1          if (s_ucUartTxLen == 1)                   //第一个数据，直接发送,不进入缓冲区
+   83   1          {
+   84   2              UARTBUF = ch;
+   85   2          }
+   86   1          else
+   87   1          {
+   88   2              s_aucUartOutBuf[s_ucUartTxStore++] = ch;  //数据放入缓冲区,先入后加
+   89   2              if (s_ucUartTxStore >= UBUF_OUT_LEN)
+   90   2              {
+   91   3                  s_ucUartTxStore = 0;                  //环形缓冲区
+   92   3              }
+   93   2          }
+   94   1      
+   95   1          U1_ON;
+   96   1          return 0;
+   97   1      }
+   98          
+   99          #if _UART_RECEIVE_EN
+               /*******************************************************************************
+               *   Name: getbyte
+               *  Brief:
+               *  Input:
+               * Output: None
+               * Return: None
+               *******************************************************************************/
+               UINT8 getbyte(UINT16 timeout)
+               {
+                   UINT8 ch;
+               
+                   // 接收缓冲区为空时，等待数据或超时处理
+                   while (s_ucUartRxLen == 0)
+                   {
+                       if (timeout-- == 0)
+                       {
+                           return CHAR_NOF;
+                       }
+                   }
+                   // 暂停串行接收中断，以免数据比较时出错
+                   U1_OFF;
+                   ch = s_aucUartInBuf[s_ucUartRxPos++];
+                   if (s_ucUartRxPos >= UBUF_IN_LEN)
+                   {
+C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  16:01:41  PAGE 3   
+
+                       s_ucUartRxPos = 0;        // 环形缓冲区
+                   }
+                   s_ucUartRxLen--;
+               
+                   // 恢复串口接收功能
+                   U1_ON;
+               
+                   return (ch);
+               }
+               #endif
+  134          
+  135          /*******************************************************************************
+  136          *   Name: ISR_Uart
+  137          *  Brief:
+  138          *  Input:
+  139          * Output: None
+  140          * Return: None
+  141          *******************************************************************************/
+  142          void ISR_Uart(void) interrupt 6
+  143          {
+  144   1      #if _UART_RECEIVE_EN
+                   if (UART_RI)
+                   {
+                       UART_RI = 0;
+               
+                       // 溢出，则放弃该数据
+                       if (s_ucUartRxLen >= UBUF_IN_LEN)
+                       {
+                           s_ucUartRxLen = UBUF_IN_LEN;
+                       }
+                       else
+                       {
+                           s_ucUartRxLen++;
+                           s_aucUartInBuf[s_ucUartRxStore++] = UARTBUF;
+                           if (s_ucUartRxStore >= UBUF_IN_LEN)
+                           {
+                               s_ucUartRxStore = 0;
+                           }
+                       }
+                   }
+               #endif
+  165   1      
+  166   1          if (UART_TI)
+  167   1          {
+  168   2              UART_TI = 0;
+  169   2              if (s_ucUartTxLen)  // 长度不为0，继续发送
+  170   2              {
+  171   3                  s_ucUartTxLen--;
+  172   3                  if (s_ucUartTxLen != 0)
+  173   3                  {
+  174   4                      // 未发送完继续发送
+  175   4                      UARTBUF = s_aucUartOutBuf[s_ucUartTxPos++];
+  176   4                      if (s_ucUartTxPos >= UBUF_OUT_LEN)
+  177   4                      {
+  178   5                          s_ucUartTxPos = 0;
+  179   5                      }
+  180   4                  }
+  181   3              }
+  182   2          }
+  183   1      }
+  184          
+  185          /*******************************************************************************
+  186          *   Name: DrvUartInit
+  187          *  Brief:
+  188          *
+  189          * baud =48M/(16X(2^10-uartrel)) = 3 000 000/(2^10 - uartrel)
+C251 COMPILER V5.54.0.0,  uart                                                             16/06/17  16:01:41  PAGE 4   
+
+  190          * uartrel = 2^10 - 3000000/baud = 0x400 - 3000000/baud
+  191          *
+  192          *  Input:
+  193          * Output: None
+  194          * Return: None
+  195          *******************************************************************************/
+  196          void DrvUartInit(void)
+  197          {
+  198   1          UINT16 cnt;
+  199   1      
+  200   1          UART1 = 1;
+  201   1          UART0 = 0;
+  202   1      
+  203   1      
+  204   1      
+  205   1          
+  206   1          UARTCKEN = 1;
+  207   1          P0MOD |= BITn(7);
+  208   1      
+  209   1          // 工作方式8位
+  210   1          UARTCON = BITn(7);
+  211   1      
+  212   1          cnt = (0x400 - UART_CLK/BAUD_RATE/(MAIN_CLK+1));     /* 波特率设置 */
+  213   1          UART_RELH = cnt/256;
+  214   1          UART_RELL = cnt%256;
+  215   1      }
+  216          #endif //_U_DEBUG
+  217          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =         4     ------
+  ecode size           =       164     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       253     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        15     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
