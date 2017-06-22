@@ -8,3 +8,5 @@ initmap.ini
 *.uvopt
 *.uvgui.liweiwei
 *.plg
+*.map
+mcu
