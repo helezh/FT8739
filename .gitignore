@@ -1,9 +1,9 @@
 #windows
 initmap.ini
-/list/
-/obj/
+/list
+/obj
 *.hex
-/si/
+/si
 *.bin
 *.uvopt
 *.uvgui.liweiwei
