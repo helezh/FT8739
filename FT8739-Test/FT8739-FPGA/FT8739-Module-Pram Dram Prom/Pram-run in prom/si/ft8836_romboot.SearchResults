@@ -1,2 +1,0 @@
----- PRAM2_ADDR8 Matches (1 in 1 files) ----
-FT8836.h (e:\project\ft8739\ft8739-test\ft8739-module-pram dram prom\pram-run in prom\source\drv):#define PRAM2_ADDR8(n)   (*((UINT8 far  *)  (0xFd0000 + n)))

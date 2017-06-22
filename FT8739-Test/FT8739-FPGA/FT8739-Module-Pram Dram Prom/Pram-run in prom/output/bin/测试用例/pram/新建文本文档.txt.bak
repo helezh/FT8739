@@ -1,2 +1,0 @@
-SFT_RST:启动后delay 500ms 后复位
-LenMax_64K_WB：pram区64KB填满，看能否正常启动

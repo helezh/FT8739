@@ -1,1 +1,0 @@
-"..\..\src\source\driver\Drv_mcu.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\Drv_mcu.lst) TABS (2) OBJECT(.\obj\Drv_mcu.obj)

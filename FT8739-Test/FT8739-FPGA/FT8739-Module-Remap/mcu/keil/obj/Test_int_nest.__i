@@ -1,1 +1,0 @@
-"..\..\src\source\task\Test_int_nest.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task) STRING(FAR) DEBUG PRINT(.\list\Test_int_nest.lst) TABS (2) OBJECT(.\obj\Test_int_nest.obj)

@@ -1,1 +1,0 @@
-运行promboot,对pram进行拷机测试

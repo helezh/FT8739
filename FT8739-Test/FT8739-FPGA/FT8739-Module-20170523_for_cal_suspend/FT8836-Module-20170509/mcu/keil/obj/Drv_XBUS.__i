@@ -1,1 +1,0 @@
-"..\..\src\source\driver\Drv_XBUS.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..\..\src\include\config) STRING(FAR) DEFINE (_FT8836_) DEBUG CODE LISTINCLUDE SYMBOLS PRINT(.\list\Drv_XBUS.lst) PREPRINT(.\list\Drv_XBUS.i) OBJECT(.\obj\Drv_XBUS.obj)
