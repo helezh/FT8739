@@ -1,0 +1,3 @@
+---- DRAMBUF Matches (2 in 1 files) ----
+Spi0_dma.c (drv):volatile UINT8  XRAM DRAMBUF[16];
+Spi0_dma.c (drv):    //ucpAsmram =&DRAMBUF[0];//&BUF[0];
