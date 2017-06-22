@@ -1,0 +1,157 @@
+C251 COMPILER V5.54.0.0,  Drv_XBUS                                                         22/06/17  10:38:29  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Drv_XBUS
+OBJECT MODULE PLACED IN .\obj\Drv_XBUS.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\source\driver\Drv_XBUS.c XSMALL ROM(HUGE) O
+                    -PTIMIZE(9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..
+                    -\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\Drv_XBUS.lst) TABS(2) OBJECT(.\obj\Drv_XBUS.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2017-2019, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: Drv_XBUS.c
+    5          *
+    6          *    Author: tangsujun
+    7          *   Created: 2017-03-22
+    8          *
+    9          *  Abstract:
+   10          *
+   11          * Reference:
+   12          *
+   13          *   Version:CRC 0X020304 0305
+   14          *
+   15          *******************************************************************************/
+   16          /*******************************************************************************
+   17          * 1.Included header files
+   18          *******************************************************************************/
+   19          #include <intrins.h>
+   20          #include "CfgGlobal.h"
+   21          #include "Drv_XBUS.h"
+   22          #include "FT8836_Reg.h"
+   23          
+   24          /*******************************************************************************
+   25          * 2.Private constant and macro definitions using #define
+   26          *******************************************************************************/
+   27          #define WRITERREAD  1
+   28          #define READONLY    0
+   29          /* lcd wrap base addr */
+   30          #define LCD_WRAP_START_ADDR     0xBC00
+   31          //对lcd reg操作，小心操作
+   32          #define LCD_REG_BASE_ADDR      0x020000
+   33          #define Xbus_ADDR8(n)    (*((UINT8 far *)(LCD_REG_BASE_ADDR + n)))
+   34          #define Xbus_ADDR16(n)   (*((UINT16 far *)(LCD_REG_BASE_ADDR + n)))
+   35          
+   36          
+   37          /*******************************************************************************
+   38          * 3.Private enumerations, structures and unions using typedef
+   39          *******************************************************************************/
+   40          ST_LcdWrapRegisters *XRAM pLcdWrapRegs = (volatile ST_LcdWrapRegisters *)XBUS_REG_BASE_ADDR;
+   41          /*******************************************************************************
+   42          * 4.Static variables
+   43          *******************************************************************************/
+   44          
+   45          /*******************************************************************************
+   46          * 5.Global variable or extern global variabls/functions
+   47          *******************************************************************************/
+   48          
+   49          /*******************************************************************************
+   50          * 6.Static function prototypes
+   51          *******************************************************************************/
+   52          
+   53          
+   54          /*******************************************************************************
+   55          *   Name: Drv_XbusInit
+   56          *  Brief:
+   57          *  Input:
+C251 COMPILER V5.54.0.0,  Drv_XBUS                                                         22/06/17  10:38:29  PAGE 2   
+
+   58          * Output:
+   59          * Return:
+   60          *******************************************************************************/
+   61          void Drv_XbusInit(void)
+   62          {
+   63   1          XBUSCKEN = 1;//
+   64   1          LCD_RELOAD_FLASH_WKEN =1;
+   65   1      
+   66   1      }
+   67          
+   68          
+   69          /******************************************************************************
+   70          *
+   71          *   Name: DrvXbus_ReadLcd16
+   72          *  Brief: 读lcd数据 16位(双字节对齐)
+   73          *  Input:
+   74          * Output:
+   75          * Return:
+   76          *******************************************************************************/
+   77          UINT16 DrvXbus_ReadLcd16(UINT16 usaddr)
+   78          {
+   79   1          volatile UINT8 Dummy;
+   80   1          while(((pLcdWrapRegs->lcd_regfile_ctrl) & (BITn(1))) == 0);   //wait wr enable
+   81   1          Dummy = Xbus_ADDR8(usaddr);     
+   82   1          while(((pLcdWrapRegs->lcd_regfile_ctrl) & (BITn(0))) == 0);   //wait rdata redy
+   83   1          //return (UINT16)((pLcdWrapRegs->rdata_lo_byte << 8) + (pLcdWrapRegs->rdata_ho_byte & 0x00ff)); //Big
+             --endian
+   84   1          return (UINT16)(pLcdWrapRegs->rdata_lo_byte);
+   85   1      
+   86   1      }
+   87          
+   88          
+   89          /******************************************************************************
+   90          *
+   91          *   Name: DrvXbus_WriteLcd8
+   92          *  Brief:写lcd数据 8位
+   93          *  Input:
+   94          * Output:
+   95          * Return:
+   96          *******************************************************************************/
+   97          void DrvXbus_WriteLcd8(UINT16 usaddr,UINT8 usdata)
+   98          {
+   99   1          while(((pLcdWrapRegs->lcd_regfile_ctrl) & (BITn(1))) == 0); //wait wr enable
+  100   1          Xbus_ADDR8(usaddr) = usdata;
+  101   1      }
+  102          
+  103          /******************************************************************************
+  104          *
+  105          *   Name: DrvXbus_WriteLcd16
+  106          *  Brief:写lcd数据 16位
+  107          *  Input:
+  108          * Output:
+  109          * Return:
+  110          *******************************************************************************/
+  111          /*void DrvXbus_WriteLcd16(UINT16 usaddr,UINT16 usdata)
+  112          {
+  113              while(((pLcdWrapRegs->lcd_regfile_ctrl) & (BITn(1))) == 0); //wait wr enable
+  114              Xbus_ADDR16(usaddr) = usdata;
+  115          }*/
+  116          
+  117          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =        72     ------
+C251 COMPILER V5.54.0.0,  Drv_XBUS                                                         22/06/17  10:38:29  PAGE 3   
+
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =         4          1
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =         8     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

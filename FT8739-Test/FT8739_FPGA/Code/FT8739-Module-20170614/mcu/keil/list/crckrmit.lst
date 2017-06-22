@@ -1,0 +1,181 @@
+C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  10:38:29  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE crckrmit
+OBJECT MODULE PLACED IN .\obj\crckrmit.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\source\driver\crckrmit.c XSMALL ROM(HUGE) O
+                    -PTIMIZE(9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..
+                    -\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\crckrmit.lst) TABS(2) OBJECT(.\obj\crckrmit.obj) 
+
+stmt  level    source
+
+    1          /*
+    2           * Library: libcrc
+    3           * File:    src/crckrmit.c
+    4           * Author:  Lammert Bies
+    5           *
+    6           * This file is licensed under the MIT License as stated below
+    7           *
+    8           * Copyright (c) 1999-2016 Lammert Bies
+    9           *
+   10           * Permission is hereby granted, free of charge, to any person obtaining a copy
+   11           * of this software and associated documentation files (the "Software"), to deal
+   12           * in the Software without restriction, including without limitation the rights
+   13           * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   14           * copies of the Software, and to permit persons to whom the Software is
+   15           * furnished to do so, subject to the following conditions:
+   16           *
+   17           * The above copyright notice and this permission notice shall be included in all
+   18           * copies or substantial portions of the Software.
+   19           * 
+   20           * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   21           * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   22           * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   23           * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   24           * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   25           * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   26           * SOFTWARE.
+   27           *
+   28           * Description
+   29           * -----------
+   30           * The source file src/crckrmit.c contains routines which calculate the CRC
+   31           * Kermit cyclic redundancy check value for an incomming byte string.
+   32           */
+   33          
+   34          #include "CfgGlobal.h"
+   35          #include "checksum.h"
+   36          
+   37          static void   init_crc_tab( void );
+   38          
+   39          static BOOLEAN    crc_tab_init = FALSE;
+   40          static unsigned short XRAM  crc_tab[256];
+   41          
+   42          /*
+   43           * unsigned short crc_kermit( const unsigned char *input_str, size_t num_bytes );
+   44           *
+   45           * The function crc_kermit() calculates the 16 bits Kermit CRC in one pass for
+   46           * a byte string of which the beginning has been passed to the function. The
+   47           * number of bytes to check is also a parameter.
+   48           */
+   49          
+   50          unsigned short crc_kermit( const unsigned char *input_str, unsigned short num_bytes ) 
+   51          {
+   52   1      
+   53   1        unsigned short crc;
+   54   1        unsigned short tmp;
+   55   1        unsigned short short_c;
+   56   1        unsigned short low_byte;
+   57   1        unsigned short high_byte;
+C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  10:38:29  PAGE 2   
+
+   58   1        const unsigned char *ptr;
+   59   1        unsigned short a;
+   60   1      
+   61   1        if ( ! crc_tab_init ) init_crc_tab();
+   62   1      
+   63   1        crc = CRC_START_KERMIT;
+   64   1        ptr = input_str;
+   65   1      
+   66   1        if ( ptr != NULL ) for (a=0; a<num_bytes; a++) {
+   67   2      
+   68   2          short_c = 0x00ff & (unsigned short) *ptr;
+   69   2          tmp     =  crc       ^ short_c;
+   70   2          crc     = (crc >> 8) ^ crc_tab[ tmp & 0xff ];
+   71   2      
+   72   2          ptr++;
+   73   2        }
+   74   1      
+   75   1        //low_byte  = (crc & 0xff00) >> 8;
+   76   1        //high_byte = (crc & 0x00ff) << 8;
+   77   1        //crc       = low_byte | high_byte;
+   78   1      
+   79   1        return crc;
+   80   1      
+   81   1      }  /* crc_kermit */
+*** WARNING C47 IN LINE 56 OF ..\..\src\source\driver\crckrmit.c: 'low_byte': unreferenced local variable
+*** WARNING C47 IN LINE 57 OF ..\..\src\source\driver\crckrmit.c: 'high_byte': unreferenced local variable
+   82          
+   83          /*
+   84           * unsigned short update_crc_kermit( unsigned short crc, unsigned char c );
+   85           *
+   86           * The function update_crc_kermit() calculates a new CRC Kermit value based on
+   87           * the previous value of the CRC and the next byte of data to be checked.
+   88           */
+   89          
+   90          unsigned short update_crc_kermit( unsigned short crc, unsigned char c ) {
+   91   1      
+   92   1        unsigned short tmp;
+   93   1        unsigned short short_c;
+   94   1      
+   95   1        short_c = 0x00ff & (unsigned short) c;
+   96   1      
+   97   1        if ( ! crc_tab_init ) init_crc_tab();
+   98   1      
+   99   1        tmp =  crc       ^ short_c;
+  100   1        crc = (crc >> 8) ^ crc_tab[ tmp & 0xff ];
+  101   1      
+  102   1        return crc;
+  103   1      
+  104   1      }  /* update_crc_kermit */
+  105          
+  106          /*
+  107           * static void init_crc_tab( void );
+  108           *
+  109           * For optimal performance, the  CRC Kermit routine uses a lookup table with
+  110           * values that can be used directly in the XOR arithmetic in the algorithm.
+  111           * This lookup table is calculated by the init_crc_tab() routine, the first
+  112           * time the CRC function is called.
+  113           */
+  114          
+  115          static void init_crc_tab( void ) {
+  116   1      
+  117   1        unsigned short i;
+  118   1        unsigned short j;
+  119   1        unsigned short crc;
+  120   1        unsigned short c;
+  121   1      
+C251 COMPILER V5.54.0.0,  crckrmit                                                         22/06/17  10:38:29  PAGE 3   
+
+  122   1        for (i=0; i<256; i++) {
+  123   2      
+  124   2          crc = 0;
+  125   2          c   = i;
+  126   2      
+  127   2          for (j=0; j<8; j++) {
+  128   3      
+  129   3            if ( (crc ^ c) & 0x0001 ) crc = ( crc >> 1 ) ^ CRC_POLY_KERMIT;
+  130   3            else                      crc =   crc >> 1;
+  131   3      
+  132   3            c = c >> 1;
+  133   3          }
+  134   2      
+  135   2          crc_tab[i] = crc;
+  136   2        }
+  137   1      
+  138   1        crc_tab_init = TRUE;
+  139   1      
+  140   1      }  /* init_crc_tab */
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =         2     ------
+  ecode size           =       158     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       512          4
+  bit size             =         1     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

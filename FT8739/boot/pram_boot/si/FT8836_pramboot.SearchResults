@@ -1,0 +1,4 @@
+---- g_ucSendIntFlag Matches (3 in 1 files) ----
+Task_hcomm.c (task):UINT8  g_ucSendIntFlag        = 0;
+Task_hcomm.c (task):    if (g_ucSendIntFlag == BOOT_INT_FLAG)
+Task_hcomm.c (task):            g_ucSendIntFlag = ucData;

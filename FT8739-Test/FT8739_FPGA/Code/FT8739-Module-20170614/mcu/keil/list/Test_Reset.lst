@@ -1,0 +1,251 @@
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 1   
+
+
+C251 COMPILER V5.54.0.0, COMPILATION OF MODULE Test_Reset
+OBJECT MODULE PLACED IN .\obj\Test_Reset.obj
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C251\BIN\C251.EXE ..\..\src\source\task\Test_Reset.c XSMALL ROM(HUGE) O
+                    -PTIMIZE(9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task;..
+                    -\..\src\include\config) STRING(FAR) DEBUG PRINT(.\list\Test_Reset.lst) TABS(2) OBJECT(.\obj\Test_Reset.obj) 
+
+stmt  level    source
+
+    1          /*******************************************************************************
+    2          * Copyright (C) 2012-2014, FocalTech Systems (R)，All Rights Reserved.
+    3          *
+    4          * File Name: Test_Reset.c
+    5          *
+    6          *    Author: 
+    7          *
+    8          *   Created: 2017-4-19
+    9          *
+   10          *  Abstract:
+   11          *
+   12          * Reference:
+   13          *
+   14          *   Version:
+   15          *
+   16          *******************************************************************************/
+   17          
+   18          /*******************************************************************************
+   19          * 1.Included header files
+   20          *******************************************************************************/
+   21          #include "Test_Reset.h"
+   22          
+   23          #if _TEST_RST_EN
+               /*******************************************************************************
+               * 2.Private constant and macro definitions using #define
+               *******************************************************************************/
+               
+               // Software reset test
+               //#define TEST_SW_RESET
+               
+               // 000:POR Reset test in boot program-不用单独测试
+               //#define TEST_PORRST_CNT
+               
+               // 001:WDT Reset--need to enable WDT Test EN
+               //#define TEST_WDTRST_CNT
+               //extern int WDT_Init();
+               
+               // 010:EXT Reset-不用单独测试
+               //#define TEST_EXTRST_CNT
+               
+               // 011: LCD Reset-不用单独测试
+               //#define TEST_LCDRST_CNT
+               
+               // 100: ESD Reset-不用单独测试
+               //#define TEST_ESDRST_CNT
+               
+               // 101: LVD Reset
+               //#define TEST_LVDRST_CNT
+               
+               // 测试发生ESD和LVD时的flag位
+               #define TEST_XDP_STATUS
+               
+               /*******************************************************************************
+               * 3.Private enumerations, structures and unions using typedef
+               *******************************************************************************/
+               
+               
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 2   
+
+               /*******************************************************************************
+               * 4.Static variables
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 5.Global variable or extern global variabls/functions
+               *******************************************************************************/
+               
+               /*******************************************************************************
+               * 6.Static function prototypes
+               *******************************************************************************/
+               void Test_Reset()
+               {
+               #ifdef TEST_SW_RESET
+                   while(1)
+                  {
+                       DBG_FLOW("\r\n----------------------");
+                       DBG_FLOW("\r\nSoft Reset Start:");
+                       DBG_FLOW("\r\nThis program will be reset in 3 seconds.");
+                       DelayMs(1000);
+                       DBG_FLOW("3s");
+                       DelayMs(1000);
+                       DBG_FLOW("2s");
+                       DelayMs(1000);
+                       DBG_FLOW("1s\r\n");
+                       DelayMs(1000);
+                       SFTRST = 0xff;
+                  }
+               #endif
+               
+               // POR reset测试（undone）
+               #ifdef TEST_PORRST_CNT
+                   CNT_MASK = 0x00;
+                   DBG_FLOW("\nPORRST_CNT Test");
+                   while(1)
+                   {
+                       DBG_FLOW("\nCNT_POR = %d",CNT_STA);
+                       DelayMs(1000);
+                   }
+               #endif
+               
+               // WDT reset测试（done）
+               #ifdef TEST_WDTRST_CNT
+                   WDT_Init();
+                   CNT_MASK = 0x01;
+                   DBG_FLOW("\nWDTRST_CNT Test");
+                   while(1)
+                   {
+                       DBG_FLOW("\nCNT_WDT = %d",CNT_STA);
+                       // 清零CPU_WDTRST_CNT
+                       if (CNT_STA == 0x20)
+                       {
+                           CNT_MASK |= 0xA0;
+                       }        
+                       DelayMs(1000);
+                   }
+               #endif
+               
+               // Ext reset测试（done）
+               #ifdef TEST_EXTRST_CNT
+                   CNT_MASK = 0x02;
+                   DBG_FLOW("\nEXTRST_CNT Test");
+                   while(1)
+                   {
+                       DBG_FLOW("\nCNT_EXT = %d",CNT_STA);
+                       DelayMs(1000);
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 3   
+
+                   }
+               #endif
+               
+               // LCD reset测试（going）
+               #ifdef TEST_LCDRST_CNT
+                   CNT_MASK = 0x03;
+                   DBG_FLOW("\nLCDRST_CNT Test");
+                   while(1)
+                   {
+                       DBG_FLOW("\nCNT_LCD = %d",CNT_STA);       
+                       DelayMs(1000);
+                   }
+               #endif
+               
+               // ESD reset测试（done）
+               #ifdef TEST_ESDRST_CNT
+                   CNT_MASK = 0x04;
+                   ESD_RST_EN = 1;
+                   DBG_FLOW("\nESDRST_CNT Test");
+                   while(1)
+                   {
+                       DBG_FLOW("\nCNT_ESD = %d",CNT_STA);
+                       DelayMs(1000);
+                   }
+               #endif
+               
+               // LVD reset测试（done）
+               #ifdef TEST_LVDRST_CNT
+                   CNT_MASK = 0x05;
+                   LVD_MASK = 1;
+                   DBG_FLOW("\nLVDRST_CNT Test");
+                   while(1)
+                   {
+                       DBG_FLOW("\nCNT_LVD = %d",CNT_STA);
+                       DelayMs(1000);
+                   }
+               #endif
+               
+               #ifdef TEST_XDP_STATUS
+                   DBG_FLOW("\nXDP_STATUS Test");
+                   while (1)
+                   {
+                       #if 1
+                       DBG_FLOW("\nXDP_STATUS = %x",XDP_STA);
+                       DelayMs(1000);        
+                       if (ESD_FLAG == 1)
+                       {
+                           DBG_FLOW("\nXDP_STATUS = %x",XDP_STA);            
+                           DBG_FLOW("\nESD Detected");
+                           ESD_FLAG = 0;            
+                           DelayMs(1000);
+                       }
+                       if (LVD_FLAG == 1)
+                       {
+                           DBG_FLOW("\nXDP_STATUS = %x",XDP_STA);            
+                           DBG_FLOW("\nLVD Detected");
+                           LVD_FLAG = 0;
+                           LVD_INT_CLR = 1;        // 清零
+                           DelayMs(1000);
+                       }        
+                       #else
+               
+                       ESD_RST_EN = 0;
+                       ESD_FLAG = 0;
+                       LVD_FLAG = 0;
+                       
+C251 COMPILER V5.54.0.0,  Test_Reset                                                       22/06/17  10:38:28  PAGE 4   
+
+                       while(1)
+                       {
+                           DBG_FLOW("\nESD_FLAG = %d\nESD_STA = %d",ESD_FLAG,ESD_STA);
+                           DelayMs(10);
+                       }
+               
+                       DBG_FLOW("\nLVD Test");
+                       LVD_FLAG = 0;
+                       while (LVD_FLAG == 0);
+                       while(1)
+                       {
+                           DBG_FLOW("\nLVD_FLAG = %d",LVD_FLAG);
+                           DelayMs(10);
+                       }       
+                       #endif      // if 0
+                   }
+               #endif    //TEST_XDP_STATUS
+               }
+               
+               #endif
+  210          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
