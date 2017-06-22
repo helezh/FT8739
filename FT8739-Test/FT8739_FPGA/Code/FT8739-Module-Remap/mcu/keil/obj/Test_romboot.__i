@@ -1,1 +1,0 @@
-"..\..\src\source\task\Test_romboot.c" XSMALL ROM(HUGE) OPTIMIZE (9,SPEED) BROWSE INCDIR(..\..\src\include;..\..\src\include\Debug;..\..\src\include\Drv;..\..\src\include\task) STRING(FAR) DEBUG PRINT(.\list\Test_romboot.lst) TABS (2) OBJECT(.\obj\Test_romboot.obj)
