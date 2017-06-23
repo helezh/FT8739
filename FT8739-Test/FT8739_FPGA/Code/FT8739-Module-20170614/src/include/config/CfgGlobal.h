@@ -69,7 +69,7 @@
 #define _TEST_GPIO_EN                   0     /* gpio需要判断其input output以及高低电平切换的状态，需分别单独进行测试 */
 #define _TEST_TIMER_EN                  0     /* Timer单独进行测试 */ 
 #define _TEST_GPIO_WK_EN                0     /* int0中断唤醒源过多,单独进行测试 */
-#define _TEST_I2C_WK_EN                 0     /* 和I2C中断冲突，单独进行测试 */ 
+#define _TEST_I2C_WK_EN                 1     /* 和I2C中断冲突，单独进行测试 */ 
 #define _TEST_INT_NEST_EN               0     /* 中断嵌套测试,单独进行测试  */
 #define _TEST_XSI_EN                    0     /* XSI读写拷机测试，单独测试 */
 #define _TEST_CAL_EN                    0     /* CAL模块,测试模块较多,单独进行测试 */
@@ -79,7 +79,7 @@
 #define _TEST_SPI0_EN                   0     /* test SPI0   */
 #define _TEST_SPI0_DMA_EN               0     /* test SPI0_dma */
 #define _TEST_SPI0_WK_EN                0     /* 和SPI0,I2C中断冲突，单独进行测试 */   
-#define _TEST_DEBUGOUT_EN               1     /* 测试内部信号，单独进行测试*/
+#define _TEST_DEBUGOUT_EN               0     /* 测试内部信号，单独进行测试*/
 #define _TEST_AFE_EN                    0
 /*******************************************************************************
 * 1.Included files

@@ -104,7 +104,7 @@ void DrvHostI2cInit(void)
     Uart_IPH = 0;
     Uart_IPL = 0;
 
-    I2C_MON_CFG = 0;//i2c??,i2c monitor???
+    I2C_MON_CFG = 0;    // 0:i2c工作,1:i2c monitor工作
     I2C_WKEN = 0;
     ISP_MON_WKEN = 1;
     I2C_DEGLITCH_EN = 0; 

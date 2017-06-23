@@ -1,0 +1,9 @@
+---- ucData Matches (8 in 1 files) ----
+Main.c:UINT16 XRAM ucData[Test_CAL_Len] _at_ (0x100);
+Main.c:        ucData[i_tmp] =  0x5555;
+Main.c:        pCalRegs->rS1Addr  = (UINT16)(&ucData[i_tmp*Cal_Len]);
+Main.c:        pCalRegs->rOutAddr = (UINT16)(&ucData[i_tmp*Cal_Len]);
+Main.c:        if(ucData[i_tmp] == 0xAAAB)
+Main.c:        pCalRegs->rS1Addr  = (UINT16)(&ucData[i_tmp*Cal_Len]);
+Main.c:        pCalRegs->rOutAddr = (UINT16)(&ucData[i_tmp*Cal_Len]);
+Main.c:        if(ucData[i_tmp] == 0x5555)
