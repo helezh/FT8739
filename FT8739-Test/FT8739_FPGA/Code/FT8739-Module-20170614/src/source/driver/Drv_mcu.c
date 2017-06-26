@@ -155,8 +155,7 @@ void DelayUs(UINT8 ucDlyCnt)
         _nop_();         
         _nop_();
         _nop_(); 
-        
-      
+
     }
 #endif	
 }

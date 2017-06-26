@@ -127,8 +127,8 @@ void Test_I2C(void)
 #if I2C_MON_WAKEUP
     DBG_I2CWK("\nStart I2C monitor wakeup...");
     DelayMs(100);
-    DrvSysPowerIdle();
-    //DrvSysPowerStandby();
+    //DrvSysPowerIdle();
+    DrvSysPowerStandby();
     //DrvSysPowerStop();
     DBG_I2CWK("\n\rWK src:%x",g_nWKsrc);
     DBG_I2CWK("\nStart I2C monitor wakeup..ok.");

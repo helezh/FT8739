@@ -331,6 +331,8 @@ void Test_DebugOut(void)//AFE相关信号的测试放在AFE测试代码里面
     Test_CLk32K();              //从p0_6出信号
 #endif
 
+    DrvSysPowerStop();
+
 }
 #endif
 

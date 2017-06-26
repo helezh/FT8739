@@ -129,7 +129,7 @@ void Test_I2CWakeup(void)
 {
     DrvHostI2cInit();
     ExternInt0Init();
-    
+    P0_2 = 0;
     DBG_I2CWK("\nI2C wakeup Start");
  
     g_ucI2Ccmd = I2CWakeup_NOP;
@@ -145,6 +145,7 @@ void Test_I2CWakeup(void)
             ISP_STOP_EI  = 1;
             DelayMs(1);
             DrvSysPowerIdle();
+            DelayMs(1);
             DBG_I2CWK("\nWake up in idle");
             g_ucI2Ccmd = 0;
         }
@@ -158,6 +159,7 @@ void Test_I2CWakeup(void)
             ISP_STOP_EI  = 1;            
             DelayMs(1);
             DrvSysPowerStandby();
+            DelayMs(1);
             DBG_I2CWK("\nWake up in standby");
             g_ucI2Ccmd = 0;
         }

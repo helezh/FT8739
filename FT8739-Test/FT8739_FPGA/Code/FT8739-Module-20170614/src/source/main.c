@@ -78,7 +78,7 @@ void init_mcu(void)
     g_ucSFR[0x94] = SFRGetRegMapDataNormal(0x94);   //P1BUF
 #endif
     DrvSysClkInit(MAIN_CLK);
-    //SEL_32K_SRC = 1;        // select 32K src OSC
+    SEL_32K_SRC = 1;        // select 32K src OSC
     //FlASH_HOLD = 0;         // Flash Hold≤‚ ‘
     DrvIOInit();
     //DelayMs(3000);
