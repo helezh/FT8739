@@ -32,12 +32,12 @@
 #define MAIN_STOP         0     // 主程序中，直接停止
 
 //Run_Mode
-#define RUN_MODE          0     // 0:single mode   1:repeat mode
+#define RUN_MODE          1     // 0:single mode   1:repeat mode
 
 //中断唤醒测试
 #define TEST_IDLE          0    // 在定时中断中，暂停计数
 #define TEST_STANDBY       0    // 在定时中断中，停止计数
-#define TEST_STOP          0    // 主程序中，直接暂停，低功耗的stop模式
+#define TEST_STOP          1    // 主程序中，直接暂停，低功耗的stop模式
 
 #define TEST_SW_CLR_INT   0     // 1:软件清中断标志 0:硬件清中断标志位
 

@@ -867,6 +867,44 @@ BOOLEAN Test_CAL_MaxtixMov()
     {
         DBG_CAL("\nCal MOV test is OK!");
     }
+
+#if 1                                           // lww
+    DBG_CAL("\n\rMem to Aram");
+    CalParam.usSrc1Addr = CAL_TEST_A1;          // CAL_TEST_A0;
+    CalParam.usDstAddr  = ARAM_DATA_BASE_ADDR;
+    CalParam.ucTxLen    = CAL_ARAM_TX;
+    CalParam.ucRxLen    = CAL_ARAM_RX;
+    CalParam.usCalCmd   = OP_MOV;
+    CalParam.ucCfg      = MOV_CFG_0;            /* 0: 不转置，1: 转置 */
+
+    DrvCal_MatrixProc(&CalParam);
+    flag = 0;
+    for (i = 0; i < CAL_ARAM_TX; i++)
+    {
+        for (j = 0; j < CAL_ARAM_RX; j++)
+        {
+            if (g_pAfeAram[i*RX_ARAM_NUM + j] != *(T_tempbuf2 + i*RX_ARAM_NUM + j))
+            {
+                flag = 1;
+                DBG_ERROR("\n\rERROR->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
+            }
+            else
+            {
+                //DBG_CAL_DATA("\n\rOK->   %04x,%04x",*(g_pAfeAram + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j));
+            }
+        }
+    }
+
+    if (flag)
+    {
+        DBG_CAL("\nCal MOV test is Error!");
+    }
+    else
+    {
+        DBG_CAL("\nCal MOV test is OK!");
+    }    
+#endif
+
 #if TEST_CAL_MOV_INT_EN
     /* RTC中断打断CAL测试 */
     CLK_WP = 1;
@@ -1044,7 +1082,7 @@ BOOLEAN Test_CAL_MaxtixMov2()
         }
     }
 
-    DBG_CAL("\nMem-Aram:");
+    DBG_CAL("\nAram-Mem:");
     CalParam.usSrc1Addr = ARAM_DATA_BASE_ADDR;
     CalParam.usDstAddr  = CAL_TEST_A1;
     CalParam.ucTxLen    = CAL_ARAM_TX;
@@ -1087,6 +1125,43 @@ BOOLEAN Test_CAL_MaxtixMov2()
     {
         DBG_CAL("\nCal MOV2 test is OK!");
     }
+
+#if 1                                           // lww
+    DBG_CAL("\n\rMem to Aram");
+    CalParam.usSrc1Addr = CAL_TEST_A1;          // CAL_TEST_A0;
+    CalParam.usDstAddr  = ARAM_DATA_BASE_ADDR;
+    CalParam.ucTxLen    = CAL_ARAM_TX;
+    CalParam.ucRxLen    = CAL_ARAM_RX;
+    CalParam.usCalCmd   = OP_MOV;
+    CalParam.ucCfg      = MOV_CFG_0;            /* 0: 不转置，1: 转置 */
+
+    DrvCal_MatrixProc(&CalParam);
+    flag = 0;
+    for (i = 0; i < CAL_ARAM_TX; i++)
+    {
+        for (j = 0; j < CAL_ARAM_RX; j++)
+        {
+            if (g_pAfeAram[i*RX_ARAM_NUM + j] != *(T_tempbuf2 + i*RX_ARAM_NUM + j))
+            {
+                flag = 1;
+                DBG_ERROR("\n\rERROR->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
+            }
+            else
+            {
+                //DBG_CAL_DATA("\n\rOK->   %04x,%04x",*(g_pAfeAram + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j));
+            }
+        }
+    }
+
+    if (flag)
+    {
+        DBG_CAL("\nCal MOV test is Error!");
+    }
+    else
+    {
+        DBG_CAL("\nCal MOV test is OK!");
+    }    
+#endif
 
     return flag;
 }

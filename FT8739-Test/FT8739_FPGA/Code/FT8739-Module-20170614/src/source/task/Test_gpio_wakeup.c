@@ -27,13 +27,13 @@
 *     3. INT0_P06πÃ∂®µÕµÁ∆ΩªΩ–—
 *******************************************************************************/
 
-#define INT0_P06_WK_EN          0
+#define INT0_P06_WK_EN          1
 #define INT0_P07_WK_EN          0
 #define INT0_LCD_ESD_WK_EN      0
 #define INT0_LCD_LVD_WK_EN      0
 #define INT0_LCD_RELOAD_WK_EN   0
 #define INT0_ASM_WK_EN          0
-#define INT0_LCD_WK_EN          1
+#define INT0_LCD_WK_EN          0
 
 #define INT0_LCD_BUSY_FALL           BITn(15)
 #define INT0_LCD_BUSY_RISE           BITn(14)
@@ -193,7 +193,7 @@ void Test_Int0Wakeup(void)
     while (1)
     {
         DBG_GPIOWK("\nstart...");
-        DelayMs(100);
+        //DelayMs(100);
         //EA = 0;
 #if INT0_LCD_RELOAD_WK_EN
         DrvXbus_WriteLcd8(0xfb30,0x00);
@@ -211,10 +211,10 @@ void Test_Int0Wakeup(void)
 #if INT0_LCD_WK_EN
         LCD_TIM_WKEN = 1;
 #endif
-        EA = 1;
+        EA = 0;
         //DrvSysPowerIdle();
-        //DrvSysPowerStandby();
-        DrvSysPowerStop();
+        DrvSysPowerStandby();
+        //DrvSysPowerStop();
         DBG_GPIOWK("\nexit Power");
         while (!g_bInt0Flag);
         DBG_GPIOWK("\nWK src:%X,cnt=%d",g_nWKsrc,g_nINT0cnt);

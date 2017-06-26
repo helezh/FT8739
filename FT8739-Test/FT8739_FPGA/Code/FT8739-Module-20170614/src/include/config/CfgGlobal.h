@@ -72,14 +72,14 @@
 #define _TEST_I2C_WK_EN                 0     /* 和I2C中断冲突，单独进行测试 */ 
 #define _TEST_INT_NEST_EN               0     /* 中断嵌套测试,单独进行测试  */
 #define _TEST_XSI_EN                    0     /* XSI读写拷机测试，单独测试 */
-#define _TEST_CAL_EN                    0     /* CAL模块,测试模块较多,单独进行测试 */
+#define _TEST_CAL_EN                    1     /* CAL模块,测试模块较多,单独进行测试 */
 #define _TEST_ROMBOOT_EN                0     /* romboot test使用所需相关测试bin */
 #define _TEST_XBUS_EN                   0     /* XBUS读写测试*/
 #define _TEST_ROMECC_EN                 0     /* 计算ecc和prom membist的结果比较*/
 #define _TEST_SPI0_EN                   0     /* test SPI0   */
 #define _TEST_SPI0_DMA_EN               0     /* test SPI0_dma */
 #define _TEST_SPI0_WK_EN                0     /* 和SPI0,I2C中断冲突，单独进行测试 */   
-#define _TEST_DEBUGOUT_EN               1     /* 测试内部信号，单独进行测试*/
+#define _TEST_DEBUGOUT_EN               0     /* 测试内部信号，单独进行测试*/
 #define _TEST_AFE_EN                    0
 /*******************************************************************************
 * 1.Included files

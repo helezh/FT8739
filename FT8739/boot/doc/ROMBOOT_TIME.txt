@@ -1,0 +1,26 @@
+CPU 48M SPI1 12M 双线
+70K * 0.7MS/K =49MS
+TP_SOC wait debug mode：4 ms
+MCU initialization：小于1ms
+LCD initial reload：3.1 ms
+
+TP上电到AP执行P时间为，49+8.1=57.1ms
+
+CPU 48M SPI1 12M 单线
+70K * 1.0MS/K =70MS
+TP_SOC wait debug mode：4 ms
+MCU initialization：小于1ms
+LCD initial reload：3.1 ms
+
+TP上电到AP执行P时间为，70+8.1=77.1ms
+
+
+CPU 48M CPU16BIT写1K PRAM 406US
+SPI0 20M  1024*0.4=409US
+
+写1K时间总花费 0.815MS
+
+CPU 48M CPU16BIT写1K PRAM 406US
+SPI0 10M  1024*0.8=818US
+
+写1K时间总花费 1.224MS
