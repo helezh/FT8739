@@ -22,14 +22,14 @@
 #include <math.h>
 #include "Test_CAL.h"
 #include "Drv_Cal.h"
-#include "FT8836_Reg.h"
+#include "FT8835_Reg.h"
 
 #if _TEST_CAL_EN
 /*******************************************************************************
  * 2.Private constant and macro definitions using #define
  *******************************************************************************/
 ST_FrameData  g_stFrmData _at_ 0x2000;// Frame Data
-volatile ST_Spi0DmaRegisters *XRAM pSpi0_DmaRegs = (ST_Spi0DmaRegisters *)SPI0_REG_BASE_ADDR;
+volatile ST_Spi0DmaRegisters *XRAM pSpi0_DmaRegs = (ST_Spi0DmaRegisters *)SPI0_DMA_BASE_ADDR;
 #define CAL_TEST_A0  (UINT16)(g_stFrmData.CalBaseAddr)
 #define CAL_TEST_A1  (CAL_TEST_A0+(TX_LOCAL_NUM*RX_LOCAL_NUM)*2)
 #define CAL_TEST_A2  (CAL_TEST_A1+(TX_LOCAL_NUM*RX_LOCAL_NUM)*2)
@@ -53,6 +53,14 @@ SINT16 * XRAM T_tempbuf2;
 SINT16 * XRAM T_tempbuf3;
 SINT16 * XRAM T_tempOut;
 SINT16 * XRAM g_pAfeAram = (volatile SINT16*)ARAM_DATA_BASE_ADDR;
+
+UINT32  XRAM g_I2cCnt   = 0;
+UINT8   XRAM g_I2cCheck = 0;
+UINT8   XRAM g_I2c0Num  = 0;
+BOOLEAN XRAM g_I2cEnd   = 0;
+BOOLEAN XRAM g_I2cCkFlg = 0;
+BOOLEAN XRAM g_I2cOk    = 0;
+BOOLEAN XRAM g_I2cErr   = 0; 
 /*******************************************************************************
  * 6.Static function prototypes
  *******************************************************************************/
@@ -67,10 +75,10 @@ SINT16 * XRAM g_pAfeAram = (volatile SINT16*)ARAM_DATA_BASE_ADDR;
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixAdd()
 {
-    UINT8 i,j;
-    UINT8 shift;
-    BOOLEAN flag;
-    SINT32 temp;
+    UINT8 XRAM i,j;
+    UINT8 XRAM shift;
+    BOOLEAN XRAM flag;
+    SINT32 XRAM temp;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest: Matrix add");
@@ -115,7 +123,7 @@ BOOLEAN Test_CAL_MaxtixAdd()
                 if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)temp)
                 {
                     flag = 1;
-                    DBG_ERROR("\n\r%03derror%04X,%04x",(i*RX_LOCAL_NUM + j),*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
+                    DBG_ERROR("\n\r%03dError%04X,%04x",(i*RX_LOCAL_NUM + j),*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
                 }
                 else
                 {
@@ -132,7 +140,7 @@ BOOLEAN Test_CAL_MaxtixAdd()
             DBG_CAL("\n\rCal Add test is OK!");
         }
 
-        
+#if (TEST_AMOVE_RTC_INT_EN == 0)         
         DBG_CAL("\nAram-Mem:");
 
         for (i = 0; i < TX_ARAM_NUM; i++)
@@ -173,7 +181,7 @@ BOOLEAN Test_CAL_MaxtixAdd()
                 if (*(T_tempOut + i*RX_ARAM_NUM + j) != (SINT16)temp)
                 {
                     flag = 1;
-                    DBG_ERROR("\n\r%03derror%04X,%04x",(i*RX_ARAM_NUM + j),*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
+                    DBG_ERROR("\n\r%03dError%04X,%04x",(i*RX_ARAM_NUM + j),*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
                 }
                 else
                 {
@@ -189,169 +197,10 @@ BOOLEAN Test_CAL_MaxtixAdd()
         {
             DBG_CAL("\nCal Add test is OK");
         }
+
+#endif        
         
     }
-#if TEST_CAL_INT_EN
-
-#define RTC_CAL_INT
-    /* RTC中断打断CAL测试 */
-    {
-        #ifdef RTC_CAL_INT
-        CLK_WP = 1;
-        EN_32K = 1;   //open
-
-        //clk
-        RTCCKEN = 1;
-
-        //清rtc
-        RTC_WP  = 1;
-        RTC_CLR = 1;
-
-        /* 配置计数器时无需RTC_WP保护 */
-        RTCIVH  = 320/256;
-        RTCIVL  = 320%256;
-        RTCSLN  = 0;
-
-        //RTC中断作为中断0
-        RTC_INT_EN_CPU = 1;  // select rtc
-        RTC_AUTO_MODE = 1;
-        RTC_CNT_WKEN = 1;  // RTC wake en
-
-        #if 1
-        IT0   = 0;   // 0:LOW level triggered 1:falling edge
-        IPL0  = 0;
-        IPH0  = 0;
-        IPLX0 = 1;
-        IPHX0 = 1;  //中断0优先级必须最高
-
-        EX0   = 1;
-        #else
-
-        IT1 = 0;
-        IPL0 = 0;
-        IPH0 = 0;
-        IPLX1 = 1;
-        IPHX1 = 1;
-        EX0 = 0;
-        EX1 = 1;
-
-        #endif
-        EA = 1;
-        //DelayMs(5000);
-        pCalRegs->rDmask = BITn(0)+BITn(1);//CAL的Mask
-        RTC_WP    = 1;
-        RTC_START = 1;
-        #endif
-
-        #ifdef TIMER0_CAL_INT
-        TIMERCKEN = 1;
-        TMOD = 0x02;
-        TH0 = 0;
-        TDIV = 0;
-        TL0 = 1;
-        TF0 = 0;
-        TR0 = 1;
-        IPLT0 = 0;
-        IPHT0 = 1;
-        ET0 = 1;
-        EA = 1;
-        TR0 = 1;
-        P1_0 = 0;
-        P1_1 = 0;             
-        #endif
-
-        #ifdef IIC_CAL_INT
-		pCalRegs->rDmask = BITn(5);//CAL的Mask
-        I2CCKEN = 1;
-
-        I2CBUF = 0;
-        I2CRI  = 0;
-        I2CTI  = 0;
-
-        /* 设置设备地址 */
-        I2CADDR = I2C_SLAVE_ADDR&0xFE;
-
-        I2C_STOP_EI = 1;        //Set to enable Additional Interrupt 0
-        I2C_STOP_IF = 0;
-
-        I2C_IPH = 0;
-        I2C_IPL = 1;
-        P1_0 = 0;
-        P1_1 = 0; 
-
-        Uart_IPH = 0;
-        Uart_IPL = 0;
-        ET2 = 1;
-        EA = 1;
-        #endif
-        
-        while (1)
-        {
-            for (i = 0; i < TX_LOCAL_NUM; i++)
-            {
-                for (j = 0; j < RX_LOCAL_NUM; j++)
-                {
-                    *(T_tempbuf1 + i*RX_LOCAL_NUM + j) = rand()>>2;
-                    *(T_tempbuf2 + i*RX_LOCAL_NUM + j) = rand()>>2;
-                    g_pAfeAram[i*RX_LOCAL_NUM + j]     = rand()>>2;
-                }
-            }
-            CalParam.usSrc1Addr = CAL_TEST_A0;
-            CalParam.usSrc2Addr = ARAM_DATA_BASE_ADDR;
-            CalParam.usDstAddr  = CAL_TEST_A1;
-            //CalParam.ucTxNum    = TX_LOCAL_NUM;
-            //CalParam.ucRxNum    = RX_LOCAL_NUM;
-            CalParam.ucTxLen    = CAL_TEST_TX;
-            CalParam.ucRxLen    = CAL_TEST_RX;
-            CalParam.ucShift    = 1;
-            CalParam.usCalCmd   = OP_ADD;
-            CalParam.ucCfg      = SIGN_MOD_0;
-
-            #if 0
-            RTC_WP    = 1;
-            RTC_START = 1;
-            RTC_CNT_WKEN  = 1;  //RTC wake en
-            #endif
-            
-            DrvCal_MatrixProc(&CalParam);
-
-
-
-            if (g_bCalResumeFlag)
-            {
-                DBG_CAL("\n\rhave int flag");
-                EX0 = 0;
-
-                RTC_WP = 1;
-                RTC_CLR = 1;
-
-                //DrvCal_Init(TX_LOCAL_NUM, RX_LOCAL_NUM, 0x00);
-                DelayMs(1000);
-            }
-
-            flag = 0;
-            for (i=0; i<CAL_TEST_TX; i++)
-            {
-                for (j=0; j<CAL_TEST_RX; j++)
-                {
-                    if (*(T_tempbuf2 + i*RX_LOCAL_NUM + j) != (*(T_tempbuf1 + i*RX_LOCAL_NUM + j) + g_pAfeAram[i*RX_LOCAL_NUM + j])>>1 )
-                    {
-                        flag = 1;
-                    }
-                }
-            }
-            if (flag)
-            {
-                DBG_CAL("\nCal Add test is Error");
-            }
-            else
-            {
-                DBG_CAL("\nCal Add test is OK");
-            } 
-            //DelayMs(500);
-        }
-    }
-#endif
     return flag;
 }
 #else
@@ -368,11 +217,11 @@ BOOLEAN Test_CAL_MaxtixAdd()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixSub()
 {
-    UINT8 i,j;
-    UINT8 shift;
-    UINT16 usSubMax;
-    SINT16 temp;
-    BOOLEAN flag;
+    UINT8 XRAM i,j;
+    UINT8 XRAM shift;
+    UINT16 XRAM usSubMax;
+    SINT16 XRAM temp;
+    BOOLEAN XRAM flag;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest: Matrix sub");
@@ -423,7 +272,7 @@ BOOLEAN Test_CAL_MaxtixSub()
                 if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)temp)
                 {
                     flag = 1;
-                    DBG_ERROR("\n\r%03derror%04X,%04x",(i*RX_LOCAL_NUM + j),*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
+                    DBG_ERROR("\n\r%03dError%04X,%04x",(i*RX_LOCAL_NUM + j),*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
                 }
                 else
                 {
@@ -433,13 +282,14 @@ BOOLEAN Test_CAL_MaxtixSub()
         }
         if (flag)
         {
-            DBG_CAL("\nCal SUB test is ERROR!");
+            DBG_CAL("\nCal SUB test is Error!");
         }
         else
         {
             DBG_CAL("\n\rCal SUB test is OK!");
         }
 
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
         for (i=0; i<TX_ARAM_NUM; i++)
         {
@@ -486,7 +336,7 @@ BOOLEAN Test_CAL_MaxtixSub()
                 if (*(T_tempOut + i*RX_ARAM_NUM + j) != (SINT16)temp)
                 {
                     flag = 1;
-                    DBG_ERROR("\n\r%03derror%04X,%04x",(i*RX_ARAM_NUM + j),*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
+                    DBG_ERROR("\n\r%03dError%04X,%04x",(i*RX_ARAM_NUM + j),*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
                 }
                 else
                 {
@@ -512,6 +362,7 @@ BOOLEAN Test_CAL_MaxtixSub()
         {
             DBG_CAL("\nCal SUB test is OK!");
         }
+#endif        
     }
     return flag;
 }
@@ -529,12 +380,11 @@ BOOLEAN Test_CAL_MaxtixSub()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixAmp()
 {
-    UINT8 i,j;
-    BOOLEAN flag;
-    UINT8 shift;
-    SINT16 mul;
-    SINT32 temp;
-    //   SINT16 tmp2;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag;
+    UINT8 XRAM shift;
+    SINT16 XRAM mul;
+    SINT32 XRAM temp;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest: Matrix amp");
@@ -579,7 +429,7 @@ BOOLEAN Test_CAL_MaxtixAmp()
                     if (*(T_tempbuf2 + i*RX_LOCAL_NUM + j) != (SINT16)temp )
                     {
                         flag = 1;
-                        DBG_ERROR("\nerror=%04x,%04x,%04x",*(T_tempbuf2 + i*RX_LOCAL_NUM + j),(SINT16)temp,*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
+                        DBG_ERROR("\nError=%04x,%04x,%04x",*(T_tempbuf2 + i*RX_LOCAL_NUM + j),(SINT16)temp,*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
                     }
                     else
                     {
@@ -592,6 +442,8 @@ BOOLEAN Test_CAL_MaxtixAmp()
                 DBG_CAL("\n\r\Mul:%03d,shift:%02d",mul,shift);
                 DBG_CAL("\n\rError");
             }
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
              for (i = 0; i < TX_ARAM_NUM; i++)
             {
@@ -627,7 +479,7 @@ BOOLEAN Test_CAL_MaxtixAmp()
                     if (*(T_tempbuf2 + i*RX_ARAM_NUM + j) != (SINT16)temp )
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rerror>>%04x,%04x,%04x",*(T_tempbuf2 + i*RX_ARAM_NUM + j),(SINT16)temp,*(g_pAfeAram + i*RX_ARAM_NUM + j));
+                        DBG_ERROR("\n\rError>>%04x,%04x,%04x",*(T_tempbuf2 + i*RX_ARAM_NUM + j),(SINT16)temp,*(g_pAfeAram + i*RX_ARAM_NUM + j));
                     }
                     else
                     {
@@ -640,6 +492,8 @@ BOOLEAN Test_CAL_MaxtixAmp()
                 DBG_CAL("\n\Mul:%03d,shift:%02d",mul,shift);
                 DBG_CAL("\nError");
             }
+
+#endif            
 
         }  
         DBG_CAL("\nCal AMP test is OK!");
@@ -661,9 +515,9 @@ BOOLEAN Test_CAL_MaxtixAmp()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixDiv()
 {
-    UINT8 i,j;
-    BOOLEAN flag;
-    UINT8 Div;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag;
+    UINT8 XRAM Div;
 
     ST_CalMcMatrixParam XRAM CalParam;
 
@@ -693,7 +547,7 @@ BOOLEAN Test_CAL_MaxtixDiv()
             if (*(T_tempbuf2 + i*RX_LOCAL_NUM + j) != (*(T_tempbuf1 + i*RX_LOCAL_NUM + j))/Div )
             {
                 flag = 1;
-                DBG_ERROR("\n\r%03dERROR->Soft:%04X,Cal:%04x ",i*RX_LOCAL_NUM+j,(*(T_tempbuf1 + i*RX_LOCAL_NUM + j))/Div,*(T_tempbuf2 + i*RX_LOCAL_NUM + j));
+                DBG_ERROR("\n\r%03dError->Soft:%04X,Cal:%04x ",i*RX_LOCAL_NUM+j,(*(T_tempbuf1 + i*RX_LOCAL_NUM + j))/Div,*(T_tempbuf2 + i*RX_LOCAL_NUM + j));
             }
             else
             {
@@ -709,6 +563,9 @@ BOOLEAN Test_CAL_MaxtixDiv()
     {
         DBG_CAL("\nCal DIV test mem is OK!");
     }
+
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     for (i = 0; i < TX_ARAM_NUM; i++)
     {
@@ -734,7 +591,7 @@ BOOLEAN Test_CAL_MaxtixDiv()
             if (*(T_tempbuf2 + i*RX_ARAM_NUM + j) != (*(g_pAfeAram + i*RX_ARAM_NUM + j))/Div )
             {
                 flag = 1;
-                DBG_ERROR("\n\r%03dERROR->Soft:%04X,Cal:%04x ",i*RX_LOCAL_NUM+j,(*(g_pAfeAram + i*RX_LOCAL_NUM + j))/Div,*(T_tempbuf2 + i*RX_LOCAL_NUM + j));
+                DBG_ERROR("\n\r%03dError->Soft:%04X,Cal:%04x ",i*RX_LOCAL_NUM+j,(*(g_pAfeAram + i*RX_LOCAL_NUM + j))/Div,*(T_tempbuf2 + i*RX_LOCAL_NUM + j));
             }
             else
             {
@@ -751,7 +608,7 @@ BOOLEAN Test_CAL_MaxtixDiv()
         DBG_CAL("\nCal DIV test aram is OK!");
     }
 
-    
+#endif    
     return flag;
 }
 #else
@@ -768,12 +625,10 @@ BOOLEAN Test_CAL_MaxtixDiv()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixMov()
 {
-    UINT8 i,j;
-    BOOLEAN flag = 0;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag = 0;
 	
-#if TEST_CAL_MOV_INT_EN	
-    UINT16 DelayValue;
-#endif
+
 	
     ST_CalMcMatrixParam XRAM CalParam;
 
@@ -805,7 +660,7 @@ BOOLEAN Test_CAL_MaxtixMov()
             if (*(T_tempbuf2 + i*RX_LOCAL_NUM + j) != *(T_tempbuf1 + i*RX_LOCAL_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->%04x,%04x",*(T_tempbuf2 + i*RX_LOCAL_NUM + j),*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
+                DBG_ERROR("\n\rError->%04x,%04x",*(T_tempbuf2 + i*RX_LOCAL_NUM + j),*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
             }
             else
             {
@@ -822,6 +677,8 @@ BOOLEAN Test_CAL_MaxtixMov()
     {
         DBG_CAL("\nCal MOV test is OK!");
     }
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     for (i = 0; i < TX_ARAM_NUM; i++)
     {
@@ -850,7 +707,7 @@ BOOLEAN Test_CAL_MaxtixMov()
             if (g_pAfeAram[i*RX_ARAM_NUM + j] != *(T_tempbuf2 + i*RX_ARAM_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
+                DBG_ERROR("\n\rError->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
             }
             else
             {
@@ -858,7 +715,7 @@ BOOLEAN Test_CAL_MaxtixMov()
             }
         }
     }
-
+#endif
     if (flag)
     {
         DBG_CAL("\nCal MOV test is Error!");
@@ -886,7 +743,7 @@ BOOLEAN Test_CAL_MaxtixMov()
             if (g_pAfeAram[i*RX_ARAM_NUM + j] != *(T_tempbuf2 + i*RX_ARAM_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
+                DBG_ERROR("\n\rError->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
             }
             else
             {
@@ -904,102 +761,6 @@ BOOLEAN Test_CAL_MaxtixMov()
         DBG_CAL("\nCal MOV test is OK!");
     }    
 #endif
-
-#if TEST_CAL_MOV_INT_EN
-    /* RTC中断打断CAL测试 */
-    CLK_WP = 1;
-    EN_32K = 1;   //open
-    
-    //clk
-    RTCCKEN = 1;
-    
-    //清rtc
-    RTC_WP  = 1;
-    RTC_CLR = 1;
-    
-    /* 配置计数器时无需RTC_WP保护 */
-    RTCIVH  = 32/256; //1ms
-    RTCIVL  = 32%256;
-    
-    //RTC中断作为中断0
-    RTC_WKEN = 1;  // select rtc
-    #if 0
-    RTC_CNT_WKEN = 1;  // RTC wake en
-    
-    IT0   = 0;   // 0:LOW level triggered 1:falling edge
-    IPL0  = 0;
-    IPH0  = 0;
-    IPLX0 = 1;
-    IPHX0 = 1;  //中断0优先级必须最高
-    
-    EX0   = 1;
-    #endif
-
-    IT1   = 1;
-    IPL0  = 0;
-    IPH0  = 0;
-    IPLX1 = 1;
-    IPHX1 = 1;
-    EX1   = 1;
-    EA    = 1;
-
-    DelayMs(5000);
-    RTC_WP    = 1;
-    RTC_START = 1;
-    
-    while(1)
-    {
-        RTC_WP    = 1;
-        RTC_START = 1;
-        for (i = 0; i < TX_LOCAL_NUM; i++)
-        {
-            for (j = 0; j < RX_LOCAL_NUM; j++)
-            {
-                *(T_tempbuf1 + i*RX_LOCAL_NUM + j) = rand();
-            }
-        }
-
-        CalParam.usSrc1Addr = CAL_TEST_A0;
-        CalParam.usDstAddr  = CAL_TEST_A1;
-        //CalParam.ucTxNum    = TX_LOCAL_NUM;
-        //CalParam.ucRxNum    = RX_LOCAL_NUM;
-        CalParam.ucTxLen    = CAL_TEST_TX;
-        CalParam.ucRxLen    = CAL_TEST_RX;
-        CalParam.usCalCmd   = OP_MOV;
-        CalParam.ucCfg      = MOV_CFG_0;    /* 0: 不转置，1: 转置 */
-    
-        DrvCal_MatrixProc(&CalParam);
-        flag = 0;
-        for (i = 0; i < CAL_TEST_TX; i++)
-        {
-            for (j = 0; j < CAL_TEST_RX; j++)
-            {
-                if (*(T_tempbuf2 + i*RX_LOCAL_NUM + j) != *(T_tempbuf1 + i*RX_LOCAL_NUM + j))
-                {
-                    flag = 1;
-                    DBG_ERROR("\nerror %04x,%04x",*(T_tempbuf2 + i*RX_LOCAL_NUM + j),*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
-                }
-                else
-                {
-                    //DBG_CAL("\n\rOK->   %04x,%04x",*(T_tempbuf2 + i*RX_LOCAL_NUM + j),*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
-                }
-            }
-        }
-
-        DelayValue = (rand()%6000);
-        if (flag)
-        {
-            DBG_CAL("\nInt MOV Error, Delay:%d",DelayValue);
-        }
-        else
-        {
-            DBG_CAL("\nInt MOV OK, Delay:%d",DelayValue);
-        }
-      
-        DelayMs(DelayValue);
-    }
-#endif
-
     return flag;
 }
 #else
@@ -1016,8 +777,8 @@ BOOLEAN Test_CAL_MaxtixMov()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixMov2()
 {
-    UINT8 i,j;
-    BOOLEAN flag = 0;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag = 0;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest: Matrix mov2");
@@ -1055,7 +816,7 @@ BOOLEAN Test_CAL_MaxtixMov2()
             if (*(T_tempbuf2 + i*TX_LOCAL_NUM + j) != *(T_tempOut + i*TX_LOCAL_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->%04x,%04x",*(T_tempbuf2 + i*TX_LOCAL_NUM + j),*(T_tempOut + i*TX_LOCAL_NUM + j));
+                DBG_ERROR("\n\rError->%04x,%04x",*(T_tempbuf2 + i*TX_LOCAL_NUM + j),*(T_tempOut + i*TX_LOCAL_NUM + j));
             }
             else
             {
@@ -1072,6 +833,7 @@ BOOLEAN Test_CAL_MaxtixMov2()
         DBG_CAL("\nCal MOV2 test is OK!");
     }
 
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     for (i = 0; i < TX_ARAM_NUM; i++)
     {
@@ -1108,7 +870,7 @@ BOOLEAN Test_CAL_MaxtixMov2()
             if (*(T_tempbuf2 + i*TX_ARAM_NUM + j) != *(T_tempOut + i*TX_ARAM_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->%04x,%04x",*(T_tempbuf2 + i*TX_ARAM_NUM + j),*(T_tempOut + i*TX_ARAM_NUM + j));
+                DBG_ERROR("\n\rError->%04x,%04x",*(T_tempbuf2 + i*TX_ARAM_NUM + j),*(T_tempOut + i*TX_ARAM_NUM + j));
             }
             else
             {
@@ -1125,7 +887,7 @@ BOOLEAN Test_CAL_MaxtixMov2()
     {
         DBG_CAL("\nCal MOV2 test is OK!");
     }
-
+#endif
 #if 1                                           // lww
     DBG_CAL("\n\rMem to Aram");
     CalParam.usSrc1Addr = CAL_TEST_A1;          // CAL_TEST_A0;
@@ -1144,7 +906,7 @@ BOOLEAN Test_CAL_MaxtixMov2()
             if (g_pAfeAram[i*RX_ARAM_NUM + j] != *(T_tempbuf2 + i*RX_ARAM_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
+                DBG_ERROR("\n\rError->%04x,%04x",*(g_pAfeAram + i*RX_ARAM_NUM + j),*(T_tempbuf2 + i*RX_ARAM_NUM + j));
             }
             else
             {
@@ -1182,10 +944,10 @@ BOOLEAN Test_CAL_MaxtixMov2()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixMul_PtoP1()
 {
-    UINT8 i,j;
-    UINT8 ucShift;
-    SINT16 tmp;
-    BOOLEAN flag;
+    UINT8 XRAM i,j;
+    UINT8 XRAM ucShift;
+    SINT16 XRAM tmp;
+    BOOLEAN XRAM flag;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest: Matrix MUL2_1");
@@ -1237,7 +999,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP1()
                 }
                 if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)tmp )
                 {
-                    DBG_ERROR("\n\rERROR->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
+                    DBG_ERROR("\n\rError->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
                     flag = 1;
                 }
                 else
@@ -1295,7 +1057,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP1()
                 }
                 if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)tmp )
                 {
-                    DBG_ERROR("\n\rERROR->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
+                    DBG_ERROR("\n\rError->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
                     flag = 1;
                 }
                 else
@@ -1314,6 +1076,9 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP1()
         }
     }
 #endif
+
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
        DBG_CAL("\naram-mem");
     
@@ -1363,7 +1128,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP1()
                     }
                     if (*(T_tempOut + i*RX_ARAM_NUM + j) != (SINT16)tmp )
                     {
-                        DBG_ERROR("\n\rERROR->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)tmp,i,j);
+                        DBG_ERROR("\n\rError->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)tmp,i,j);
                         flag = 1;
                     }
                     else
@@ -1420,7 +1185,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP1()
                     }
                     if (*(T_tempOut + i*RX_ARAM_NUM + j) != (SINT16)tmp )
                     {
-                        DBG_ERROR("\n\rERROR->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)tmp,i,j);
+                        DBG_ERROR("\n\rError->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)tmp,i,j);
                         flag = 1;
                     }
                     else
@@ -1440,7 +1205,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP1()
         }
 #endif
 
-
+#endif
 
     return flag;
 }
@@ -1461,10 +1226,10 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP1()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixMul_PtoP2()
 {
-    UINT8 i,j;
-    UINT8 ucShift;
-    SINT16 tmp;
-    BOOLEAN flag;
+    UINT8 XRAM i,j;
+    UINT8 XRAM ucShift;
+    SINT16 XRAM tmp;
+    BOOLEAN XRAM flag;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\n\rTest: Matrix MUL2");
@@ -1509,7 +1274,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP2()
                 }
                 if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)tmp )
                 {
-                    DBG_ERROR("\n\rERROR->%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),tmp);
+                    DBG_ERROR("\n\rError->%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),tmp);
                     flag = 1;
                 }
                 else
@@ -1528,6 +1293,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP2()
         }     
     }
 
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\n aram-men");
     for (i=0; i<TX_ARAM_NUM; i++)
@@ -1569,7 +1335,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP2()
                 }
                 if (*(T_tempOut + i*RX_ARAM_NUM + j) != (SINT16)tmp )
                 {
-                    DBG_ERROR("\n\rERROR->%04x,%04x",*(T_tempOut + i*RX_ARAM_NUM + j),tmp);
+                    DBG_ERROR("\n\rError->%04x,%04x",*(T_tempOut + i*RX_ARAM_NUM + j),tmp);
                     flag = 1;
                 }
                 else
@@ -1588,6 +1354,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP2()
         }     
     }
     
+#endif    
     return flag;
 }
 #else
@@ -1605,10 +1372,10 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP2()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixCom_1()
 {
-    UINT8 i,j;
-    BOOLEAN flag;
-    UINT8 step = 50;
-    UINT8 Threshlod = 100;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag;
+    UINT8 XRAM step = 50;
+    UINT8 XRAM Threshlod = 100;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest: Matrix Compensation_1");
@@ -1653,7 +1420,7 @@ BOOLEAN Test_CAL_MaxtixCom_1()
                     if (*(T_tempOut + i*RX_LOCAL_NUM + j) != *(T_tempbuf2 + i*RX_LOCAL_NUM + j) + step )
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR->out=%04x,base=%04x,step=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j),step);
+                        DBG_ERROR("\n\rError->out=%04x,base=%04x,step=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j),step);
                     }
                     else
                     {
@@ -1665,7 +1432,7 @@ BOOLEAN Test_CAL_MaxtixCom_1()
                     if (*(T_tempOut + i*RX_LOCAL_NUM + j) != *(T_tempbuf2 + i*RX_LOCAL_NUM + j) - step )
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR->out=%04x,base=%04x,step=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j),step);
+                        DBG_ERROR("\n\rError->out=%04x,base=%04x,step=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j),step);
                     }
                     else
                     {
@@ -1677,7 +1444,7 @@ BOOLEAN Test_CAL_MaxtixCom_1()
                     if (*(T_tempOut + i*RX_LOCAL_NUM + j) != *(T_tempbuf2 + i*RX_LOCAL_NUM + j))
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR->out=%04x,base=%04x,step=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j),step);
+                        DBG_ERROR("\n\rError->out=%04x,base=%04x,step=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf2 + i*RX_LOCAL_NUM + j),step);
                     }
                     else
                     {
@@ -1714,11 +1481,11 @@ BOOLEAN Test_CAL_MaxtixCom_1()
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixCom_2()
 {
-    UINT8 i,j;
-    BOOLEAN flag;
-    UINT8 mode;
-    UINT8 step = 50;
-    UINT8 Threshlod = 100;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag;
+    UINT8 XRAM mode;
+    UINT8 XRAM step = 50;
+    UINT8 XRAM Threshlod = 100;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest Matrix Compensation_2 TX");
@@ -1763,7 +1530,7 @@ BOOLEAN Test_CAL_MaxtixCom_2()
                     if (*(T_tempOut + i*RX_LOCAL_NUM + j) != *(T_tempbuf1 + i*RX_LOCAL_NUM + j) - (T_tempbuf2[i]))
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR>->out=%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1+ i*RX_LOCAL_NUM + j) - T_tempbuf2[i],i);
+                        DBG_ERROR("\n\rError>->out=%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1+ i*RX_LOCAL_NUM + j) - T_tempbuf2[i],i);
                     }
                 }
                 else if (*(T_tempbuf1 + i*RX_LOCAL_NUM + j) < -Threshlod)
@@ -1771,7 +1538,7 @@ BOOLEAN Test_CAL_MaxtixCom_2()
                     if (*(T_tempOut + i*RX_LOCAL_NUM + j) != *(T_tempbuf1 + i*RX_LOCAL_NUM + j) + T_tempbuf2[i])
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR<->out=%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1+ i*RX_LOCAL_NUM + j) - T_tempbuf2[i],i);
+                        DBG_ERROR("\n\rError<->out=%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1+ i*RX_LOCAL_NUM + j) - T_tempbuf2[i],i);
                     }
                     else
                     {
@@ -1784,7 +1551,7 @@ BOOLEAN Test_CAL_MaxtixCom_2()
                     if (*(T_tempOut + i*RX_LOCAL_NUM + j) != *(T_tempbuf1 + i*RX_LOCAL_NUM + j))
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR=->out=%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1+ i*RX_LOCAL_NUM + j) - T_tempbuf2[i],i);
+                        DBG_ERROR("\n\rError=->out=%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1+ i*RX_LOCAL_NUM + j) - T_tempbuf2[i],i);
                     }
                     else
                     {
@@ -1846,7 +1613,7 @@ BOOLEAN Test_CAL_MaxtixCom_2()
                     if (*(T_tempOut + j*RX_LOCAL_NUM + i) != *(T_tempbuf1 + j*RX_LOCAL_NUM + i) - T_tempbuf2[i])
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR->out=%04x,%04x,%04x",*(T_tempOut + j*RX_LOCAL_NUM + i),*(T_tempbuf1+ j*RX_LOCAL_NUM + i) - T_tempbuf2[i],i);
+                        DBG_ERROR("\n\rError->out=%04x,%04x,%04x",*(T_tempOut + j*RX_LOCAL_NUM + i),*(T_tempbuf1+ j*RX_LOCAL_NUM + i) - T_tempbuf2[i],i);
                     }
                     else
                     {
@@ -1858,7 +1625,7 @@ BOOLEAN Test_CAL_MaxtixCom_2()
                     if (*(T_tempOut + j*RX_LOCAL_NUM + i) != *(T_tempbuf1 + j*RX_LOCAL_NUM + i) + T_tempbuf2[i])
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR->out=%04x,%04x,%04x",*(T_tempOut + j*TX_LOCAL_NUM + i),*(T_tempbuf1+ j*TX_LOCAL_NUM + i) - T_tempbuf2[i],i);
+                        DBG_ERROR("\n\rError->out=%04x,%04x,%04x",*(T_tempOut + j*TX_LOCAL_NUM + i),*(T_tempbuf1+ j*TX_LOCAL_NUM + i) - T_tempbuf2[i],i);
                     }
                 }
                 else
@@ -1866,7 +1633,7 @@ BOOLEAN Test_CAL_MaxtixCom_2()
                     if (*(T_tempOut + j*RX_LOCAL_NUM + i) != *(T_tempbuf1 + j*RX_LOCAL_NUM + i))
                     {
                         flag = 1;
-                        DBG_ERROR("\n\rERROR->out=%04x,%04x,%04x",*(T_tempOut + j*RX_LOCAL_NUM + i),*(T_tempbuf1+ j*RX_LOCAL_NUM + i) - T_tempbuf2[i],i);
+                        DBG_ERROR("\n\rError->out=%04x,%04x,%04x",*(T_tempOut + j*RX_LOCAL_NUM + i),*(T_tempbuf1+ j*RX_LOCAL_NUM + i) - T_tempbuf2[i],i);
                     }
 
                 }
@@ -1899,12 +1666,12 @@ BOOLEAN Test_CAL_MaxtixCom_2()
  *******************************************************************************/
 BOOLEAN Test_CAL_LDS()
 {
-    UINT8 i,j;
-    UINT16 x0,x1,y0,y1;
-    BOOLEAN flag;
+    UINT8 XRAM i,j;
+    UINT16 XRAM x0,x1,y0,y1;
+    BOOLEAN XRAM flag;
 
-    UINT16 DisSoft;
-    UINT16 DisCal;
+    UINT16 XRAM DisSoft;
+    UINT16 XRAM DisCal;
 
     ST_CalMcMatrixParam XRAM CalParam;
 
@@ -1950,7 +1717,7 @@ BOOLEAN Test_CAL_LDS()
             if (DisSoft != DisCal)
             {
                 flag = 1;
-                DBG_ERROR("\nLDS error soft:%d,cal:%d",DisSoft,DisCal);
+                DBG_ERROR("\nLDS Error soft:%d,cal:%d",DisSoft,DisCal);
                 DBG_ERROR("\nx0=%d,x1=%d,y1=%d,y2=%d",x0,x1,y0,y1);
             }
         }
@@ -1958,7 +1725,7 @@ BOOLEAN Test_CAL_LDS()
 
     if(flag)
     {
-        DBG_CAL("\nLDS ERROR");        
+        DBG_CAL("\nLDS Error");        
     }
     else
     {
@@ -2062,12 +1829,12 @@ BOOLEAN Test_CAL_MDS()
     }
     return 0;
 #else
-    UINT8 i,j;
-    UINT16 x0,x1,y0,y1;
-    BOOLEAN flag;
+    UINT8 XRAM i,j;
+    UINT16 XRAM x0,x1,y0,y1;
+    BOOLEAN XRAM flag;
 
-    UINT16 DisSoft;
-    UINT16 DisCal;
+    UINT16 XRAM DisSoft;
+    UINT16 XRAM DisCal;
 
     ST_CalMcMatrixParam XRAM CalParam;
 
@@ -2116,7 +1883,7 @@ BOOLEAN Test_CAL_MDS()
             if (DisSoft != DisCal)
             {
                 flag = 1;
-                DBG_ERROR("\n\rMDS ERROR->out:%04x,soft=%04x",DisCal,DisSoft);
+                DBG_ERROR("\n\rMDS Error->out:%04x,soft=%04x",DisCal,DisSoft);
                 return 1;
             } 
             else
@@ -2147,13 +1914,13 @@ BOOLEAN Test_CAL_MDS()
  *******************************************************************************/
 BOOLEAN Test_CAL_CHK()
 {
-    BOOLEAN flag = 0;
-    UINT8 i,j;
-    UINT16 check;
+    BOOLEAN XRAM flag = 0;
+    UINT8 XRAM i,j;
+    UINT16 XRAM check;
 
-    UINT16 max;
-    UINT16 min;
-    UINT16 max_all;
+    UINT16 XRAM max;
+    UINT16 XRAM min;
+    UINT16 XRAM max_all;
     UINT16 XRAM RxMax[CAL_TEST_RX];
     DBG_CAL("\n");
     for (i=0; i<TX_LOCAL_NUM; i++)
@@ -2209,6 +1976,7 @@ BOOLEAN Test_CAL_CHK()
         DBG_CAL("\nOK!");
     }
 
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\naram");
 
@@ -2261,6 +2029,7 @@ BOOLEAN Test_CAL_CHK()
      {
          DBG_CAL("\nOK!");
      }
+#endif
 
     return flag;
 }
@@ -2280,8 +2049,8 @@ BOOLEAN Test_CAL_CHK()
  *******************************************************************************/
 UINT16 GetCrc16(UINT32 addr,UINT16 length,UINT8 bPram)
 {
-    UINT16 cFcs = 0;
-    UINT32 i, j;
+    UINT16 XRAM cFcs = 0;
+    UINT32 XRAM i, j;
  
     for ( i = 0; i < length; i++ )
     {
@@ -2334,10 +2103,10 @@ UINT16 GetCrc16(UINT32 addr,UINT16 length,UINT8 bPram)
  *******************************************************************************/
 BOOLEAN Test_CAL_CRC()
 {
-    BOOLEAN flag = 0;
+    BOOLEAN XRAM flag = 0;
 
-    UINT16 ResultCal;
-    UINT16 ResultSoft;
+    UINT16 XRAM ResultCal;
+    UINT16 XRAM ResultSoft;
 
     DBG_CAL("\n\nTest: CRC");
 
@@ -2437,8 +2206,8 @@ BOOLEAN Test_CAL_CRC()
  *******************************************************************************/
 UINT16 GetXorSum(UINT32 addr,UINT16 length,UINT8 bPram)
 {
-    UINT16 cFcs = 0;
-    UINT32 i,j;
+    UINT16 XRAM cFcs = 0;
+    UINT32 XRAM i,j;
     for ( i = 0; i < length; i++ )
      {
          if ((bPram == CRC_SRC_FF_ZONE)||(bPram == CRC_SRC_FE_ZONE))
@@ -2481,10 +2250,10 @@ UINT16 GetXorSum(UINT32 addr,UINT16 length,UINT8 bPram)
  *******************************************************************************/
 BOOLEAN Test_CAL_XORSUM()
 {
-    UINT8 i,j;
-    BOOLEAN flag = 0;
-    UINT16 ResultCal;
-    UINT16 ResultSoft;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag = 0;
+    UINT16 XRAM ResultCal;
+    UINT16 XRAM ResultSoft;
 
     DBG_CAL("\n\nTest: XORSUM");
 
@@ -2578,10 +2347,10 @@ BOOLEAN Test_CAL_XORSUM()
 
 void Test_CAL_MAC_1()
 {
-    UINT8 i,j;
-    SINT32 ulSum_c  = 0;
-    SINT32 ulSum_tx = 0;
-    SINT32 ulSum_rx = 0;
+    UINT8 XRAM i,j;
+    SINT32 XRAM ulSum_c  = 0;
+    SINT32 XRAM ulSum_tx = 0;
+    SINT32 XRAM ulSum_rx = 0;
     ST_CalMcMacParam XRAM CalParam;
 
     DBG_CAL("\n\nCal Mac test start\n");
@@ -2674,10 +2443,10 @@ void Test_CAL_MAC_1()
  *******************************************************************************/
 void Test_CAL_MAC_2()
 {
-    UINT8 i,j;
-    SINT32 ulSum_c  = 0;
-    SINT32 ulSum_tx = 0;
-    SINT32 ulSum_rx = 0;
+    UINT8 XRAM i,j;
+    SINT32 XRAM ulSum_c  = 0;
+    SINT32 XRAM ulSum_tx = 0;
+    SINT32 XRAM ulSum_rx = 0;
     ST_CalMcMacParam XRAM CalParam;
 
     DBG_CAL("\n\nCal Mac test start\n");
@@ -2766,10 +2535,10 @@ void Test_CAL_MAC_2()
  *******************************************************************************/
 void Test_CAL_ID()
 {
-    UINT8 i;
-    UINT8 ucLastNum = 4;
-    UINT8 ucCurrNum = 8;
-    UINT8 ucMaxNum  = 10;
+    UINT8 XRAM i;
+    UINT8 XRAM ucLastNum = 4;
+    UINT8 XRAM ucCurrNum = 8;
+    UINT8 XRAM ucMaxNum  = 10;
     ST_CalKmIdParam XRAM stKmIDp;
 
     DBG_CAL("\n\nCal ID test start");
@@ -2872,11 +2641,11 @@ void Test_CAL_ID()
  *******************************************************************************/
 void Test_CAL_SearchPeak()
 {
-    UINT8 i,j;
-    UINT8 ucPeakValidGroup;
-    UINT8 ucPeakValidPos;
+    UINT8 XRAM i,j;
+    UINT8 XRAM ucPeakValidGroup;
+    UINT8 XRAM ucPeakValidPos;
     UINT16 XRAM ausNegPeaks[MAX_PEAK + 1];
-    UINT16 *pNegPeakBuf;
+    UINT16 XRAM *pNegPeakBuf;
     ST_CalMcPeakDetectParam XRAM stMcPDP;
     ST_CalMcPeakInfo XRAM stMcPI;
     ST_PeakData  XRAM  g_stPeakData;
@@ -2992,9 +2761,9 @@ void Test_CAL_SearchPeak()
  *******************************************************************************/
 void Test_CAL_AMov(void)
 {
-    UINT8 i,j;
-    BOOLEAN flag;
-    ST_CalMatrixAMov CalParam;
+    UINT8 XRAM i,j;
+    BOOLEAN XRAM flag;
+    ST_CalMatrixAMov XRAM CalParam;
   
 
     DBG_CAL("\n\nTest CAL Amov");
@@ -3037,7 +2806,7 @@ void Test_CAL_AMov(void)
             if (*(T_tempOut + i*RX_LOCAL_NUM + j) != *(T_tempbuf1 + i*RX_LOCAL_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->out=%04x,vl=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
+                DBG_ERROR("\n\rError->out=%04x,vl=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(T_tempbuf1 + i*RX_LOCAL_NUM + j));
             }
             else
             {
@@ -3048,7 +2817,7 @@ void Test_CAL_AMov(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rAmov Mem to Mem ERROR");
+        DBG_CAL("\n\rAmov Mem to Mem Error");
     }
     else
     {
@@ -3073,7 +2842,7 @@ void Test_CAL_AMov(void)
             if (*(T_tempOut + i*RX_ARAM_NUM + j) != *(g_pAfeAram + i*RX_ARAM_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->out=%04x,vl=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(g_pAfeAram + i*RX_LOCAL_NUM + j));
+                DBG_ERROR("\n\rError->out=%04x,vl=%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),*(g_pAfeAram + i*RX_LOCAL_NUM + j));
             }
             else
             {
@@ -3084,7 +2853,7 @@ void Test_CAL_AMov(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rAmov Aram to Mem ERROR");
+        DBG_CAL("\n\rAmov Aram to Mem Error");
     }
     else
     {
@@ -3105,11 +2874,11 @@ void Test_CAL_AMov(void)
  *******************************************************************************/
 void Test_CAL_AVG_TX(void)
 {
-    UINT8 usAvgMode;
-    UINT8 i,j;
-    UINT8 flag;
-    SINT32 slSumDiff = 0;
-    SINT16 ssAvgBuf[CAL_TEST_TX];
+    UINT8 XRAM usAvgMode;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT32 XRAM slSumDiff = 0;
+    SINT16 XRAM ssAvgBuf[CAL_TEST_TX];
 
     ST_CalMcMatrixParam CalParam;
 
@@ -3171,7 +2940,7 @@ void Test_CAL_AVG_TX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3182,7 +2951,7 @@ void Test_CAL_AVG_TX(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ORG AVG Tx is ERROR!");
+        DBG_CAL("\n\rTest CAL ORG AVG Tx is Error!");
     }
     else
     {
@@ -3236,7 +3005,7 @@ void Test_CAL_AVG_TX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_CAL_DATA("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_CAL_DATA("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3247,7 +3016,7 @@ void Test_CAL_AVG_TX(void)
 
     if (flag)
     {
-        DBG_ERROR("\n\rTest CAL ABS AVG Tx is ERROR!");
+        DBG_ERROR("\n\rTest CAL ABS AVG Tx is Error!");
     }
     else
     {
@@ -3270,13 +3039,13 @@ void Test_CAL_AVG_TX(void)
  *******************************************************************************/
 void Test_CAL_AVG_RX(void)
 {
-    UINT8 usAvgMode;
-    UINT8 i,j;
-    UINT8 flag;
-    SINT32 slSumDiff = 0;
-    SINT16 ssAvgBuf[CAL_TEST_RX];
+    UINT8 XRAM usAvgMode;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT32 XRAM slSumDiff = 0;
+    SINT16 XRAM ssAvgBuf[CAL_TEST_RX];
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nCAL ORG AVG Rx Test");
     //DBG_CAL("\n");    
@@ -3340,7 +3109,7 @@ void Test_CAL_AVG_RX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3351,7 +3120,7 @@ void Test_CAL_AVG_RX(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ORG AVG Rx is ERROR!");
+        DBG_CAL("\n\rTest CAL ORG AVG Rx is Error!");
     }
     else
     {
@@ -3405,7 +3174,7 @@ void Test_CAL_AVG_RX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_CAL_DATA("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_CAL_DATA("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3416,7 +3185,7 @@ void Test_CAL_AVG_RX(void)
 
     if (flag)
     {
-        DBG_ERROR("\n\rTest CAL ABS AVG Rx is ERROR!");
+        DBG_ERROR("\n\rTest CAL ABS AVG Rx is Error!");
     }
     else
     {
@@ -3601,14 +3370,14 @@ void Test_CAL_AVG_RX(void)
  *******************************************************************************/
 void Test_CAL_AVG2_TX(void)
 {
-    UINT8 usAvgMode;
-    UINT8 i,j;
-    UINT8 flag;
-    UINT8 removalData;
-    SINT32 slSumDiff = 0;
-    SINT16 ssAvgBuf[CAL_TEST_TX];
+    UINT8 XRAM usAvgMode;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    UINT8 XRAM removalData;
+    SINT32 XRAM slSumDiff = 0;
+    SINT16 XRAM ssAvgBuf[CAL_TEST_TX];
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nCAL ORG AVG2 Tx Test");
     for (i=0; i<TX_LOCAL_NUM; i++)
@@ -3670,7 +3439,7 @@ void Test_CAL_AVG2_TX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3681,7 +3450,7 @@ void Test_CAL_AVG2_TX(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ORG AVG2 Tx is ERROR!");
+        DBG_CAL("\n\rTest CAL ORG AVG2 Tx is Error!");
     }
     else
     {
@@ -3739,7 +3508,7 @@ void Test_CAL_AVG2_TX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3750,7 +3519,7 @@ void Test_CAL_AVG2_TX(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ABS AVG2 Tx is ERROR!");
+        DBG_CAL("\n\rTest CAL ABS AVG2 Tx is Error!");
     }
     else
     {
@@ -3771,14 +3540,14 @@ void Test_CAL_AVG2_TX(void)
  *******************************************************************************/
 void Test_CAL_AVG2_RX(void)
 {
-    UINT8 usAvgMode;
-    UINT8 i,j;
-    UINT8 flag;
-    UINT8 removalData;
-    SINT32 slSumDiff = 0;
-    SINT16 ssAvgBuf[CAL_TEST_RX];
+    UINT8 XRAM usAvgMode;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    UINT8 XRAM removalData;
+    SINT32 XRAM slSumDiff = 0;
+    SINT16 XRAM ssAvgBuf[CAL_TEST_RX];
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nCAL ORG AVG2 Rx Test");
     for (i=0; i<TX_LOCAL_NUM; i++)
@@ -3840,7 +3609,7 @@ void Test_CAL_AVG2_RX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3851,7 +3620,7 @@ void Test_CAL_AVG2_RX(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ORG AVG2 Rx is ERROR!");
+        DBG_CAL("\n\rTest CAL ORG AVG2 Rx is Error!");
     }
     else
     {
@@ -3915,7 +3684,7 @@ void Test_CAL_AVG2_RX(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -3926,7 +3695,7 @@ void Test_CAL_AVG2_RX(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ABS AVG2 Rx is ERROR!");
+        DBG_CAL("\n\rTest CAL ABS AVG2 Rx is Error!");
     }
     else
     {
@@ -3947,15 +3716,18 @@ void Test_CAL_AVG2_RX(void)
  *******************************************************************************/
 void Test_CAL_AVG_ARAM(void)
 {
-    UINT8 usAvgMode;
-    UINT8 i,j;
-    UINT8 flag;
-    UINT8 removalData;    
-    SINT32 slSumDiff = 0;
-    SINT16 ssAvgBuf[40];
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
+
+    UINT8 XRAM usAvgMode;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    UINT8 XRAM removalData;    
+    SINT32 XRAM slSumDiff = 0;
+    SINT16 XRAM ssAvgBuf[40];
 
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nCAL ORG AVG Rx Aram Test");
  
@@ -4017,7 +3789,7 @@ void Test_CAL_AVG_ARAM(void)
     {
         if (*(UINT16 *)(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(UINT16 *)(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(UINT16 *)(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -4028,7 +3800,7 @@ void Test_CAL_AVG_ARAM(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ORG AVG Rx Aram is ERROR!");
+        DBG_CAL("\n\rTest CAL ORG AVG Rx Aram is Error!");
     }
     else
     {
@@ -4095,7 +3867,7 @@ void Test_CAL_AVG_ARAM(void)
     {
         if (*(T_tempOut + i) != ssAvgBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,soft:%04x",i,*(T_tempOut + i),ssAvgBuf[i]);
             flag = 1;
         }
         else
@@ -4106,14 +3878,14 @@ void Test_CAL_AVG_ARAM(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rTest CAL ORG AVG2 Tx is ERROR!");
+        DBG_CAL("\n\rTest CAL ORG AVG2 Tx is Error!");
     }
     else
     {
         DBG_CAL("\n\rTest CAL ORG AVG2 Tx is OK!");
     }
 
-    
+#endif    
 }
 #else
 #define Test_CAL_AVG_ARAM() /##/
@@ -4129,12 +3901,12 @@ void Test_CAL_AVG_ARAM(void)
  *******************************************************************************/
 void Test_CAL_MIN_TX(void)
 {
-    UINT8 i,j;
-    UINT8 flag;
-    SINT16 slTemp;
-    SINT16 ssMinBuf[CAL_TEST_TX];
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT16 XRAM slTemp;
+    SINT16 XRAM ssMinBuf[CAL_TEST_TX];
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nCAL ORG MIN Tx Test");
 
@@ -4175,7 +3947,7 @@ void Test_CAL_MIN_TX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4229,7 +4001,7 @@ void Test_CAL_MIN_TX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4245,6 +4017,8 @@ void Test_CAL_MIN_TX(void)
     {
         DBG_CAL("\n\rTest CAL ABS Min Tx is OK!");
     }
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\naram");
     for (i=0; i<TX_ARAM_NUM; i++)
@@ -4283,7 +4057,7 @@ void Test_CAL_MIN_TX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4339,7 +4113,7 @@ void Test_CAL_MIN_TX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4354,7 +4128,9 @@ void Test_CAL_MIN_TX(void)
     else
     {
         DBG_CAL("\n\rTest CAL ABS Min Tx is OK!");
-    }    
+    } 
+#endif
+    
 }
 #else
 #define Test_CAL_MIN_TX()   /##/
@@ -4370,12 +4146,12 @@ void Test_CAL_MIN_TX(void)
  *******************************************************************************/
 void Test_CAL_MIN_RX(void)
 {
-    UINT8 i,j;
-    UINT8 flag;
-    SINT32 slTemp;
-    SINT16 ssMinBuf[CAL_TEST_RX];
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT32 XRAM slTemp;
+    SINT16 XRAM ssMinBuf[CAL_TEST_RX];
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     
     DBG_CAL("\n\nCAL ORG MIN Rx Test");
@@ -4417,7 +4193,7 @@ void Test_CAL_MIN_RX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4471,7 +4247,7 @@ void Test_CAL_MIN_RX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4487,6 +4263,9 @@ void Test_CAL_MIN_RX(void)
     {
         DBG_CAL("\n\rTest CAL ABS Min Rx is OK!");
     }
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
+
 
    DBG_CAL("\naram");
     for (i=0; i<TX_ARAM_NUM; i++)
@@ -4525,7 +4304,7 @@ void Test_CAL_MIN_RX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4579,7 +4358,7 @@ void Test_CAL_MIN_RX(void)
     {
         if (*(T_tempOut + i) != ssMinBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMinBuf[i]);
             flag = 1;
         }
         else
@@ -4594,7 +4373,9 @@ void Test_CAL_MIN_RX(void)
     else
     {
         DBG_CAL("\n\rTest CAL ABS Min Rx is OK!");
-    }    
+    }
+#endif
+    
 }
 #else
 #define Test_CAL_MIN_RX()   /##/
@@ -4611,12 +4392,12 @@ void Test_CAL_MIN_RX(void)
  *******************************************************************************/
 void Test_CAL_MAX_TX(void)
 {
-    UINT8 i,j;
-    UINT8 flag;
-    SINT32 slTemp;
-    SINT16 ssMaxBuf[CAL_TEST_TX];
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT32 XRAM slTemp;
+    SINT16 XRAM ssMaxBuf[CAL_TEST_TX];
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nCAL ORG Max Tx Test");
 
@@ -4657,7 +4438,7 @@ void Test_CAL_MAX_TX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -4712,7 +4493,7 @@ void Test_CAL_MAX_TX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -4728,6 +4509,9 @@ void Test_CAL_MAX_TX(void)
     {
         DBG_CAL("\n\rTest CAL ABS Max Tx is OK!");
     }
+
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\naram");
     for (i=0; i<TX_ARAM_NUM; i++)
@@ -4766,7 +4550,7 @@ void Test_CAL_MAX_TX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -4820,7 +4604,7 @@ void Test_CAL_MAX_TX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -4835,7 +4619,9 @@ void Test_CAL_MAX_TX(void)
     else
     {
         DBG_CAL("\n\rTest CAL ABS Max Tx is OK!");
-    }    
+    } 
+#endif
+    
 }
 #else
 #define Test_CAL_MAX_TX()   /##/
@@ -4851,12 +4637,12 @@ void Test_CAL_MAX_TX(void)
 *******************************************************************************/
 void Test_CAL_MAX_RX(void)
 {
-    UINT8 i,j;
-    UINT8 flag;
-    SINT32 slTemp;
-    SINT16 ssMaxBuf[CAL_TEST_RX];
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT32 XRAM slTemp;
+    SINT16 XRAM ssMaxBuf[CAL_TEST_RX];
 
-    ST_CalMcMatrixParam CalParam;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nCAL ORG Max Rx Test");
     for (i=0; i<TX_LOCAL_NUM; i++)
@@ -4895,7 +4681,7 @@ void Test_CAL_MAX_RX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -4949,7 +4735,7 @@ void Test_CAL_MAX_RX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\rERROR->Cal:%04x,Soft%04x",*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\rError->Cal:%04x,Soft%04x",*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -4966,6 +4752,7 @@ void Test_CAL_MAX_RX(void)
         DBG_CAL("\n\rTest CAL ABS Max Rx is OK!");
     }
 
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
    DBG_CAL("\naram");
     for (i=0; i<TX_ARAM_NUM; i++)
@@ -5004,7 +4791,7 @@ void Test_CAL_MAX_RX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -5058,7 +4845,7 @@ void Test_CAL_MAX_RX(void)
     {
         if (*(T_tempOut + i) != ssMaxBuf[i])
         {
-            DBG_ERROR("\n\r%02dERROR->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMaxBuf[i]);
+            DBG_ERROR("\n\r%02dError->Cal:%04x,Soft:%04x",i,*(T_tempOut + i),ssMaxBuf[i]);
             flag = 1;
         }
         else
@@ -5073,7 +4860,9 @@ void Test_CAL_MAX_RX(void)
     else
     {
         DBG_CAL("\n\rTest CAL ABS Max Rx is OK!");
-    }      
+    } 
+#endif
+    
 }
 #else
 #define Test_CAL_MAX_RX()   /##/
@@ -5089,13 +4878,13 @@ void Test_CAL_MAX_RX(void)
 *******************************************************************************/
 void Test_CAL_Count(void)
 {
-    UINT8 i,j;
-    UINT8 flag;
-    SINT16 CountMax;
-    SINT16 CountMin;
-    UINT16 CalCountNum = 0;
-    UINT16 SofCountNum = 0;
-    ST_CalMcMatrixParam CalParam;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT16 XRAM CountMax;
+    SINT16 XRAM CountMin;
+    UINT16 XRAM CalCountNum = 0;
+    UINT16 XRAM SofCountNum = 0;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest Cal Count");
     
@@ -5139,12 +4928,14 @@ void Test_CAL_Count(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rCal Test CAL Count is ERROR!");
+        DBG_CAL("\n\rCal Test CAL Count is Error!");
     }
     else
     {
         DBG_CAL("\n\rCal Test CAL Count is OK!");
     }
+
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\naram");
     for (i=0; i<TX_ARAM_NUM; i++)
@@ -5187,12 +4978,14 @@ void Test_CAL_Count(void)
 
     if (flag)
     {
-        DBG_CAL("\n\rCal Test CAL Count is ERROR!");
+        DBG_CAL("\n\rCal Test CAL Count is Error!");
     }
     else
     {
         DBG_CAL("\n\rCal Test CAL Count is OK!");
-    }    
+    } 
+
+#endif    
 }
 #else
 #define Test_CAL_Count()   /##/
@@ -5208,10 +5001,10 @@ void Test_CAL_Count(void)
 *******************************************************************************/
 void Test_CAL_SubConst(void)
 {
-    UINT8 i,j;
-    UINT8 flag;
-    SINT32 temp;
-    ST_CalMcMatrixParam CalParam;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT32 XRAM temp;
+    ST_CalMcMatrixParam XRAM CalParam;
 
 
     DBG_CAL("\n\nmem");
@@ -5257,7 +5050,7 @@ void Test_CAL_SubConst(void)
             }
             if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (UINT16)temp)
             {
-                DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
+                DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
                 flag = 1;
             }
             else
@@ -5269,7 +5062,7 @@ void Test_CAL_SubConst(void)
     
     if (flag)
     {
-        DBG_CAL("\n\rCal Test SubConst Tx is ERROR!");
+        DBG_CAL("\n\rCal Test SubConst Tx is Error!");
     }
     else
     {
@@ -5308,7 +5101,7 @@ void Test_CAL_SubConst(void)
             }
             if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)temp)
             {
-                DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
+                DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)temp);
                 flag = 1;
             }
             else
@@ -5320,13 +5113,14 @@ void Test_CAL_SubConst(void)
     
     if (flag)
     {
-        DBG_CAL("\n\rCal Test SubConst Rx is ERROR!");
+        DBG_CAL("\n\rCal Test SubConst Rx is Error!");
     }
     else
     {
         DBG_CAL("\n\rCal Test SubConst Rx is OK!");
     }
 
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\naram");
     DBG_CAL("\nTest CAL SubConst Tx");
@@ -5370,7 +5164,7 @@ void Test_CAL_SubConst(void)
             }
             if (*(T_tempOut + i*RX_ARAM_NUM + j) != (SINT16)temp)
             {
-                DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
+                DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
                 flag = 1;
             }
             else
@@ -5382,7 +5176,7 @@ void Test_CAL_SubConst(void)
     
     if (flag)
     {
-        DBG_CAL("\n\rCal Test SubConst Tx is ERROR!");
+        DBG_CAL("\n\rCal Test SubConst Tx is Error!");
     }
     else
     {
@@ -5421,7 +5215,7 @@ void Test_CAL_SubConst(void)
             }
             if (*(T_tempOut + i*RX_ARAM_NUM + j) != (SINT16)temp)
             {
-                DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
+                DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_ARAM_NUM + j),(SINT16)temp);
                 flag = 1;
             }
             else
@@ -5433,12 +5227,14 @@ void Test_CAL_SubConst(void)
     
     if (flag)
     {
-        DBG_CAL("\n\rCal Test SubConst Rx is ERROR!");
+        DBG_CAL("\n\rCal Test SubConst Rx is Error!");
     }
     else
     {
         DBG_CAL("\n\rCal Test SubConst Rx is OK!");
-    }    
+    } 
+#endif
+    
 }
 #else
 #define Test_CAL_SubConst()   /##/
@@ -5456,10 +5252,10 @@ void Test_CAL_SubConst(void)
 *******************************************************************************/
 void Test_CAL_CMP(void)
 {
-    UINT8 i,j;
-    UINT8 flag;
-    SINT16 temp;
-    ST_CalMcMatrixParam CalParam;
+    UINT8 XRAM i,j;
+    UINT8 XRAM flag;
+    SINT16 XRAM temp;
+    ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest CAL CMP");
     DBG_CAL("\n mem-mem");
@@ -5514,7 +5310,7 @@ void Test_CAL_CMP(void)
             
             if (*(T_tempOut + i*RX_LOCAL_NUM + j) != temp)
             {
-                DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),temp);
+                DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),temp);
                 flag = 1;
             }
             else
@@ -5526,12 +5322,14 @@ void Test_CAL_CMP(void)
     
     if (flag)
     {
-        DBG_CAL("\n\rCal Test CMP is ERROR!");
+        DBG_CAL("\n\rCal Test CMP is Error!");
     }
     else
     {
         DBG_CAL("\n\rCal Test CMP is OK!");
     }
+    
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\nAram-mem");
 
@@ -5587,7 +5385,7 @@ void Test_CAL_CMP(void)
             if (*(T_tempOut + i*RX_ARAM_NUM + j) != temp)
             {
 
-                DBG_ERROR("\n\rERROR->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_ARAM_NUM + j),temp);
+                DBG_ERROR("\n\rError->Cal:%04x,Soft:%04x",*(T_tempOut + i*RX_ARAM_NUM + j),temp);
                 flag = 1;
             }
             else
@@ -5599,12 +5397,14 @@ void Test_CAL_CMP(void)
     
     if (flag)
     {
-        DBG_CAL("\n\rCal Test CMP is ERROR!");
+        DBG_CAL("\n\rCal Test CMP is Error!");
     }
     else
     {
         DBG_CAL("\n\rCal Test CMP is OK!");
-    }    
+    }
+
+#endif    
 }
 #else
 #define Test_CAL_CMP()  /##/
@@ -5623,10 +5423,10 @@ void Test_CAL_CMP(void)
  *******************************************************************************/
 BOOLEAN Test_CAL_MaxtixMul_PtoP3()
 {
-    UINT8 i,j;
-    UINT8 ucShift;
-    SINT32 tmp;
-    BOOLEAN flag;
+    UINT8 XRAM i,j;
+    UINT8 XRAM ucShift;
+    SINT32 XRAM tmp;
+    BOOLEAN XRAM flag;
     ST_CalMcMatrixParam XRAM CalParam;
 
     DBG_CAL("\n\nTest: Matrix MUL3");
@@ -5678,7 +5478,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP3()
                 }
                 if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)tmp )
                 {
-                    DBG_ERROR("\n\rERROR->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
+                    DBG_ERROR("\n\rError->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
                     flag = 1;
                 }
                 else
@@ -5697,6 +5497,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP3()
             DBG_CAL("\n\rCal MUL3  test %02d is OK!",ucShift);
         }
     }
+#if (TEST_AMOVE_RTC_INT_EN == 0) 
 
     DBG_CAL("\nmem-aram");
 
@@ -5729,7 +5530,7 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP3()
                 }
                 if (*(T_tempOut + i*RX_LOCAL_NUM + j) != (SINT16)tmp )
                 {
-                    DBG_ERROR("\n\rERROR->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
+                    DBG_ERROR("\n\rError->%04x,%04x,%04x,%04x",*(T_tempOut + i*RX_LOCAL_NUM + j),(SINT16)tmp,i,j);
                     flag = 1;
                 }
                 else
@@ -5747,7 +5548,9 @@ BOOLEAN Test_CAL_MaxtixMul_PtoP3()
         {
             DBG_CAL("\n\rCal MUL3  test %02d is OK!",ucShift);
         }
-    }    
+    }   
+
+#endif    
     return flag;
 }
 #else
@@ -5777,7 +5580,7 @@ void DrvClearIICState(void)
     //I2CWK_STOP = 0;
 }
 
-
+UINT16 XRAM AmoveData[TX_ARAM_NUM][RX_ARAM_NUM] _at_(0x200) ;
 /*******************************************************************************
  *   Name: CalAmovAramToMem
  *  Brief:
@@ -5787,11 +5590,11 @@ void DrvClearIICState(void)
  *******************************************************************************/
 void CalAmovAramToMem(void)
 {
-    UINT8 i,j;
-    BOOLEAN flag;
-    ST_CalMatrixAMov CalParam;
+    UINT8 XRAM i,j;
+    static BOOLEAN XRAM flag = 0;
+    ST_CalMatrixAMov XRAM CalParam;
 
-    #if 0
+    #if 1
     for (i=0; i<TX_ARAM_NUM; i++)
     {
         for (j=0; j<RX_ARAM_NUM; j++)
@@ -5801,7 +5604,7 @@ void CalAmovAramToMem(void)
     }
     #endif
     CalParam.usSrc1Addr = ARAM_DATA_BASE_ADDR;
-    CalParam.usDstAddr  = CAL_TEST_A2;
+    CalParam.usDstAddr  = (UINT16)AmoveData;
     CalParam.ucS1TxLen  = CAL_ARAM_TX;
     CalParam.ucS1RxLen  = CAL_ARAM_RX;
     CalParam.usDmaMask  = 0x0000;
@@ -5809,15 +5612,14 @@ void CalAmovAramToMem(void)
     DrvCal_MatrixAMov(&CalParam);
 
     #if 1
-    flag = 0;
     for (i=0; i<CAL_ARAM_TX; i++)
     {
         for (j=0; j<CAL_ARAM_RX; j++)
         {
-            if (*(T_tempOut + i*RX_ARAM_NUM + j) != *(g_pAfeAram + i*RX_ARAM_NUM + j))
+            if ( AmoveData[i][j] != *(g_pAfeAram + i*RX_ARAM_NUM + j))
             {
                 flag = 1;
-                DBG_ERROR("\n\rERROR->out=%04x,vl=%04x",*(T_tempOut + i*RX_ARAM_NUM + j),*(g_pAfeAram + i*RX_ARAM_NUM + j));
+                //DBG_ERROR("\n\rERROR->out=%04x,vl=%04x",ucData[i][j],*(g_pAfeAram + i*RX_ARAM_NUM + j));
             }
             else
             {
@@ -5828,45 +5630,75 @@ void CalAmovAramToMem(void)
 
     if (flag)
     {
-        DBG_CAL("\nInt Amov Aram to Mem ERROR");
+        DBG_CAL("\nAmov Error");
     }
     else
     {
-        DBG_CAL("\nInt Amov Aram to Mem OK");
+        //DBG_CAL("\nAmov OK");
     }  
     #endif
 }
 
-
+#if TEST_AMOVE_RTC_INT_EN
 /*******************************************************************************
- *   Name: Test_CAL
+ *   Name: RtcInit
  *  Brief:
  *  Input:
  * Output:
  * Return:
  *******************************************************************************/
-void Test_CAL(void)
+void RtcInit(void)
 {
-    BOOLEAN flag = TRUE;
+    UINT8 XRAM ucMs = 30;
+    // 32K时钟使能
+    CLK_WP = 1;
+    EN_32K = 1;
+    RTC_32K_EN = 1;
 
-    UINT16 CALMask =   0x00;//BITn(11);//0x00;//0xFFFF;//BITn(2); // RTC[1]  ok
-    UINT16 AmoveMask = 0x00;//BITn(11);//0x00;
-    UINT16 i;
+    // rtc clk enable
+    RTCCKEN = 1;
 
-	UINT8 XRAM ucData[16];
-    
-    DrvClearIICState();
+    // clear rtc
+    RTC_WP  = 1;
+    RTC_CLR = 1;
+
+    // 设置RTC计数时间
+    RTCIVH  = (32*ucMs)>>8;
+    RTCIVL  = 32*ucMs;
+
+    //Normal mode
+    RTC_AUTO_MODE = 0;
+    LCD_START_EN  = 0;
+
+    RTC_INT_EN_CPU = 1;
+
+    IT1   = 0;   
+    EX1   = 1;
+
+    IPLX1 = 0;
+    IPHX1 = 0;  //中断0优先级必须最高
+
+    RTC_WP = 1;
+    RTC_START = 1;
+}
+#endif
+
 
 #if TEST_SPI0_CAL_INT_EN
-
-	CALMask = BITn(11);
-	AmoveMask = BITn(11);
-	
+/*******************************************************************************
+ *   Name: Spi0Init
+ *  Brief:
+ *  Input:
+ * Output:
+ * Return:
+ *******************************************************************************/
+void Spi0Init(void)
+{
     SPI0CKEN = 1;
-    SPI0CON5 =0xff;               //clr spi0 all flag
-    SPI0CON2 =0x00;
-    SPI0CON3 =0;
-    SPI0CON4 =0X00;
+    SPI0CON5 = 0xff;               //clr spi0 all flag
+    SPI0CON2 = 0x00;
+    SPI0CON3 = 0;
+    SPI0CON4 = 0X00;
     /* IO配置: P05-->P02  MOSI MISO CLK CS */
     P0MOD |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
     P0SEL |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
@@ -5881,13 +5713,25 @@ void Test_CAL(void)
     SPI0TI_EN = 0;
 
     SPI0_IPH = 1;
-    SPI0_IPL = 1;
-    EA = 1; 
+    SPI0_IPL = 1;    
+}
+#endif
+
 
 #if TEST_SPI0_DMA_INT_EN
-
-
-    SPI0_32K_EN = 1;
+/*******************************************************************************
+ *   Name: Spi0DmaInit
+ *  Brief:
+ *  Input:
+ * Output:
+ * Return:
+ *******************************************************************************/
+void Spi0DmaInit(void)
+{
+    UINT8 XRAM ucData[16];
+    UINT8 XRAM i;
+    
+    SPI0_32K_EN = 1;	
     pSpi0_DmaRegs->dma_ctrl = 0;
     pSpi0_DmaRegs->timeout_ctrl = 0xffec;
     pSpi0_DmaRegs->addr_h = (1<<14) + (0<<8) + (0);    //[15:14] dma ram sel.0:aram;1:dram;2:pram. [9:8]ram起始地址[17:16]bit. [1:0] ram结束地址[1:0] 
@@ -5895,17 +5739,145 @@ void Test_CAL(void)
     pSpi0_DmaRegs->end_addr_l = (UINT16)(&ucData) + 0x0F;
     pSpi0_DmaRegs->dma_crc = 0xffff;	
     pSpi0_DmaRegs->dma_srcr = 0x000f;
-	
-	DBG_FLOW("\nStart_addr:%04x",pSpi0_DmaRegs->start_addr_l);
-	DBG_FLOW("\nEnd_addr:%04x",pSpi0_DmaRegs->end_addr_l);	
 
     for(i = 0; i < 0x10; i++)
     {
-        ucData[i] = 0x20+i;
-		*(UINT8 *)(ARAM_DATA_BASE_ADDR + i) = i;
-    }
-    
+        ucData[i] = 0x20 + i;
+        *(UINT8 *)(ARAM_DATA_BASE_ADDR + i) = i;
+    }    
+}
+
 #endif
+
+
+#if TEST_IIC_CAL_INT
+/*******************************************************************************
+ *   Name: I2cInit
+ *  Brief:
+ *  Input:
+ * Output:
+ * Return:
+ *******************************************************************************/
+void I2cInit(void)
+{
+    I2CCKEN = 1;
+
+    I2CBUF = 0;
+    I2CRI  = 0;
+    I2CTI  = 0;
+
+    /* 设置设备地址 */
+    I2CADDR = I2C_SLAVE_ADDR&0xFE;
+
+    ISP_STOP_EI = 1;        //Set to enable Additional Interrupt 0
+    I2C_STOP_IF = 0;
+
+    I2C_IPH = 1;
+    I2C_IPL = 1;
+    
+    I2C_STOP_IPH = 1;
+    I2C_STOP_IPL = 1;
+
+    Uart_IPH = 1;
+    Uart_IPL = 0;    
+
+    ET2 = 1;
+}
+
+/*******************************************************************************
+ *   Name: I2cInit
+ *  Brief:
+ *  Input:
+ * Output:
+ * Return:
+ *******************************************************************************/
+void I2cDataCtrl(void)
+{
+    UINT16 XRAM i;
+    if(g_I2cCkFlg)
+    {
+        if(g_I2cOk)
+        {
+          for(i = 0; i < 5;i++)
+          {
+            DBG_CAL("\nI2C SEND DATA OK,len:%ld",g_I2cCnt); 
+          }
+
+        }
+
+
+        if(g_I2cErr)
+        {
+          for(i = 0; i < 5;i++)
+          {
+            DBG_CAL("\nI2C SEND DATA ERROR,len:%ld",g_I2cCnt); 
+          }
+          HOLD; 
+        }
+
+        g_I2cCnt = 0;
+        g_I2cOk  = 0;
+        g_I2cErr = 0;
+        g_I2cCkFlg = 0;
+        ET2 = 1;
+        DelayMs(5000);
+    }    
+}
+
+#endif
+
+/*******************************************************************************
+ *   Name: Test_CAL
+ *  Brief:
+ *  Input:
+ * Output:
+ * Return:
+ *******************************************************************************/
+void Test_CAL(void)
+{
+    BOOLEAN XRAM flag = TRUE;
+
+    UINT16 XRAM CALMask =   0x00;
+    UINT16 XRAM AmoveMask = 0x00;
+
+    
+    DrvClearIICState();
+
+    DelayMs(1000);
+
+    EA = 0;
+
+    AFEACKEN = 1;
+    ARAM_SEL = 1;
+
+#if TEST_AMOVE_RTC_INT_EN
+    CALMask |= BITn(1);    //int1
+    RtcInit();
+
+#endif
+
+
+#if TEST_IIC_CAL_INT
+    CALMask   |= BITn(5);   //IIC
+    AmoveMask |= BITn(5);   //IIC
+
+    CALMask   |= BITn(8);   //IIC_STP
+    AmoveMask |= BITn(8);   //IIC_STP
+    I2cInit();
+#endif
+
+
+
+#if TEST_SPI0_CAL_INT_EN
+
+    CALMask   |= BITn(11);
+    AmoveMask |= BITn(11);
+    Spi0Init();
+    
+#if TEST_SPI0_DMA_INT_EN
+    Spi0DmaInit();
+#endif
+
 #endif
 
     T_tempbuf1 = CAL_TEST_A0;
@@ -5914,30 +5886,29 @@ void Test_CAL(void)
     
     T_tempbuf3 = CAL_TEST_PKS;
 
+    DrvCal_Init(TX_LOCAL_NUM, RX_LOCAL_NUM, CALMask,AmoveMask);
+
+    EA = 1;
+
     DBG_CAL("\n\rStart CalTest!\n\r");
     DBG_CAL("\n\rCal-A0:%08lx",T_tempbuf1);
     DBG_CAL("\n\rCal-A1:%08lx",T_tempbuf2);
     DBG_CAL("\n\rCal-A2:%08lx",T_tempOut);
     DBG_CAL("\n\rCal-A3:%08lx",CAL_TEST_PKS);
-    DBG_CAL("\n\rAram:%08lx",g_pAfeAram);
-
-    AFEACKEN = 1;
-    ARAM_SEL = 1;
-
-    DrvCal_Init(TX_LOCAL_NUM, RX_LOCAL_NUM, CALMask,AmoveMask);
-    
+    DBG_CAL("\n\rAram:%08lx",g_pAfeAram);    
+        
 //while(1)
 {
     Test_CAL_MaxtixAdd();   
-    Test_CAL_MaxtixSub();
-    Test_CAL_MaxtixAmp();
-    Test_CAL_MaxtixDiv();
+    Test_CAL_MaxtixSub();    
+    Test_CAL_MaxtixAmp();     
+    Test_CAL_MaxtixDiv();     
     Test_CAL_MaxtixMov();
-    Test_CAL_MaxtixMov2();
+    Test_CAL_MaxtixMov2();    
     Test_CAL_MaxtixCom_1();
-    Test_CAL_MaxtixCom_2();
+    Test_CAL_MaxtixCom_2();  
     Test_CAL_MaxtixMul_PtoP1();
-    Test_CAL_MaxtixMul_PtoP2();
+    Test_CAL_MaxtixMul_PtoP2();    
     Test_CAL_LDS();
     Test_CAL_MDS();
     Test_CAL_CHK();
@@ -5948,7 +5919,11 @@ void Test_CAL(void)
     Test_CAL_XORSUM();
     Test_CAL_SearchPeak();
     //扩展算法
-    Test_CAL_AMov();    
+
+#if (TEST_AMOVE_RTC_INT_EN == 0)    
+    Test_CAL_AMov();
+#endif
+
     Test_CAL_AVG_TX();
     Test_CAL_AVG_RX();
     Test_CAL_AVG2_TX();
@@ -5962,6 +5937,11 @@ void Test_CAL(void)
     Test_CAL_SubConst();
     Test_CAL_CMP();
     Test_CAL_MaxtixMul_PtoP3();
+
+#if TEST_IIC_CAL_INT
+    I2cDataCtrl();
+#endif
+    
 } 
 
     AFEACKEN = 0;
@@ -5983,9 +5963,9 @@ void Test_CAL(void)
 void Exint0_IRQHandler(void) interrupt 0
 { 
     if(RTC_CNT_INT)
-	{
-    	RTC_CNT_WKEN = 0;
-	}
+    {
+        RTC_CNT_WKEN = 0;
+    }
     DBG_CAL("\nint0");
 
 }
@@ -5999,42 +5979,100 @@ void Exint0_IRQHandler(void) interrupt 0
  * Return: INT1中断响应函数
  *******************************************************************************/
 void Exint1_IRQHandler(void) interrupt 2
-{ 
+{
+    UINT8 XRAM ucMs;
     if(RTC_CNT_INT)
     {   
-#if TEST_CAL_MOV_INT_EN
+#if TEST_AMOVE_RTC_INT_EN
         CalAmovAramToMem();
 #endif
-		while(RTC_START_STA == 0);
+        while(RTC_START_STA == 0);
         RTC_WP  = 1;
         RTC_CLR = 1;
-        DBG_CAL("\nint1");
+
+        ucMs = (UINT8)((UINT32)8*rand()/0x7fff + 8);//8ms-18ms
+
+#if 1
+        RTCIVH = (ucMs*32)>>8;
+        RTCIVL = ucMs*32;
+#else
+        RTCIVH = 0;
+        RTCIVL = 1*32;
+#endif
+        while(RTC_START_STA == 0);
+        RTC_WP = 1;
+        RTC_START = 1;
+        //DBG_CAL("\nint1");
     }
 }
 
 
-
 /*******************************************************************************
- *   Name:
- *  Brief:
- *  Input:
- * Output:
- * Return: I2C中断响应函数
- *******************************************************************************/
-UINT32 g_I2cCnt =0;
+*   Name: I2C_ISR
+*  Brief: 检测I2C接收的数据是否与HOST发送的一致.I2C命令可参考iic_data_for_cal.
+*         发送一串随机数,发4个00表示结束,并最后发送前面数据的crc,在软件中判断
+*         是否与发送的crc一致.并打出数据的长度.
+*  Input:
+* Output:
+* Return: I2C中断响应函数.
+*******************************************************************************/
 void I2C_ISR(void) interrupt 5
 {
-    UINT8 ch = 0;
-    DBG_CAL("\n I2C Init");
+    UINT8 XRAM ch;
+    UINT8 static XRAM last_ch = 1;
+    //DBG_CAL("\nI2C");
 
     if (RIFLAG)
     {
         RIFLAG = 0;
         ch = DATABUFF;
-        g_I2cCnt++; 
+        if(g_I2cCkFlg == 1)
+        {
+            if(g_I2cCheck == ch)//与工具发送过来的校验码是否一致
+            {
+                g_I2cOk = 1;
+            }
+            else
+            {
+                g_I2cErr = 1;               
+            }
+            g_I2cCheck = 0;
+            ET2 =  0;
+        }
+        else
+        {
+            g_I2cCheck ^= ch;
+            g_I2cCnt++;
+        }
+        
+        if((last_ch == 0)&&(ch == 0))
+        {
+            g_I2c0Num++;
+            if(g_I2c0Num == 3)//实际上为连续4个0
+            {
+                g_I2cEnd = 1;
+            }
+        }
+        else
+        {  
+           g_I2c0Num = 0; 
+        }
 
+        last_ch = ch;
 
-    }    
+        if(g_I2cEnd)
+        {
+            g_I2cEnd = 0;
+            DBG_CAL("\n I2CNUM:%ld",g_I2cCnt);
+            g_I2cCkFlg = 1;
+        }
+
+    }
+
+    if(TIFLAG)
+    {
+        TIFLAG = 0;
+    }
 }
 
 /*******************************************************************************
@@ -6050,6 +6088,7 @@ void I2C_STOP_ISR(void) interrupt 8
 }
 
 
+
 /*******************************************************************************
 *   Name: SPI0_IRQHandler
 *  Brief:
@@ -6059,7 +6098,7 @@ void I2C_STOP_ISR(void) interrupt 8
 ******************************************************************************/
 void SPI0_IRQHandler(void) interrupt 11
 {
-    UINT8 ch = 0;  
+    UINT8 XRAM ch = 0;  
 
     //DBG_CAL("\nSPI0 INT"); 
     

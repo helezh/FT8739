@@ -15,7 +15,7 @@
 *
 *******************************************************************************/
 #include "Drv_XSI.h"
-#include "FT8836_Reg.h"
+#include "FT8835_Reg.h"
 
 /*******************************************************************************
 * 1.Included header files
@@ -126,7 +126,7 @@ void Drv_XsiWriteReg(ST_XSIRegisters *pXSIRegs, UINT16 usAddr, UINT16 usData,UIN
 *******************************************************************************/
 void Drv_XsiRead(ST_XSIRegisters *pXSIRegs, UINT16 usAddr, UINT16 *pBuf, UINT16 len, UINT8 flag)
 {
-    UINT8 i;
+    UINT16 XRAM i;
 
     XSI_SEL = 0;
     //pXSIRegs->Stop = 1;
@@ -214,8 +214,8 @@ void Test_Xsi()
            {
                 Buf1[i] = i + Buf3[j];
            }
-            Drv_XsiWrite(pXSI0Regs,256,Buf1,len,XSI_S_REG);
-            Drv_XsiRead(pXSI0Regs,256,Buf2,len,XSI_S_REG);
+            Drv_XsiWrite(pXSI0Regs,256,Buf1,len,AFE_REG);
+            Drv_XsiRead(pXSI0Regs,256,Buf2,len,AFE_REG);
             for (i = 0; i < len; i++)
             {
                 if (Buf1[i] != Buf2[i])                

@@ -28,6 +28,10 @@
 #define PROM_END_ADDRESS        0xFD0FFF   //Prom end address
 #define PROM_LENGTH             1024*4     ///2  //0x80
 
+
+#define TEST_PROM_WRITE         1
+#define TEST_PROM_READ          0
+
 //UINT16 far *pRom;
 //UINT16 XRAM ucRomTestBuf[PROM_LENGTH];
 UINT8 far *pRom;
@@ -59,8 +63,10 @@ void Test_Prom(void)
 {
     UINT16 i;
     UINT8 t;
-    DBG_MODE("\nprom test is start");
-    pRom = PROM_START_ADDRESS;
+
+
+    DBG_MODE("\nprom read test is start");
+    pRom = PROM_PTR8(0);
     for (i = 0; i < PROM_LENGTH; i++)
     {
         ucRomTestBuf[i] = *pRom++;
@@ -76,7 +82,29 @@ void Test_Prom(void)
         DBG_PROM("%02X ",ucRomTestBuf[i]);
         DelayMs(20);
     }
-    DBG_MODE("\n\rprom test is end\n");
+    DBG_MODE("\n\rprom read test is end\n");
+
+
+
+    DBG_MODE("\n\n\n\n\n\n\nprom write test is start");
+    pRom = PROM_PTR8(0);
+    for (i = 0; i < PROM_LENGTH; i++)
+    {
+        pRom[i] = ucRomTestBuf[PROM_LENGTH - i - 1];
+    }
+    for (i = 0; i < PROM_LENGTH; i++)
+    {
+        if (t%16 == 0)
+        {
+            t = 0;
+            DBG_PROM("\n\r");
+        }
+        t++;
+        DBG_PROM("%02X ",pRom[i]);
+        DelayMs(20);
+    }
+    DBG_MODE("\n\rprom write test is end\n");
+
 }
 #endif
 

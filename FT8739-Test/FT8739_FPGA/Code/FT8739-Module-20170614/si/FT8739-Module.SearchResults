@@ -1,2 +1,20 @@
----- TEST_XDP_STATUS Matches (1 in 1 files) ----
-Test_Reset.c (source\task):#define TEST_XDP_STATUS
+---- STANDBY Matches (19 in 8 files) ----
+Drv_mcu.c (source\driver):        STANDBY = 0;
+Drv_mcu.c (source\driver):    /* Standby mode */
+Drv_mcu.c (source\driver):        STANDBY = 1;
+Drv_mcu.h (include\drv):#define DrvSysPowerStandby()            DrvSysPowerMode(2)          //enter the standby mode 
+FT8836.h (include\drv):SBIT STANDBY                = CGUCON0^6;  /* 用于在正常模式下，mcu处于power down时，对osc时钟以及digital的主时钟的disable.0:disable clock tree, osc48m;1:不关时钟 */
+FT8836.h (include\drv):SBIT CLOSE_500K_EN          = CGUCON3^4;     /* mcu standby close 500k enable signal.1:close*/
+FT8836.h (include\drv):SBIT CLOSE_TIMER_EN         = CGUCON3^1;     /* mcu standby close timer clock enable sigal.1:close*/
+Test_i2c_wakeup.c (source\task):*                           0x02 : standby wake up
+Test_i2c_wakeup.c (source\task):         2.cmd 03: standby mode wake up
+Test_i2c_wakeup.c (source\task):            DBG_I2CWK("\nStart I2C wakeup...Standby");
+Test_i2c_wakeup.c (source\task):            DBG_I2CWK("\nWake up in standby");
+Test_RTC.c (source\task):        DBG_RTC("\n\rjoin in Standby");
+Test_RTC.c (source\task):        DBG_RTC("\n\rexit Standby");
+Test_spi0_wakeup.c (source\task):*                           0x02 : standby wake up
+Test_spi0_wakeup.c (source\task):         2.cmd 03: standby mode wake up
+Test_spi0_wakeup.c (source\task):            DBG_SPI0WK("\nStart SPI0 wakeup...Standby");
+Test_spi0_wakeup.c (source\task):            DBG_SPI0WK("\nWake up in standby");
+Test_spi0_wakeup.h (include\task):*                           0x02 : standby wake up
+Test_wdt.c (source\task):// TEST_POWER_MANAGE:0-Idle;1-Standby;2-Stop;3-none

@@ -107,7 +107,7 @@ void WDT_int(void)
 ********************************************************************************/
 void WDT_Init(void)
 {
-    WDT_500K_EN = 1; //wdt clk
+    WDT_500K_EN = 1;    //wdt clk
     WDTSTARTEN = 1;     //start en = 1
 
     /* 时钟计数: 只配置高7位，低8位固定为0 

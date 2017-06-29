@@ -20,7 +20,7 @@
 * 1.Included files
 *******************************************************************************/
 #include "CfgGlobal.h"
-#include "FT8836_Reg.h"
+#include "FT8835_Reg.h"
 
 /*******************************************************************************
 * 2.Global constant and macro definitions using #define

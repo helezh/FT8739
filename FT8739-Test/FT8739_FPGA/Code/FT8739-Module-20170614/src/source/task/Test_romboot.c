@@ -30,7 +30,9 @@
 /*******************************************************************************
 * 4.Static variables
 *******************************************************************************/
-
+volatile UINT32 far *load_ok  =   ((UINT32 *)(0xFFFFFF-0X03));
+volatile UINT32 far *load_err =   ((UINT32 *)(0xFFFFFF-0X07));
+volatile UINT32 far *load_cnt =   ((UINT32 *)(0xFFFFFF-0X0B));
 /*******************************************************************************
 * 5.Global variable or extern global variabls/functions
 *******************************************************************************/
@@ -145,6 +147,108 @@ void TestUpdateRST()
     SFTRST  = 0xFF;
 }
 
+
+/*******************************************************************************
+*   Name: TestChangeEcc1()
+*  Brief:
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void TestChangeEcc1()
+{
+    DelayMs(2000);
+    PRAM_ADDR16(ADDR_PART1_ECC) += 1;
+    PRAM_ADDR16(ADDR_PART1_ECC_NE) -= 1;
+    SFTRST  = 0xFF;
+}
+
+
+/*******************************************************************************
+*   Name: TestChangeEcc2()
+*  Brief:
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void TestChangeEcc2()
+{
+    DelayMs(2000);
+    PRAM_ADDR16(ADDR_PART2_ECC) += 1;
+    PRAM_ADDR16(ADDR_PART2_ECC_NE) -= 1;
+    SFTRST  = 0xFF;
+}
+
+
+/*******************************************************************************
+*   Name: TestChangeLenL()
+*  Brief:
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void TestClrLen()
+{
+    DelayMs(2000);
+    PRAM_ADDR16(ADDR_APP_LEN) = 0;
+    PRAM_ADDR16(ADDR_APP_NE_LEN) = 0xFFFF;    
+    PRAM_ADDR16(ADDR_APP_LEN_H) = 0;
+    PRAM_ADDR16(ADDR_APP_LEN_H) = 0xFFFF;   
+    SFTRST  = 0xFF;
+}
+
+/*******************************************************************************
+*   Name: TestMaxLen()
+*  Brief:
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void TestMaxLen()
+{
+    DelayMs(2000);
+    PRAM_ADDR16(ADDR_APP_LEN) = 0;
+    PRAM_ADDR16(ADDR_APP_NE_LEN) = 0xFFFF;    
+    PRAM_ADDR16(ADDR_APP_LEN_H) = 2;
+    PRAM_ADDR16(ADDR_APP_LEN_H) = 0xFFFD;  
+    SFTRST  = 0xFF;
+}
+
+
+/*******************************************************************************
+*   Name: TestMaxLen()
+*  Brief:
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void TestChangeLen()
+{
+    DelayMs(2000);
+    PRAM_ADDR16(ADDR_APP_LEN) -= 1;
+    PRAM_ADDR16(ADDR_APP_NE_LEN) += 1;    
+    SFTRST  = 0xFF;
+}
+/*******************************************************************************
+*   Name: TestLoadCnt()
+*  Brief:
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void TestLoadCnt()
+{
+    DBG_FLOW("\nload_ok:0x%lx",*load_ok);
+    DBG_FLOW("\nload_err:0x%lx",*load_err);    
+    DBG_FLOW("\nload_cnt:0x%lx",*load_cnt);
+    DelayMs(2000);
+    PRAM_ADDR16(ADDR_PART1_ECC) = 0x00;
+    PRAM_ADDR16(ADDR_PART2_ECC) = 0x00;    
+    SFTRST  = 0xFF;
+    
+}
+
+
 /*******************************************************************************
 *   Name: Test_romboot()
 *  Brief:
@@ -157,8 +261,8 @@ void Test_romboot()
     UINT8 g_ucRomboot;
 
     DBG_FLOW("\nTest_romboot\n");
-    DelayMs(3000);
-    g_ucRomboot = 0x02;//5;// 2;
+    DelayMs(500);
+    g_ucRomboot = 0x05;//5;// 2;
     switch (g_ucRomboot)
     {
         case 0x01:
@@ -194,6 +298,37 @@ void Test_romboot()
         case 0x07:
         {
             TestUpdateRST();
+            break;
+        }
+
+        case 0x08:
+        {
+            TestChangeEcc1();
+            break;
+        }
+        case 0x09:
+        {
+            TestChangeEcc2();
+            break;
+        }
+        case 0x0A:
+        {
+            TestClrLen();
+            break;
+        }
+        case 0x0B:
+        {
+            TestMaxLen();
+            break;
+        }
+        case 0x0C:
+        {
+            TestChangeLen();
+            break;
+        }
+        case 0x0D:
+        {
+            TestLoadCnt();
             break;
         }
         default:

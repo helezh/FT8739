@@ -96,11 +96,11 @@ void SPI0_Init(void)
     SPI0CKEN = 1;
     SPI0CON5 =0xff;
     SPI0CON2 =0x00;
-    SPI0CON3 =0;
+    SPI0CON3 =0x60;
     SPI0CON4 =0X00;
     
-    SPI0_EDGE_SEL =1;
-    
+    SPI0_EDGE_SEL =0;
+    SPI0_PHASE    = 1;
     /* IOÅäÖÃ: P05-->P02  MOSI MISO CLK CS */
     P0MOD |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
     P0SEL |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
@@ -291,7 +291,7 @@ UINT8 DrvRomRegWR(UINT16 idx,UINT8 ucData)
 
         case HCMD_BOOT_STATE:
         {
-            ch = 0X66;
+            ch = 0X22;
             break;
         }
         default:
@@ -315,7 +315,11 @@ void SPI0_IRQHandler(void) interrupt 11
 {
     UINT8 ch = 0;  
 
+    if (SPI0TI)
+    {
+        INTOUT ^=1;
     
+    }
     if (SPI0RI)
     {
     //    SPI0RI_CLR = 1;
@@ -363,15 +367,17 @@ void SPI0_IRQHandler(void) interrupt 11
 void Test_Byte(void)
 {
     UINT8 BUF[8];
-    SPI0_EI = 0;
+    SPI0_EI = 1;
     SPI0BUF=0X55;
     
-    SPI0RI_EN = 1;
-    SPI0TI_EN = 1;
-    
+    SPI0RI_EN = 0;
+    SPI0TI_EN = 0;
+    DBG_SPI("\n SPI0RI_EN=%02x ",SPI0RI_EN);
+    DBG_SPI("\n SPI0TI_EN=%02x ",SPI0TI_EN);
+    DBG_SPI("\n SPI0_EI=%02x ",SPI0_EI);
     while(1)
     {
-        while(!SPI0RI);
+        while(!SPI0_STOP);
 
         BUF[0]=SPI0CON5;
         BUF[1]=SPI0BUF;
@@ -386,7 +392,9 @@ void Test_Byte(void)
 
         DBG_SPI("\n b SPI0CON5=%02x ",SPI0CON5);
         DBG_SPI("\n SPI0_START=%02x ",SPI0_START);
-                     
+        
+        
+        
     }
 }
 
@@ -438,6 +446,11 @@ void Test_SPI0(void)
     //Test_N_Byte();
     SPI0_EI = 1;
     
+    SPI1PH = 0;
+    SPI1PO = 1;
+    DBG_SPI("\n P1MOD=%02x ",P1MOD);
+    P1MOD  |=0X04;
+    DBG_SPI("\n P1MOD=%02x ",P1MOD);
     while(1)
     {
 
@@ -445,11 +458,15 @@ void Test_SPI0(void)
         {
             SPI0_STOP_CLR=1;
         //    for(i=0;i<16;i++)
-       //     DBG_SPI("\n g_ucDataBuf[%02x]=%02x ",i,g_ucDataBuf[i]); 
+       //     DBG_SPI("\n g_ucDataBuf[%02x]=%02x ",i,g_ucDataBuf[i]);
+            DBG_SPI("\n P1MOD=%02x ",P1MOD); 
             DBG_SPI("\n SPI0CON3=%02x ",SPI0CON3); 
             DBG_SPI("\n Byte_Num=%04x ",SPI0_Get_Byte_Num());
-            SPI0CON3 =0;
-        } 
+        //    SPI0CON3 =0;
+        }
+ 
+        
+
     }
 }
 

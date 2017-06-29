@@ -74,7 +74,7 @@ void SPI0_DMA_Init(void);
 void SPI0_DMA_ClrStatus(void);
 void SPI0_DMA_Wait_Done(void);
 void SPI0_DMA_SetAddr(UINT32 start_addr,UINT32 len,UINT16 mem_sel);
-void SPI0_DMA_Enable(UINT8 time_out,UINT8 reg);
+void SPI0_DMA_Enable(UINT8 time_out,UINT16 reg);
 void Test_DMA(void);
 #else
 #define SPI0_DMA_Init       /##/

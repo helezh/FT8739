@@ -58,7 +58,7 @@ UINT8 ECODE g_aucVerfication[APP_VERIF_LEN+FW_CFG_TOTAL_SIZE] _at_ APP_INFO_ADDR
 *******************************************************************************/
 void init_mcu(void)
 {
-    UINT8 i,cnt;    
+    UINT8 XRAM i,cnt;    
     I2CRI  = 0;
     I2CTI  = 0;
     I2CSTP = 0;
@@ -191,7 +191,7 @@ void init_mcu(void)
 *******************************************************************************/
 void main(void)
 {
-    unsigned char i=0;
+    UINT16 XRAM i = 0;
 
  #if 0  
     UINT8 buf[8]={0};

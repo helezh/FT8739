@@ -127,6 +127,13 @@ void DrvCal_MatrixProc(ST_CalMcMatrixParam *pMcMP)
     // run
     pCalRegs->rCmd  = ((pMcMP->ucCfg & 0x01)<<8);
     DrvCal_Cmd(pMcMP->usCalCmd);
+
+    if(g_bCalResumeFlag)
+    {
+        DBG_CAL("\nSuspend!");
+        DBG_CAL("\nSuspend!");
+        DBG_CAL("\nSuspend!");        
+    }
        
     CALCKEN = FALSE;
 }
@@ -421,7 +428,17 @@ UINT16 DrvCal_CRC16(UINT16 usSrc1Addr, UINT16 usLen, UINT8 Area, BOOLEAN type)
             break;            
     }
     
+    g_bCalResumeFlag = 0;
+    
     DrvCal_Cmd(OP_CRC);
+
+    if(g_bCalResumeFlag)
+    {
+        DBG_CAL("\nSuspend!");
+        DBG_CAL("\nSuspend!");
+        DBG_CAL("\nSuspend!");        
+    }
+
 
     value = pCalRegs->rCrc;
       

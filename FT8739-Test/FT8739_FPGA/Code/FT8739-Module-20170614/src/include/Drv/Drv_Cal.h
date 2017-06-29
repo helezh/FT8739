@@ -21,7 +21,7 @@
 * 1.Included files
 *******************************************************************************/
 #include "CfgGlobal.h"
-#include "FT8836_Reg.h"
+#include "FT8835_Reg.h"
 
 
 #if _TEST_CAL_EN

@@ -19,6 +19,16 @@
 
 
 /*DMA_CTRL REG*/
+#define DMA_CRC_FH           ((UINT16)1<<10)  
+#define DMA_CRC_FL           ((UINT16)0<<10)
+
+#define DMA_TIMEOUT_DL           ((UINT16)2<<8)  
+#define DMA_TIMEOUT_D2           ((UINT16)1<<8)  
+#define DMA_TIMEOUT_D1           ((UINT16)0<<8)
+
+#define DMA_DUAL_EN              ((UINT16)1<<7)  
+#define DMA_DUAL_DIS             ((UINT16)0<<7)  
+
 #define DMA_TIMEOUT_EN           ((UINT16)1<<6)  
 #define DMA_TIMEOUT_DIS          ((UINT16)0<<6)  
 
@@ -40,6 +50,7 @@
 #define DMA_EN                   ((UINT16)1<<0)
 
 /*DMA_ADDR_H REG*/
+#define DMA_MEM_DRAM8K           ((UINT16)3<<14)
 #define DMA_MEM_PRAM             ((UINT16)2<<14)/*dma访问的ram选择. 2'b00:aram;2'b01:dram;2'b1x:pram*/
 #define DMA_MEM_DRAM             ((UINT16)1<<14)/*dma访问的ram选择. 2'b00:aram;2'b01:dram;2'b1x:pram*/
 #define DMA_MEM_ARAM             ((UINT16)0<<14) /*dma访问的ram选择. 2'b00:aram;2'b01:dram;2'b1x:pram*/
@@ -47,15 +58,23 @@
 #define ARAM_START_ADDRESS   0xA000
 #define ARAM_END_ADDRESS     0xA500
 #define ARAM_LENGTH          0x500
+
+#define DRAM8K_START_ADDRESS   0x8000
+#define DRAM8K_END_ADDRESS     0xA000
+#define DRAM8K_LENGTH          0x2000
 /*******************************************************************************
 * 2.Private constant and macro definitions using #define
 *******************************************************************************/
 #define SPI1_DMA_EN         1
-#define FPGA_BUS_SEL        1
-#define NUM_B   1024UL//1280UL//256UL//128UL
+#define FPGA_BUS_SEL        0
 
+#define NUM_B   512UL//1280UL
+#define NUM_C   4096UL//512UL//1280UL
 
-
+#define SPI1_CLK_CONFIG SPI1_12M
+#define CPHA            1 //phase
+#define CPOL            1 //clk
+#define EDGE_SEL        0
 
 /*******************************************************************************
 * 3.Private enumerations, structures and unions using typedef
@@ -72,11 +91,12 @@ typedef enum
 /*******************************************************************************
 * 4.Static variables
 *******************************************************************************/
-volatile ST_Spi1DmaRegisters *XRAM pSpi1_DmaRegs = (ST_Spi1DmaRegisters *)SPI1_REG_BASE_ADDR;
-volatile ST_Spi0DmaRegisters *XRAM pSpi0_DmaRegs = (ST_Spi0DmaRegisters *)SPI0_REG_BASE_ADDR;
+volatile ST_Spi1DmaRegisters *XRAM pSpi1_DmaRegs = (ST_Spi1DmaRegisters *)SPI1_DMA_BASE_ADDR;
+volatile ST_Spi0DmaRegisters *XRAM pSpi0_DmaRegs = (ST_Spi0DmaRegisters *)SPI0_DMA_BASE_ADDR;
+volatile ST_Spi0DmaRegisters *XRAM pSpi0_Dma2Regs= (ST_Spi0DmaRegisters *)SPI0_DMA2_BASE_ADDR;
 
-volatile UINT8  XRAM DRAMBUF[2600] ;
-
+volatile UINT8  XRAM DRAMBUF[NUM_C] ;
+//volatile UINT8  XRAM DRAM2BUF[2600] _at_ DRAM8K_START_ADDRESS;
 
 /*******************************************************************************
 * 5.Global variable or extern global variabls/functions
@@ -181,14 +201,14 @@ void SPI1_Init(void)
     SPI1MAS = 1;                       // 1：maste mode;
     SPI1_SLVSLELEN  = 1;  //                      // 1：master 模式下slvselo受SPI0CON2[2]控制
 
-    SPI1PH = 1;
-    SPI1PO = 0;
+    SPI1PH = CPHA;//1;
+    SPI1PO = CPOL;
 
     //SPI分频配置000:4分频;001:6分频;010:8分频;011:12分频;100:16分频;101:18分频;110:20分频;111:24分频*/
     //SPI1CKH  = 0;
     //SPI1CKM  = 0;
     //SPI1CKL  = 1;
-    SPI1_CLK_SET(SPI1_12M);
+    SPI1_CLK_SET(SPI1_CLK_CONFIG);
 
     //中断标志使能
     SPI1RI_EN = 1;
@@ -287,6 +307,42 @@ void SPI1_Write(UINT8 far *pBuf, UINT32 len)
     }
     while (!SPI1RI);
     SPI1RI=0;
+#endif
+    
+    SPI1SLVELO=1;
+}
+/*******************************************************************************
+*   Name: SPI_Read
+*  Brief: 读n个数据
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void SPI1_Write_read(UINT8 far *pBuf, UINT32 len,UINT8 far *prBuf)
+{
+    UINT32 i;
+  
+    SPI1SLVELO=0;
+#if 0
+    for (i = 0; i < len; i++)
+    {
+        SPI1BUF  = *pBuf++;
+        while (!SPI1RI);
+        SPI1RI=0;
+    }
+
+#else
+    SPI1BUF  = *pBuf++;
+    for (i = 0; i < (len-1); i++)
+    {
+        
+        while (!SPI1RI);
+        SPI1BUF  = *pBuf++;
+        *prBuf=SPI1BUF;//SPI1RI=0;
+        prBuf++;
+    }
+    while (!SPI1RI);
+    *prBuf=SPI1BUF;//SPI1RI=0;
 #endif
     
     SPI1SLVELO=1;
@@ -441,10 +497,11 @@ void SPI0_REG_Init(void)
     SPI0CKEN = 1;
     SPI0CON5 =0xff;
     SPI0CON2 =0x00;
-    SPI0CON3 =0;
+    SPI0CON3 =0X60;
     SPI0CON4 =0X00;  
 
-    SPI0_EDGE_SEL =0;
+    SPI0_EDGE_SEL = 0;
+    SPI0_PHASE    = CPHA;
     /* IO配置: P05-->P02  MOSI MISO CLK CS */
     P0MOD |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
     //P0SEL |= BITn(5) + BITn(4)+BITn(3) + BITn(2);
@@ -455,7 +512,7 @@ void SPI0_REG_Init(void)
     //中断标志使能
     SPI0RI_EN = 0;
     SPI0TI_EN = 0;
-    ISP_STOP_EI = 1;
+    ISP_STOP_EI=1;
 
     SPI0RX_AUTO_CLR =0;
     SPI0TX_AUTO_CLR =0;
@@ -483,6 +540,13 @@ void SPI0_DMA_Init(void)
     pSpi0_DmaRegs->start_addr_l=0;
     pSpi0_DmaRegs->end_addr_l=0;
     pSpi0_DmaRegs->dma_srcr=0x000f;
+
+    pSpi0_Dma2Regs->dma_ctrl=0;
+    pSpi0_Dma2Regs->timeout_ctrl=0;
+    pSpi0_Dma2Regs->addr_h=0;
+    pSpi0_Dma2Regs->start_addr_l=0;
+    pSpi0_Dma2Regs->end_addr_l=0;
+    pSpi0_Dma2Regs->dma_srcr=0x000f;
     
 #if 0    
     DBG_SPI("\n 0dma_srcr=%04x ",pSpi0_DmaRegs->dma_srcr);
@@ -551,7 +615,7 @@ void SPI0_DMA_SetAddr(UINT32 start_addr,UINT32 len,UINT16 mem_sel)
 * Output:
 * Return:
 *******************************************************************************/
-void SPI0_DMA_Enable(UINT8 time_out,UINT8 reg)
+void SPI0_DMA_Enable(UINT8 time_out,UINT16 reg)
 {
     
     UINT8  dma_errdr=0xec;
@@ -561,6 +625,79 @@ void SPI0_DMA_Enable(UINT8 time_out,UINT8 reg)
     pSpi0_DmaRegs->timeout_ctrl=((UINT16)time_out<<8)|dma_errdr;
 
     pSpi0_DmaRegs->dma_ctrl=reg;
+    
+}
+/*******************************************************************************
+*   Name: SPI0_DMA2_ClrStatus
+*  Brief: MAIN CLK: 48M
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void SPI0_DMA2_ClrStatus(void)
+{    
+    pSpi0_Dma2Regs->dma_srcr=0x000f;    
+}
+/*******************************************************************************
+*   Name: SPI0_DMA_Wait_Done
+*  Brief: MAIN CLK: 48M
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void SPI0_DMA2_Wait_Done(void)
+{    
+    while(pSpi0_Dma2Regs->dma_ctrl & BIT_DMA_EN);    
+}
+/*******************************************************************************
+*   Name: SPI0_DMA2_SetAddr
+*  Brief: MAIN CLK: 48M
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void SPI0_DMA2_SetAddr(UINT32 start_addr,UINT32 len,UINT16 mem_sel)
+{    
+    UINT16 start_addr_h,end_addr_h;
+    UINT32 end_addr;
+
+
+
+        DBG_SPI("\n2 start_addr =%04x ",start_addr);
+        DBG_SPI("\n2 len=%04x ",len);
+        DBG_SPI("\n2 mem_sel=%04x ",mem_sel);
+    
+    end_addr        =start_addr+len-1;
+
+    start_addr_h    =(start_addr>>16)&0x03;
+    end_addr_h      =(end_addr  >>16)&0x03;
+
+    mem_sel &= 0xC000;    
+    
+    pSpi0_Dma2Regs->addr_h=mem_sel|(start_addr_h<<8)|end_addr_h;  
+    
+    pSpi0_Dma2Regs->start_addr_l=start_addr&0xffff;
+    pSpi0_Dma2Regs->end_addr_l=end_addr&0xffff;
+    
+}
+
+/*******************************************************************************
+*   Name: SPI0_DMA2_config
+*  Brief: MAIN CLK: 48M
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void SPI0_DMA2_Enable(UINT8 time_out,UINT8 reg)
+{
+    
+    UINT8  dma_errdr=0xec;
+
+    pSpi0_Dma2Regs->dma_srcr=0x000f;
+        
+    pSpi0_Dma2Regs->timeout_ctrl=((UINT16)time_out<<8)|dma_errdr;
+
+    pSpi0_Dma2Regs->dma_ctrl=reg;
     
 }
 /*******************************************************************************
@@ -580,7 +717,7 @@ void Test_DMA_MEM(UINT16 mem_sel)
     
     SPI0_REG_Init(); 
   /******************************************/
-    ISP_STOP_EI = 1;
+    ISP_STOP_EI = 0;
     DMA_END_EI  =0;
 
     if(mem_sel==DMA_MEM_PRAM)
@@ -618,7 +755,11 @@ void Test_DMA_MEM(UINT16 mem_sel)
     DBG_SPI("\n DSV_CON=%02x ",DSV_CON);
     DBG_SPI("\nSPI1_CURR_MODE=%02x ",SPI1_CURR_MODE);
     SPI0_DMA_Init();
-    SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)16,mem_sel);
+    pSpi0_DmaRegs->dma_ctrl |=BITn(10);
+    SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)7,mem_sel);
+
+    //SPI_REPLACE_EN=1;
+    //SPI_REPLACE_SEL =1;
     
 #if FPGA_BUS_SEL
     reg=SYSCON;
@@ -635,9 +776,9 @@ void Test_DMA_MEM(UINT16 mem_sel)
     while(1)
     {
 
-        CRCCCITT(ucpAsmram,16,&wCRC);
+      //  CRCCCITT(ucpAsmram,7,&wCRC);
 
-        DBG_SPI("\n1  wCRC=%04x ",wCRC);
+      //  DBG_SPI("\n1  wCRC=%04x ",wCRC);
         DBG_SPI("\n test dma write Mam");
         DBG_SPI("\n SPI1CON=%02x ",SPI1CON);
         DBG_SPI("\n DSV_CON=%02x ",DSV_CON);
@@ -645,8 +786,9 @@ void Test_DMA_MEM(UINT16 mem_sel)
         wait_printf_done();
 
 
- #if 1       
-        SPI0_DMA_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_WD|
+ #if 1   
+        SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)5,mem_sel);
+        SPI0_DMA_Enable(0xff,(DMA_CRC_FL|DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_WD|
         DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN));
         
         
@@ -681,13 +823,14 @@ void Test_DMA_MEM(UINT16 mem_sel)
         wait_printf_done();
 
 
-//#else        
-        SPI0_DMA_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_DIS|DMA_CRC_DIS|DMA_RD|
+//#else  
+        SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)5,mem_sel);
+        SPI0_DMA_Enable(0xff,(DMA_CRC_FL|DMA_TIMEOUT_DIS|DMA_TRANS_ERR_DIS|DMA_CRC_DIS|DMA_RD|
         DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN));
         DBG_SPI("\n test dma read Mam");
         
         SPI0_DMA_Wait_Done();
-
+        DBG_SPI("\n RX dma_crc =%04x ",pSpi0_DmaRegs->dma_crc);
         wait_printf_done();
 #endif        
         //DelayMs(1000);
@@ -712,7 +855,7 @@ void Test_SPI1DRAM_SPI0_ARAM(void)
     
     SPI1_Init();
     SPI0_REG_Init();
-    SPI0_EDGE_SEL =1;
+    SPI0_EDGE_SEL =EDGE_SEL;
     DBG_SPI("\nTest_SPI1DRAM_SPI0_ARAM");
   /******************************************/
     DMA_END_EI  =0;
@@ -866,13 +1009,407 @@ void Test_SPI1DRAM_SPI0_ARAM(void)
     
 }
 /*******************************************************************************
-*   Name: Test_SPI1PRAM_SPI0_ARAM
+*   Name: Test_SPI1DRAM_SPI0_ARAM
 *  Brief: SPI1-->SPI0
 *  Input:
 * Output:
 * Return:
 *******************************************************************************/
-void Test_SPI1PRAM_SPI0_ARAM(void)
+void Test_DUALDRAM_SPI0_MEM_1(UINT16 mem_sel1,UINT16 mem_sel2)
+{
+    volatile UINT8  far *ucpAsmram;
+    volatile UINT8  far *ucpAsmram2;
+    UINT16 i=0,j=0,wCRC=0;
+    UINT8  reg=0,temp=10;
+    UINT32 byte_num=0;
+    
+    SPI1_Init();
+    SPI0_REG_Init();
+    SPI0_EDGE_SEL =EDGE_SEL;
+    DBG_SPI("\nTest_SPI1DRAM_SPI0_ARAM");
+  /******************************************/
+    DMA_END_EI  =0;
+    ISP_STOP_EI = 0;  
+    if(mem_sel1==DMA_MEM_ARAM)
+    {
+        ucpAsmram = ARAM_START_ADDRESS;
+    }
+    else if(mem_sel1==DMA_MEM_DRAM8K)
+    {
+        ucpAsmram =  DRAM8K_START_ADDRESS;
+    }
+
+    if(mem_sel2==DMA_MEM_ARAM)
+    {
+        ucpAsmram2 = ARAM_START_ADDRESS+NUM_B;
+    }
+    else if(mem_sel2==DMA_MEM_DRAM8K)
+    {
+        ucpAsmram2 =  DRAM8K_START_ADDRESS+NUM_B;
+    }
+    
+
+    
+    AFEACKEN = 1;
+    ARAM_SEL = 1;   /* ARAM_SEL: 1: Mcu write and read; 0: others */
+    for (i = 0; i < NUM_B; i++)
+    {
+     
+        DRAMBUF[i] = (0+i*2)&0XFF;
+        DRAMBUF[NUM_B+i] = (0+i*2)&0XFF;
+        *(ucpAsmram+i) = (UINT8)((0xC0+i*4)&0XFF);   
+        *(ucpAsmram2+i) = (UINT8)((0x00+i*4)&0XFF); 
+    }
+
+    for (i = 0; i < NUM_B; i++)
+    {     
+        //*(ucpAsmram+i) = (~i )&0xff;
+        PRAM2_ADDR8(i)=i&0xff+0x20;     
+    }
+    
+    for (i = 0; i < NUM_B; i++)
+    {
+        if (i%16 == 0)
+        {
+        //    DBG_SPI("\n");
+        }
+        //DBG_SPI("DRAM=%02x ",DRAMBUF[i]);//PRAM2_ADDR8(i));
+
+    }
+
+    
+    SPI0_DMA_Init();
+    DBG_SPI("\n SPI1CON=%02x ",SPI1CON);
+    DBG_SPI("\n DSV_CON=%02x ",DSV_CON);
+    DBG_SPI("\nSPI1_CURR_MODE=%02x ",SPI1_CURR_MODE);
+    SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)(NUM_B),mem_sel1);
+    SPI0_DMA2_SetAddr((UINT32)ucpAsmram2,(UINT32)(NUM_B),mem_sel2);
+    
+#if FPGA_BUS_SEL
+    reg=SYSCON;
+    SYSCON =reg|BITn(6)|BITn(5);  
+    SYSCON =reg|BITn(6)|BITn(5);
+    SYSCON =reg|BITn(6)|BITn(5);
+#endif 
+    do
+    {
+        while(!BUS_SEL);
+        DelayMs(2000);
+    }while(!BUS_SEL);
+
+    
+    //while(1)
+    {
+     //   EA=0;
+     //   CRCCCITT(ucpAsmram,6,&wCRC);
+
+     //   DBG_SPI("\n1  wCRC=%04x ",wCRC);
+        DBG_SPI("\n test dma write aram");
+        DBG_SPI("\n SPI1CON=%02x ",SPI1CON);
+        DBG_SPI("\n DSV_CON=%02x ",DSV_CON);
+        DBG_SPI("\nSPI1_CURR_MODE=%02x ",SPI1_CURR_MODE);
+        wait_printf_done();
+
+
+
+        SPI0_DMA2_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_WD|
+        DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN|DMA_DUAL_EN));
+        SPI0_DMA_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_RD|
+        DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN|DMA_DUAL_EN));
+
+        
+        SPI1_Write_read(DRAMBUF,NUM_B,&DRAMBUF[NUM_B]);//SPI1_Write(DRAMBUF,NUM_B);
+        //SPI1_Write(PRAM2_ADDR8(0),NUM_B);
+        
+        SPI0_DMA_Wait_Done();
+        #if 1
+        byte_num=SPI0_Get_Byte_Num();
+        DBG_SPI("\n1 byte_num=%lx ",byte_num);
+        
+        byte_num=SPI0_Get_Byte_Num();
+        DBG_SPI("\n2 byte_num=%lx,",byte_num);    
+
+        //DelayUs(100);
+        DBG_SPI("\n dma_srcr=%04x ",pSpi0_DmaRegs->dma_srcr);
+        DBG_SPI("\n dma_ctrl=%04x ",pSpi0_DmaRegs->dma_ctrl);
+        DBG_SPI("\n dma_crc =%04x ",pSpi0_DmaRegs->dma_crc);
+        DBG_SPI("\n dma_timeout=%04x ",pSpi0_DmaRegs->timeout_ctrl);
+        DBG_SPI("\n start_addr_h=%04x ",pSpi0_DmaRegs->addr_h);
+        DBG_SPI("\n start_addr_l=%04x ",pSpi0_DmaRegs->start_addr_l);
+        DBG_SPI("\n end_addr_l=%04x ",pSpi0_DmaRegs->end_addr_l);
+
+        DBG_SPI("\n2 dma_srcr=%04x ",pSpi0_Dma2Regs->dma_srcr);
+        DBG_SPI("\n2 dma_ctrl=%04x ",pSpi0_Dma2Regs->dma_ctrl);
+        DBG_SPI("\n2 dma_crc =%04x ",pSpi0_Dma2Regs->dma_crc);
+        DBG_SPI("\n2 dma_timeout=%04x ",pSpi0_Dma2Regs->timeout_ctrl);
+        DBG_SPI("\n2 start_addr_h=%04x ",pSpi0_Dma2Regs->addr_h);
+        DBG_SPI("\n2 start_addr_l=%04x ",pSpi0_Dma2Regs->start_addr_l);
+        DBG_SPI("\n2 end_addr_l=%04x ",pSpi0_Dma2Regs->end_addr_l);
+
+        
+        #if 1
+        for (i = 0; i < NUM_B; i++)
+        {
+            if (DRAMBUF[i] != *(ucpAsmram2+i))
+            //if (PRAM2_ADDR8(i) != *(ucpAsmram+i))    
+            {
+                DBG_SPI("\ntest dma2 write err=%lx\n",i);
+                HOLD;
+            }
+            if (i%16 == 0)
+            {
+                DBG_SPI("\n");
+            }
+            DBG_SPI("%02x ",*(ucpAsmram2+i));
+            
+        //    *(ucpAsmram+i)=0xA7;
+        }
+        #endif
+
+        #if 1
+        DBG_SPI("\n test dma2 read aram");
+        for (i = 0; i < NUM_B; i++)
+        {
+            if (DRAMBUF[NUM_B+i] != *(ucpAsmram+i))
+            //if (PRAM2_ADDR8(i) != *(ucpAsmram+i))    
+            {
+                DBG_SPI("\ntest dma2 read err=%lx\n",i);
+                HOLD;
+            }
+            if (i%16 == 0)
+            {
+                DBG_SPI("\n");
+            }
+            DBG_SPI("%02x ",DRAMBUF[NUM_B+i]);
+            
+        //    *(ucpAsmram+i)=0xA7;
+        }
+        #endif
+        wait_printf_done();
+
+
+
+        
+
+    for (i = 0; i < NUM_B; i++)
+    {     
+        DRAMBUF[i] = (0+i*2)&0XFF;
+        DRAMBUF[NUM_B+i] = (0+i*2)&0XFF;
+        *(ucpAsmram+i) = (UINT8)((0xC0+i*4)&0XFF);   
+        *(ucpAsmram2+i) = (UINT8)((0x00+i*4)&0XFF);        
+    }
+     //   DelayMs(1000);
+    #endif
+    }
+
+   
+    
+}
+/*******************************************************************************
+*   Name: Test_SPI1DRAM_SPI0_ARAM
+*  Brief: SPI1-->SPI0
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void Test_DUALDRAM_SPI0_MEM_2(UINT16 mem_sel1,UINT16 mem_sel2)
+{
+    volatile UINT8  far *ucpAsmram;
+    volatile UINT8  far *ucpAsmram2;
+    UINT16 i=0,j=0,wCRC=0;
+    UINT8  reg=0,temp=10;
+    UINT32 byte_num=0;
+    
+    SPI1_Init();
+    SPI0_REG_Init();
+    SPI0_EDGE_SEL =EDGE_SEL;
+    DBG_SPI("\nTest_SPI1DRAM_SPI0_ARAM");
+  /******************************************/
+    DMA_END_EI  =0;
+    ISP_STOP_EI = 0;  
+    if(mem_sel1==DMA_MEM_ARAM)
+    {
+        ucpAsmram = ARAM_START_ADDRESS;
+    }
+    else if(mem_sel1==DMA_MEM_DRAM8K)
+    {
+        ucpAsmram =  DRAM8K_START_ADDRESS;
+    }
+
+    if(mem_sel2==DMA_MEM_ARAM)
+    {
+        ucpAsmram2 = ARAM_START_ADDRESS+NUM_B;
+    }
+    else if(mem_sel2==DMA_MEM_DRAM8K)
+    {
+        ucpAsmram2 =  DRAM8K_START_ADDRESS+NUM_B;
+    }
+    
+
+    
+    AFEACKEN = 1;
+    ARAM_SEL = 1;   /* ARAM_SEL: 1: Mcu write and read; 0: others */
+    for (i = 0; i < NUM_B; i++)
+    {
+     
+        DRAMBUF[i] = (0+i*2)&0XFF;
+        DRAMBUF[NUM_B+i] = (0+i*2)&0XFF;
+        *(ucpAsmram+i) = (UINT8)((0xC0+i*4)&0XFF);   
+        *(ucpAsmram2+i) = (UINT8)((0x00+i*4)&0XFF); 
+    }
+
+    for (i = 0; i < NUM_B; i++)
+    {     
+        //*(ucpAsmram+i) = (~i )&0xff;
+        PRAM2_ADDR8(i)=i&0xff+0x20;     
+    }
+    
+    for (i = 0; i < NUM_B; i++)
+    {
+        if (i%16 == 0)
+        {
+        //    DBG_SPI("\n");
+        }
+        //DBG_SPI("DRAM=%02x ",DRAMBUF[i]);//PRAM2_ADDR8(i));
+
+    }
+
+    
+    SPI0_DMA_Init();
+    DBG_SPI("\n SPI1CON=%02x ",SPI1CON);
+    DBG_SPI("\n DSV_CON=%02x ",DSV_CON);
+    DBG_SPI("\nSPI1_CURR_MODE=%02x ",SPI1_CURR_MODE);
+    SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)(NUM_B),mem_sel1);
+    SPI0_DMA2_SetAddr((UINT32)ucpAsmram2,(UINT32)(NUM_B),mem_sel2);
+    
+#if FPGA_BUS_SEL
+    reg=SYSCON;
+    SYSCON =reg|BITn(6)|BITn(5);  
+    SYSCON =reg|BITn(6)|BITn(5);
+    SYSCON =reg|BITn(6)|BITn(5);
+#endif 
+    do
+    {
+        while(!BUS_SEL);
+        DelayMs(2000);
+    }while(!BUS_SEL);
+
+    
+    //while(1)
+    {
+     //   EA=0;
+     //   CRCCCITT(ucpAsmram,6,&wCRC);
+
+     //   DBG_SPI("\n1  wCRC=%04x ",wCRC);
+        DBG_SPI("\n test dma write aram");
+        DBG_SPI("\n SPI1CON=%02x ",SPI1CON);
+        DBG_SPI("\n DSV_CON=%02x ",DSV_CON);
+        DBG_SPI("\nSPI1_CURR_MODE=%02x ",SPI1_CURR_MODE);
+        wait_printf_done();
+
+
+
+        SPI0_DMA2_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_RD|
+        DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN|DMA_DUAL_EN));
+        SPI0_DMA_Enable(0xff,(DMA_TIMEOUT_DIS|DMA_TRANS_ERR_EN|DMA_CRC_DIS|DMA_WD|
+        DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN|DMA_DUAL_EN));
+
+        
+        SPI1_Write_read(DRAMBUF,NUM_B,&DRAMBUF[NUM_B]);//SPI1_Write(DRAMBUF,NUM_B);
+        //SPI1_Write(PRAM2_ADDR8(0),NUM_B);
+        
+        SPI0_DMA_Wait_Done();
+        #if 1
+        byte_num=SPI0_Get_Byte_Num();
+        DBG_SPI("\n1 byte_num=%lx ",byte_num);
+        
+        byte_num=SPI0_Get_Byte_Num();
+        DBG_SPI("\n2 byte_num=%lx,",byte_num);    
+
+        //DelayUs(100);
+        DBG_SPI("\n dma_srcr=%04x ",pSpi0_DmaRegs->dma_srcr);
+        DBG_SPI("\n dma_ctrl=%04x ",pSpi0_DmaRegs->dma_ctrl);
+        DBG_SPI("\n dma_crc =%04x ",pSpi0_DmaRegs->dma_crc);
+        DBG_SPI("\n dma_timeout=%04x ",pSpi0_DmaRegs->timeout_ctrl);
+        DBG_SPI("\n start_addr_h=%04x ",pSpi0_DmaRegs->addr_h);
+        DBG_SPI("\n start_addr_l=%04x ",pSpi0_DmaRegs->start_addr_l);
+        DBG_SPI("\n end_addr_l=%04x ",pSpi0_DmaRegs->end_addr_l);
+
+        DBG_SPI("\n2 dma_srcr=%04x ",pSpi0_Dma2Regs->dma_srcr);
+        DBG_SPI("\n2 dma_ctrl=%04x ",pSpi0_Dma2Regs->dma_ctrl);
+        DBG_SPI("\n2 dma_crc =%04x ",pSpi0_Dma2Regs->dma_crc);
+        DBG_SPI("\n2 dma_timeout=%04x ",pSpi0_Dma2Regs->timeout_ctrl);
+        DBG_SPI("\n2 start_addr_h=%04x ",pSpi0_Dma2Regs->addr_h);
+        DBG_SPI("\n2 start_addr_l=%04x ",pSpi0_Dma2Regs->start_addr_l);
+        DBG_SPI("\n2 end_addr_l=%04x ",pSpi0_Dma2Regs->end_addr_l);
+
+        
+        #if 1
+        for (i = 0; i < NUM_B; i++)
+        {
+            if (DRAMBUF[i] != *(ucpAsmram+i))
+            //if (PRAM2_ADDR8(i) != *(ucpAsmram+i))    
+            {
+                DBG_SPI("\ntest dma2 write err=%lx\n",i);
+                HOLD;
+            }
+            if (i%16 == 0)
+            {
+                DBG_SPI("\n");
+            }
+            DBG_SPI("%02x ",*(ucpAsmram+i));
+            
+        //    *(ucpAsmram+i)=0xA7;
+        }
+        #endif
+
+        #if 1
+        DBG_SPI("\n test dma2 read aram");
+        for (i = 0; i < NUM_B; i++)
+        {
+            if (DRAMBUF[NUM_B+i] != *(ucpAsmram2+i))
+            //if (PRAM2_ADDR8(i) != *(ucpAsmram+i))    
+            {
+                DBG_SPI("\ntest dma2 read err=%lx\n",i);
+                HOLD;
+            }
+            if (i%16 == 0)
+            {
+                DBG_SPI("\n");
+            }
+            DBG_SPI("%02x ",DRAMBUF[NUM_B+i]);
+            
+        //    *(ucpAsmram+i)=0xA7;
+        }
+        #endif
+        wait_printf_done();
+
+
+
+        
+
+    for (i = 0; i < NUM_B; i++)
+    {     
+        DRAMBUF[i] = (0+i*2)&0XFF;
+        DRAMBUF[NUM_B+i] = (0+i*2)&0XFF;
+        *(ucpAsmram+i) = (UINT8)((0xC0+i*4)&0XFF);   
+        *(ucpAsmram2+i) = (UINT8)((0x00+i*4)&0XFF);        
+    }
+     //   DelayMs(1000);
+    #endif
+    }
+
+   
+    
+}
+/*******************************************************************************
+*   Name: Test_SPI1PRAM_SPI0_DRAM8K
+*  Brief: SPI1-->SPI0
+*  Input:
+* Output:
+* Return:
+*******************************************************************************/
+void Test_SPI1PRAM_SPI0_DRAM8K(void)
 {
     volatile UINT8  far *ucpAsmram;
     UINT16 i=0,j=0,wCRC=0;
@@ -881,30 +1418,30 @@ void Test_SPI1PRAM_SPI0_ARAM(void)
     
     SPI1_Init();
     SPI0_REG_Init();
-    SPI0_EDGE_SEL =1;
+    SPI0_EDGE_SEL =EDGE_SEL;
     DBG_SPI("\nTest_SPI1PRAM_SPI0_ARAM");
   /******************************************/
     DMA_END_EI  =0;
     ISP_STOP_EI = 1;  
 
-    ucpAsmram =ARAM_START_ADDRESS+1;
+    ucpAsmram =DRAM8K_START_ADDRESS+1;
     
     AFEACKEN = 1;
     ARAM_SEL = 1;   /* ARAM_SEL: 1: Mcu write and read; 0: others */
-    for (i = 0; i < NUM_B; i++)
+    for (i = 0; i < NUM_C; i++)
     {
      
         DRAMBUF[i] = (32+i)&0XFF;
         *(ucpAsmram+i) = (UINT8)((0xC0+i)&0XFF);
     }
 
-    for (i = 0; i < NUM_B; i++)
+    for (i = 0; i < NUM_C; i++)
     {     
         //*(ucpAsmram+i) = (~i )&0xff;
         PRAM2_ADDR8(i)=(i+0X50)&0xff;     
     }
     
-    for (i = 0; i < NUM_B; i++)
+    for (i = 0; i < NUM_C; i++)
     {
         if (i%16 == 0)
         {
@@ -919,7 +1456,7 @@ void Test_SPI1PRAM_SPI0_ARAM(void)
     DBG_SPI("\n SPI1CON=%02x ",SPI1CON);    
     DBG_SPI("\n DSV_CON=%02x ",DSV_CON);
     DBG_SPI("\nSPI1_CURR_MODE=%02x ",SPI1_CURR_MODE);
-    SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)(NUM_B),DMA_MEM_ARAM);
+    SPI0_DMA_SetAddr((UINT32)ucpAsmram,(UINT32)(NUM_C),DMA_MEM_DRAM8K);
 
 #if FPGA_BUS_SEL
     reg=SYSCON;
@@ -953,7 +1490,7 @@ void Test_SPI1PRAM_SPI0_ARAM(void)
 
         
         //SPI1_Write(DRAMBUF,NUM_B);
-        SPI1_Write(PRAM2_PTR8(0),NUM_B);
+        SPI1_Write(PRAM2_PTR8(0),NUM_C);
         
         SPI0_DMA_Wait_Done();
      
@@ -974,7 +1511,7 @@ void Test_SPI1PRAM_SPI0_ARAM(void)
 
         
         #if 1
-        for (i = 0; i < NUM_B; i++)
+        for (i = 0; i < NUM_C; i++)
         {
             //if (DRAMBUF[i] != *(ucpAsmram+i))
             if (PRAM2_ADDR8(i) != *(ucpAsmram+i))    
@@ -999,18 +1536,18 @@ void Test_SPI1PRAM_SPI0_ARAM(void)
         DMA_CLR_RI_DIS|DMA_CLR_TI_DIS|DMA_EN));
         DBG_SPI("\n test dma read aram");
         //SPI1_Read(&DRAMBUF[NUM_B],NUM_B);
-        SPI1_Read(PRAM2_PTR8(NUM_B),NUM_B);
+        SPI1_Read(PRAM2_PTR8(NUM_C),NUM_C);
         SPI0_DMA_Wait_Done();
 
 #if 1
-        for (i = 0; i < NUM_B; i++)
+        for (i = 0; i < NUM_C; i++)
         {
             //if (DRAMBUF[i] != DRAMBUF[NUM_B+i])
             //if (*(ucpAsmram+i) != DRAMBUF[NUM_B+i]) 
-            if (*(ucpAsmram+i) != PRAM2_ADDR8(NUM_B+i))
+            if (*(ucpAsmram+i) != PRAM2_ADDR8(NUM_C+i))
             {
                 DBG_SPI("\ntest read err=%lx\n",i);
-                DBG_SPI("DRAM=%02x,ARAM=%02x ",DRAMBUF[NUM_B+i],*(ucpAsmram+i));
+                DBG_SPI("DRAM=%02x,ARAM=%02x ",DRAMBUF[NUM_C+i],*(ucpAsmram+i));
                 HOLD;
             }
             if (i%16 == 0)
@@ -1024,10 +1561,10 @@ void Test_SPI1PRAM_SPI0_ARAM(void)
         wait_printf_done();
         
 #endif  
-    for (i = 0; i < NUM_B; i++)
+    for (i = 0; i < NUM_C; i++)
     {
      
-        PRAM2_ADDR8(NUM_B+i) = 0X55;
+        PRAM2_ADDR8(NUM_C+i) = 0X55;
         *(ucpAsmram+i) = 0XAA;
     }
      //   DelayMs(1000);
@@ -1051,7 +1588,7 @@ void Test_SPI1DMA_SPI0DMA(void)
     
     SPI1_Init();
     SPI0_REG_Init();
-    SPI0_EDGE_SEL =1;
+    SPI0_EDGE_SEL =EDGE_SEL;
     SPI1_CLK_SET(SPI1_12M);
     
     DBG_SPI("\nTest_SPI1DMA_SPI0DMA");
@@ -1243,21 +1780,32 @@ void Test_DMA(void)
 
     while(1)
     {
-        //Test_DMA_MEM(DMA_MEM_ARAM);
-        Test_SPI1PRAM_SPI0_ARAM();
+        //Test_DMA_MEM(DMA_MEM_DRAM8K);
+
+        //Test_SPI1PRAM_SPI0_DRAM8K();
         //Test_SPI1DRAM_SPI0_ARAM();
-        Test_SPI1DMA_SPI0DMA();
+        //Test_SPI1DMA_SPI0DMA();
+        
+        #if 0 //dma1 r dma2 w
+        //Test_DUALDRAM_SPI0_MEM_1(DMA_MEM_ARAM,DMA_MEM_ARAM);
+        Test_DUALDRAM_SPI0_MEM_1(DMA_MEM_DRAM8K,DMA_MEM_DRAM8K);
+        //Test_DUALDRAM_SPI0_MEM_1(DMA_MEM_ARAM,DMA_MEM_DRAM8K);
+        //Test_DUALDRAM_SPI0_MEM_1(DMA_MEM_DRAM8K,DMA_MEM_ARAM);
+        #else //dma1 w dma2 r
+        //Test_DUALDRAM_SPI0_MEM_2(DMA_MEM_ARAM,DMA_MEM_ARAM);
+        Test_DUALDRAM_SPI0_MEM_2(DMA_MEM_DRAM8K,DMA_MEM_DRAM8K);
+        //Test_DUALDRAM_SPI0_MEM_2(DMA_MEM_ARAM,DMA_MEM_DRAM8K);//m
+        //Test_DUALDRAM_SPI0_MEM_2(DMA_MEM_DRAM8K,DMA_MEM_ARAM);
+        #endif
+
     }
 }
 
 
-/*******************************************************************************
-*   Name: SPI0_DMA_STOP_ISR
-*  Brief: 
-*  Input:
-* Output:
-* Return:
-*******************************************************************************/
+
+
+
+
 
 void SPI0_DMA_STOP_ISR(void) interrupt 8
 {
@@ -1280,6 +1828,8 @@ void SPI0_DMA_STOP_ISR(void) interrupt 8
     }
     
 }
+
+
 
 
 #endif//if _SPI0_DMA_EN

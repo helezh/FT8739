@@ -194,7 +194,7 @@ void SPI_Init(void)
     SPI1CON3 =0;
     SPI1CON4 =0X10;
     /* IO配置: P10-->P13 */
-    P1MOD = 0xFF;//9f;
+    P1MOD = 0x9f;//0x0F;//9f;
     P1SEL = 0xff;
     P1SEL &= ~(SPI1_SI_PIN|SPI1_SO_PIN|SPI1_HOLD_PIN|SPI1_WP_PIN);
     
@@ -210,7 +210,7 @@ void SPI_Init(void)
     SPI1PO = 0;
 
     //SPI分频配置
-    SPI1CKH  = 0;
+    SPI1CKH  = 1;
     SPI1CKM  = 0;
     SPI1CKL  = 0;                // 00：4分频
 
@@ -762,7 +762,7 @@ BOOLEAN SPIFLASHRead_ID(void)
 *******************************************************************************/
 void test_readwrite_1k_flash(UINT8 temp,UINT8 *buf1,UINT8 *buf2)
 {
-    UINT16 i;
+    UINT16 i,j;
     #if 1
     /*********EraseSector*****************/
     SPIFlash_EraseSector(0);      //Erase 第一扇区，只有先擦除后才能写入
@@ -854,14 +854,14 @@ void test_readwrite_1k_flash(UINT8 temp,UINT8 *buf1,UINT8 *buf2)
 * Output:
 * Return:
 *******************************************************************************/
-#define     SECTOR_N    ((UINT16)30)
+#define     SECTOR_N    ((UINT16)11)
 
 void test_readwirte_flash_to_dram(UINT8 *buf1,UINT8 *buf2)
 {
    UINT16 i,j,k=1,ucTmp;
     UINT8    arr[16]={0x12,0x45,0x67,0x89,0xAB,0x24,0x79,\
         0x68,0x86,0x69,0x6A,0XA7,0xB1,0x56,0x76,0x81};
-   #if 0
+   #if 1
    /*********EraseSector*****************/
     SPIFlash_EraseSector(SECTOR_N);      //Erase 第一扇区，只有先擦除后才能写入
     DelayMs(1500);
@@ -897,10 +897,11 @@ void test_readwirte_flash_to_dram(UINT8 *buf1,UINT8 *buf2)
 
     
 
- 
+    while(1)
+    {
     /********FastRead*******************/ 
-    DBG_SPI("\n\rSPI read 32 bytes from address 0:\n");
-    DelayMs(1000);
+    DBG_SPI("\n\rSPI read 256 bytes from address 0:\n");
+    DelayMs(100);
     SPIFlash_FastRead(SECTOR_N*SECTOR_SIZE,buf2,SPI_FLASH_LEN);
 
     
@@ -980,7 +981,7 @@ void test_readwirte_flash_to_dram(UINT8 *buf1,UINT8 *buf2)
 
 #endif
    }
-
+   }
 
 }
 /*******************************************************************************
@@ -992,7 +993,7 @@ void test_readwirte_flash_to_dram(UINT8 *buf1,UINT8 *buf2)
 *******************************************************************************/
 void Test_SPI_Flash()
 {
-    UINT16 i;
+    UINT16 i,j;
     UINT8  XRAM buf1[SPI_FLASH_LEN];
     UINT8  XRAM buf2[SPI_FLASH_LEN];
 
@@ -1006,6 +1007,7 @@ void Test_SPI_Flash()
     
     Flash_WP =1;
     Flash_HOLD = 1;   //默认复位，这里释放复位，flash开始工作
+    //EXTMCKEN  = 0;
 
     while(0)
     {
@@ -1046,7 +1048,7 @@ void Test_SPI_Flash()
     DBG_SPI("\nSPI1CON == %02x",SPI1CON);    
    
 
-#if 1
+#if 0
     //while(1)
     {
         test_readwirte_flash_to_dram(buf1,buf2);

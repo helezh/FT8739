@@ -826,8 +826,8 @@ void Test_SFR()
     DBG_MODE("\n\rSFR Write test");
 
     DBG_SFR("\n\r\n\rSSCG:");
-    Test_WriteSFR(0xF5,0x33,0x00);//SSCGCON
-    Test_WriteSFR(0xF6,0xFF,0x00);//SSCGCON1  
+    Test_WriteSFR(0xF5,0x33,0x00);//SSCG_CON0
+    Test_WriteSFR(0xF6,0xFF,0x00);//SSCG_CON1  
 
     DBG_SFR("\n\r\n\rSPI0:");
     Test_WriteSFR(0xA3,0xEF,0x00);//SPI0CON2
@@ -938,19 +938,20 @@ void Test_SFR()
     Test_WriteSFR(0xFF,0x3F,0x00);//LED_H_NUM_SFR
 
     DBG_SFR("\n\r\n\rMEMBIST");
-    Test_WriteSFR(0xD2,0xFF,0x00);//MEMBIST_EN_ID1
+    //Test_WriteSFR(0xD2,0xFF,0x00);//MEMBIST_EN_ID1
     Test_WriteSFR(0xD3,0x0F,0x00);//MEMBIST_EN_ID2
 
     DBG_SFR("\n\r\n\rOTHER");
     Test_WriteSFR(0xF8,0x3F,0x00);//AIPL    
     Test_WriteSFR(0xF7,0x3F,0x00);//AIPH
     Test_WriteSFR(0xE8,0x3F,0x00);//AIE   
-    //Test_WriteSFR(0xC0,0x3F,0x00);//AIF
+    //Test_WriteSFR(0xC0,0x3F,0x00);//AIF RO
     Test_WriteSFR(0xB8,0x3F,0x00);//IPL0
-    //Test_WriteSFR(0xBE,0x3F,0x00);//SPH    
-    Test_WriteSFR(0xB7,0x3F,0x00);//IPH0  
+    //Test_WriteSFR(0xBE,0x3F,0x00);//SPH--MCU×Ô´øµÄSFR--stack pointer high    
+    Test_WriteSFR(0xB7,0x3F,0x00);//IPH0      
     Test_WriteSFR(0xA8,0xFF,0x00);//IEN0
-
+    Test_WriteSFR(0x99,0x04,0x00);//WDTCON^2
+    
     DBG_MODE("\n\rSFR write and read is end!\n");
 }
 #endif

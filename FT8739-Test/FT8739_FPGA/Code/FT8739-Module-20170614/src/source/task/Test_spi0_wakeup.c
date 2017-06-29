@@ -28,7 +28,6 @@
 
 UINT8 g_ucSPI0cmd  = 0x00;
 UINT8 g_wkup_stop = 0;
-UINT8 g_CMDbuff[5];
 /******************R*************************************************************
 * 3.Private enumerations, structures and unions using typedef
 *******************************************************************************/
@@ -64,7 +63,8 @@ void ExternInt0Init(void)
     IPLX0 = 1;
     IPHX0 = 1;
 
-    //Uart_IPL = 1;
+    Uart_IPH = 1;
+    Uart_IPL = 0;
 
     EX0 = 1;
 
@@ -96,17 +96,15 @@ void DrvHostSpi0Init(void)
     
     SPI0_EI = 0;
     
-
-
-
-
     //中断标志使能
     SPI0RI_EN = 1;
     SPI0TI_EN = 0;
 
     SPI0RX_AUTO_CLR =1;
     SPI0TX_AUTO_CLR =1;
-   
+
+
+    ISP_STOP_EI = 1;    
     SPI0_STOP_EN = 1;
     SPI0_STOP_CLR= 1;
     
@@ -147,6 +145,7 @@ void Test_SPI0_Wakeup(void)
             DBG_SPI0WK("\nStart SPI0 wakeup...Idle");
             DelayMs(100);
             //配置中断0的中断源
+            SPI0_WK_CLR   = 1;//需要清除中断标志，否则会误进1次int0中断             
             ISP_MON_WKEN  = 1; 
             SPI0_WKEN     = 1;
             
@@ -161,6 +160,7 @@ void Test_SPI0_Wakeup(void)
             DBG_SPI0WK("\nStart SPI0 wakeup...Standby");
             DelayMs(100);
             //配置中断0的中断源
+            SPI0_WK_CLR   = 1;//需要清除中断标志，否则会误进1次int0中断 
             ISP_MON_WKEN  = 1;
             SPI0_WKEN     = 1;
                     
@@ -174,6 +174,7 @@ void Test_SPI0_Wakeup(void)
             DBG_SPI0WK("\nStart SPI0 wakeup...Stop");
             DelayMs(100);
             //配置中断0的中断源
+            SPI0_WK_CLR   = 1;//需要清除中断标志，否则会误进1次int0中断 
             ISP_MON_WKEN  = 1;
             SPI0_WKEN     = 1;  
 
@@ -184,15 +185,7 @@ void Test_SPI0_Wakeup(void)
             DrvSysPowerStop();
             DBG_SPI0WK("\nWake up in Stop");
             DelayMs(100);
-            if(g_wkup_stop == 1)
-            {
-                DBG_SPI0WK("\n\rSPI0_STATE = %02x",g_CMDbuff[0]);
-                DBG_SPI0WK("\n\rSPI0_CMD0 = %02x",g_CMDbuff[1]);
-                DBG_SPI0WK("\n\rSPI0_CMD1 = %02x",g_CMDbuff[2]);
-                DBG_SPI0WK("\n\rSPI0_CMD2 = %02x",g_CMDbuff[3]);
-                DBG_SPI0WK("\n\rSPI0_CMD3 = %02x",g_CMDbuff[4]);
-                DBG_SPI0WK("\nWake up in stop");               
-            }
+  
             g_ucSPI0cmd = 0;
             g_ucSPI0cmd = SPI0Wakeup_NOP;
             
@@ -218,7 +211,7 @@ void isr0(void) interrupt 0
          
     if ((g_ucSPI0cmd > 0)&&(g_ucSPI0cmd < 4))
     {
-		ISP_MON_WKEN  = 0;        
+        ISP_MON_WKEN  = 0;        
     }
 }
 

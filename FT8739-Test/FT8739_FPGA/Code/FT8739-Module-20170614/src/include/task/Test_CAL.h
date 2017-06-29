@@ -43,9 +43,9 @@
 #define  TEST_CAL_LDS_EN        0   // 矩阵点对应距离运算
 #define  TEST_CAL_MDS_EN        0   // 两列点的矩阵运算  (Tx,Rx均必须<=11)
 #define  TEST_CAL_CHK_EN        0   // 均匀度检查
-#define  TEST_CAL_CRC_EN        0   // CRC校验
+#define  TEST_CAL_CRC_EN        1   // CRC校验
 #define  TEST_CAL_XORSUM_EN     0   // xor异或校验
-#define  TEST_CAL_AMOV_EN       0  // AMOV    (以下为扩展算法)
+#define  TEST_CAL_AMOV_EN       0   // AMOV    (以下为扩展算法)
 #define  TEST_CAL_AVG_TX_EN     0   // 行均值算法 
 #define  TEST_CAL_AVG_RX_EN     0   // 列均值算法
 #define  TEST_CAL_AVG2_TX_EN    0   // 去掉范围外的值后行均值算法
@@ -110,10 +110,10 @@
 
 #endif
 
-#define  TEST_CAL_INT_EN        0   /* Cal模块中断打断测试,RTC打断，必须打开TEST_CAL_ADD_EN */
-#define  TEST_CAL_MOV_INT_EN    0   /* Cal模块中断打断测试,RTC打断，必须打开TEST_CAL_MOV_EN */
-#define  TEST_SPI0_CAL_INT_EN   1   /* Cal模块中断打断测试,SPI0打断 */
-#define  TEST_SPI0_DMA_INT_EN   1   /* Cal模块中断打断测试,启动SPI0 DMA,必须打开TEST_SPI0_CAL_INT_EN */
+#define  TEST_AMOVE_RTC_INT_EN  1   /* Cal模块中断打断测试,RTC打断,在rtc中断中调用amove */
+#define  TEST_SPI0_CAL_INT_EN   0   /* Cal模块中断打断测试,SPI0打断 */
+#define  TEST_SPI0_DMA_INT_EN   0   /* Cal模块中断打断测试,启动SPI0 DMA,必须打开TEST_SPI0_CAL_INT_EN */
+#define  TEST_IIC_CAL_INT       1   /* Cal模块中断打断测试,iic打断 */
 
 
 

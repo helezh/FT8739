@@ -21,7 +21,7 @@
 *******************************************************************************/
 #include <intrins.h>
 #include "CfgGlobal.h"
-#include "FT8836_Reg.h"
+#include "FT8835_Reg.h"
 #include "Drv_XBUS.h"
 #include "Test_Xbus.h"
 #if _TEST_XBUS_EN

@@ -35,8 +35,8 @@
  *            2. Keil C251 help document
  *
  *******************************************************************************/
-#ifndef __FT8836_H__
-#define __FT8836_H__
+#ifndef __FT8835_H__
+#define __FT8835_H__
 
 /* Conditional Compiler Options */
 
@@ -203,6 +203,7 @@ SFR CNT_MASK            = 0xF1; /*  7~4
                                     */      
 SFR CNT_STA             = 0xF2; /* ¸ù¾Ýcnt_maskµÄÖµ£¬¶Á³ö²»Í¬µÄcntÖµ*/
 SFR ANACON10            = 0xF3;
+SFR SPI0CON6            = 0xF4;
 SFR SSCG_CON0           = 0xF5;
 SFR SSCG_CON1           = 0xF6; /* sscg_step:sscg increase/decrease period(500us/step). sscg trim code will increase in every(500ns*(step+1))*/
 SFR AIPH                = 0xF7;
@@ -248,7 +249,7 @@ SBIT SPI0TI_EN              = SPI0CON2^0; /*0:½ûÖ¹²úÉú·¢ËÍÖÐ¶ÏÇëÇóÐÅºÅ;1:ÔÊÐí²úÉ
 
 /*SPI0CON3*/
 SBIT SPI0_WKEN              = SPI0CON3^7; /*spi wake up¹¦ÄÜÊ¹ÄÜÎ».0:disable;1:enable*/
-SBIT SPI0_DEGLITCH_EN       = SPI0CON3^6; /*0:csi deglitch disable;1:csi deglitch enable*/ 
+SBIT SPI0_CS_DEGLITCH_EN    = SPI0CON3^6; /*0:csi deglitch disable;1:csi deglitch enable*/ 
 SBIT SPI0_PHASE             = SPI0CON3^5; /*0:SPI0 phase 0 sel;1:SPI0 phase 1 sel*/
 SBIT SPI0_RI_PULSE_SEL      = SPI0CON3^4; /*0:rx_reg load at ti_ri_pulse falling edg;1:rx_reg load at ri_pulse rising edge*/
 //SBIT SPI0_CLR_NUM           = SPI0CON3^4; /*write 1 to clear byte num*/
@@ -268,6 +269,8 @@ SBIT DMA_END_CLR            = SPI0CON5^2;  /*Ð´1Çå³ýdma end flag*/
 SBIT SPI0RI_CLR             = SPI0CON5^1;  /*Ð´1Çå³ýSPI0RT*/
 SBIT SPI0TI_CLR             = SPI0CON5^0;  /*Ð´1Çå³ýSPI0TI*/
 
+/*SPI0CON6*/
+SBIT SPI0_WK_CLR            = SPI0CON6^0;  /*Ð´1Çå³ýSPI0 WAKEUP*/
 
 /*SPICLKDIV: 000:4·ÖÆµ;001:6·ÖÆµ;010:8·ÖÆµ;011:12·ÖÆµ;100:16·ÖÆµ;101:18·ÖÆµ;110:20·ÖÆµ;111:24·ÖÆµ*/
 /*SPI1CON*/
@@ -945,8 +948,11 @@ typedef enum
 #define PRAM_PTR8(n)     ((volatile UINT8 far *)((UINT32)0xFEE800 + (n)))
 #define PRAM2_PTR8(n)    ((volatile UINT8 far *)((UINT32)0xFF4000 + (n)))
 
-#define PROM_ADDR8(n)     (*((UINT8 far *)((UINT32)0xFD0000 + (n))))
-#define DRAM_ADDR8(n)     (*((UINT8 *)((UINT32)0x0000 + (n))))
+#define PROM_PTR8(n)     ((volatile UINT8 far *)((UINT32)0xFD0000 + (n)))
+#define PROM_ADDR8(n)     (*((UINT8 far *)(0xFD0000 + n)))
+
+#define DRAM_PTR8(n)     ((UINT8 far *)((UINT32)0x0000 + (n)))
+#define DRAM_ADDR8(n)     (*((UINT8 *)(0x0000 + n)))
 
 
 #define PRAM_ADDR16(n)     (*((UINT16 far *)(0xFEE800 + n)))

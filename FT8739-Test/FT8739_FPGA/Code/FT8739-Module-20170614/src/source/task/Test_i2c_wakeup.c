@@ -147,6 +147,17 @@ void Test_I2CWakeup(void)
             DrvSysPowerIdle();
             DelayMs(1);
             DBG_I2CWK("\nWake up in idle");
+            if(g_wkup_stop == 1)
+            {
+                DBG_I2CWK("\n\rI2C_STATE = %02x",g_CMDbuff[0]);
+                DBG_I2CWK("\n\rI2C_CMD0 = %02x",g_CMDbuff[1]);
+                DBG_I2CWK("\n\rI2C_CMD1 = %02x",g_CMDbuff[2]);
+                DBG_I2CWK("\n\rI2C_CMD2 = %02x",g_CMDbuff[3]);
+                DBG_I2CWK("\n\rI2C_CMD3 = %02x",g_CMDbuff[4]);
+                             
+            }   
+            
+       
             g_ucI2Ccmd = 0;
         }
         if (g_ucI2Ccmd == I2CWakeup_Standby)
@@ -161,6 +172,15 @@ void Test_I2CWakeup(void)
             DrvSysPowerStandby();
             DelayMs(1);
             DBG_I2CWK("\nWake up in standby");
+            if(g_wkup_stop == 1)
+            {
+                DBG_I2CWK("\n\rI2C_STATE = %02x",g_CMDbuff[0]);
+                DBG_I2CWK("\n\rI2C_CMD0 = %02x",g_CMDbuff[1]);
+                DBG_I2CWK("\n\rI2C_CMD1 = %02x",g_CMDbuff[2]);
+                DBG_I2CWK("\n\rI2C_CMD2 = %02x",g_CMDbuff[3]);
+                DBG_I2CWK("\n\rI2C_CMD3 = %02x",g_CMDbuff[4]);
+                             
+            }            
             g_ucI2Ccmd = 0;
         }
         if (g_ucI2Ccmd == I2CWakeup_Stop)
@@ -176,6 +196,8 @@ void Test_I2CWakeup(void)
 
             DrvSysPowerStop();
             DelayMs(100);
+            DBG_I2CWK("\nWake up in stop");  
+            DBG_I2CWK("\n I2C_WK_STOP = %02x",I2C_WK_STOP);
             if(g_wkup_stop == 1)
             {
                 DBG_I2CWK("\n\rI2C_STATE = %02x",g_CMDbuff[0]);
@@ -183,7 +205,7 @@ void Test_I2CWakeup(void)
                 DBG_I2CWK("\n\rI2C_CMD1 = %02x",g_CMDbuff[2]);
                 DBG_I2CWK("\n\rI2C_CMD2 = %02x",g_CMDbuff[3]);
                 DBG_I2CWK("\n\rI2C_CMD3 = %02x",g_CMDbuff[4]);
-                DBG_I2CWK("\nWake up in stop");               
+                             
             }
             g_ucI2Ccmd = 0;
             
@@ -245,7 +267,6 @@ void I2C_IRQHandler(void) interrupt 5
     if (TIFLAG)
     {
         TIFLAG = 0;
-        I2CBUF = 0x5a;
     }
 }
 

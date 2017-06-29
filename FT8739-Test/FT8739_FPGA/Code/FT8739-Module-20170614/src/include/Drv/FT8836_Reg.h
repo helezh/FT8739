@@ -13,31 +13,40 @@
 *
 *******************************************************************************/
 
-#ifndef _FT8836_REG_H_
-#define _FT8836_REG_H_
+#ifndef _FT8835_REG_H_
+#define _FT8835_REG_H_
 
 /* Conditional Compiler Options */
 
 /*******************************************************************************
 * Included files
 *******************************************************************************/
-#include "FT8836.h"
+#include "FT8835.h"
 
 /*******************************************************************************
 * Global constant and macro definitions using #define
 *******************************************************************************/
-#define ARAM_DATA_BASE_ADDR   0xA000
-#define SPI1_REG_BASE_ADDR               0xB220
+#define ARAM_DATA_BASE_ADDR              0xA000
+#define SPI1_DMA_BASE_ADDR               0xB210
 /* SPI0 reg Start Addr */
-#define SPI0_REG_BASE_ADDR               0xB200
+#define SPI0_DMA_BASE_ADDR               0xB200
+#define SPI0_DMA2_BASE_ADDR              0xB220
 
-#define SPI0_DMA_CTRL                    REG16(SPI0_REG_BASE_ADDR+(0x00<<1))
-#define SPI0_DMA_ERR_TIMEOUT_CTRL        REG16(SPI0_REG_BASE_ADDR+(0x01<<1))
-#define SPI0_DMA_ADDR_H                  REG16(SPI0_REG_BASE_ADDR+(0x02<<1))
-#define SPI0_DMA_START_ADDR_L            REG16(SPI0_REG_BASE_ADDR+(0x03<<1))            
-#define SPI0_DMA_END_ADDR_L              REG16(SPI0_REG_BASE_ADDR+(0x04<<1))         
-#define SPI0_DMA_CRC                     REG16(SPI0_REG_BASE_ADDR+(0x05<<1))
-#define SPI0_DMA_SRCR                    REG16(SPI0_REG_BASE_ADDR+(0x06<<1))
+#define SPI0_DMA_CTRL                    REG16(SPI0_DMA_BASE_ADDR+(0x00<<1))
+#define SPI0_DMA_ERR_TIMEOUT_CTRL        REG16(SPI0_DMA_BASE_ADDR+(0x01<<1))
+#define SPI0_DMA_ADDR_H                  REG16(SPI0_DMA_BASE_ADDR+(0x02<<1))
+#define SPI0_DMA_START_ADDR_L            REG16(SPI0_DMA_BASE_ADDR+(0x03<<1))            
+#define SPI0_DMA_END_ADDR_L              REG16(SPI0_DMA_BASE_ADDR+(0x04<<1))         
+#define SPI0_DMA_CRC                     REG16(SPI0_DMA_BASE_ADDR+(0x05<<1))
+#define SPI0_DMA_FLAG                    REG16(SPI0_DMA_BASE_ADDR+(0x06<<1))
+
+#define SPI0_DMA2_CTRL                   REG16(SPI0_DMA2_BASE_ADDR+(0x00<<1))
+#define SPI0_DMA2_ADDR_H                 REG16(SPI0_DMA2_BASE_ADDR+(0x02<<1))
+#define SPI0_DMA2_START_ADDR_L           REG16(SPI0_DMA2_BASE_ADDR+(0x03<<1))            
+#define SPI0_DMA2_END_ADDR_L             REG16(SPI0_DMA2_BASE_ADDR+(0x04<<1))         
+#define SPI0_DMA2_CRC                    REG16(SPI0_DMA2_BASE_ADDR+(0x05<<1))
+#define SPI0_DMA2_FLAG                   REG16(SPI0_DMA2_BASE_ADDR+(0x06<<1))
+
 /* XSI reg 控制区 */
 
 /* XSI0 reg start addr */
@@ -180,6 +189,21 @@ typedef struct
     
 }ST_Spi0DmaRegisters;
 
+
+/*SPI0_DAM2 reg*/
+typedef struct
+{
+    UINT16 dma2_ctrl;
+    UINT16 reserved;
+    UINT16 dma2_addr_h;
+    UINT16 dma2_start_addr_l;
+    UINT16 dma2_end_addr_l;
+    UINT16 dma2_crc;
+    UINT16 dma2_flag;
+}ST_Spi0Dma2Registers;
+
+
+
 /*SPI1_DMA reg*/
 typedef struct
 {
@@ -232,16 +256,16 @@ typedef struct
     UINT16 usAsmAramCBL;          // 26
     UINT16 usAsmAramCBR;          // 27
     UINT16 usAsmAramCBKey;        // 28
-    UINT16 usAsmReserve0;         // 29 未定义
+    UINT16 usAsmTailMargin;       // 29 
     UINT16 usAsmReserve1;         // 30 未定义
     UINT16 usAsmReserve2;         // 31 未定义
-    UINT16 usAsmHwMonCrtl0;       // 32
-    UINT16 usAsmHwMonCtrl1;       // 33
-    UINT16 usAsmHwMonCfg0;        // 34
-    UINT16 usAsmHwMonCfg1;        // 35
-    UINT16 usAsmHwMonCfg2;        // 36
-    UINT16 usAsmHwMonCfg3;        // 37
-    UINT16 usAsmHwMonCfg4;        // 38
+    UINT16 usAsmPwrCtrl;          // 32
+    UINT16 usAsmPwrSta;           // 33
+    UINT16 usAsmPwrInterval0;     // 34
+    UINT16 usAsmPwrInterval1;     // 35
+    UINT16 usAsmPwrInterval2;     // 36
+    UINT16 usAsmPwrInterval3;     // 37
+    UINT16 usAsmPwrInterval4;     // 38
     UINT16 usAsmHwMonTimer;       // 39
     UINT16 usAsmVreshCfgLcdon;    // 40
 } ST_AsmRegisters;

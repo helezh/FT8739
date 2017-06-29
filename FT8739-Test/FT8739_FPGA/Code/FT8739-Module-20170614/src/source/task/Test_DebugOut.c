@@ -151,7 +151,7 @@ typedef enum
 *******************************************************************************/
 void Test_CLk48M(void)
 {
-	UINT8 ucDiv = 5;
+    UINT8 XRAM ucDiv = 5;
     #if _UART_OUT_GPIO2
         DBG_DEBUGOUT("\nP0_6 is used to be UART TX pad!");
         return;
@@ -187,9 +187,9 @@ void Test_CLk48M(void)
 *******************************************************************************/
 void Test_CLk32K(void)
 {
-	UINT8 ucDiv = 0;//分频系数.0,1,2为2分频;其他按实际配置分频
-	UINT8 ucSrc = 2;//3:32k_from_1m;2:32k_dig;1:32k osc;0:48m
-	
+    UINT8 XRAM ucDiv = 3;//分频系数.0,1,2为2分频;其他按实际配置分频
+    UINT8 XRAM ucSrc = 2;//3:32k_from_1m;2:32k_dig;1:32k osc;0:48m
+
     #if _UART_OUT_GPIO2
         DBG_DEBUGOUT("\nP0_6 is used to be UART TX pad!");
         return;

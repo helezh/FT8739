@@ -1,54 +1,45 @@
 /*******************************************************************************
-* Copyright (C) 2017-2019, FocalTech Systems (R)£¬All Rights Reserved.
+* Copyright (C) 2016-2018, FocalTech Systems (R)£¬All Rights Reserved.
 *
-* File Name: Drv_XBUS.h
+* File Name: Test_RAM.h
 *
 *    Author: tangsujun
-*   Created: 2017-03-22
 *
-*  Abstract:
+*   Created: 2017-04-28
+*
+*  Abstract: 
 *
 * Reference:
 *
-*   Version:CRC 0X020304 0305
-*
 *******************************************************************************/
-#ifndef __DRV_XBUS_H__
-#define __DRV_XBUS_H__
+#ifndef _TEST_RAM_H__
+#define _TEST_RAM_H__
 
 /*******************************************************************************
-* 1.Included files
+* Included files
 *******************************************************************************/
 #include "CfgGlobal.h"
-#include "FT8835_Reg.h"
 
 /*******************************************************************************
-* 2.Global constant and macro definitions using #define
+* Global constant and macro definitions using #define
+*******************************************************************************/
+#if _TEST_RAM_EN
+/*******************************************************************************
+* Global structures, unions and enumerations using typedef
 *******************************************************************************/
 
 /*******************************************************************************
-* 3.Global structures, unions and enumerations using typedef
+* Global variable extern declarations
 *******************************************************************************/
 
 /*******************************************************************************
-* 4.Global variable extern declarations
+* Global function prototypes
 *******************************************************************************/
-//extern ST_RlDmaRegisters * XRAM pRlDmaRegs;
-extern ST_LcdWrapRegisters *XRAM pLcdWrapRegs;
+void Test_RAM_IN_PROM(void);
 
-/*******************************************************************************
-* 5.Global function prototypes
-*******************************************************************************/
-void Drv_XbusInit(void);
-UINT16 DrvXbus_ReadLcd16(UINT16 usaddr);
-void DrvXbus_WriteLcd8(UINT16 usaddr,UINT8 usdata);
-void DrvXbus_WriteLcd16(UINT16 usaddr,UINT16 usdata);
-void DrvXbus_WriteInitCode(void);
-#if _TEST_XBUS_EN
-void Test_Xbus(void);
 #else
-#define Test_Xbus  /##/
-#endif
+#define Test_RAM_IN_PROM(void) /##/
 
 #endif
 
+#endif

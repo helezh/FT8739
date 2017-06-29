@@ -74,12 +74,12 @@
 #define INT0_ASM_SRC0                INT0_LCD_VSTART
 #define INT0_ASM_SRC1                INT1_LCD_3D_MODE_FALL
 
-#define INT0_LCD_SRC                 INT1_LCD_RUN//INT1_LCD_DSTB
-
-#if 1//(INT0_LCD_SRC == INT1_LCD_RUN)
-#define INT0_LCD_PHASE  LCD_RUN_INTPHASE
-#elif (INT0_LCD_SRC == INT1_LCD_DSTB)
-#define INT0_LCD_PHASE  LCD_DSTB_INTPHASE
+#if 1
+#define INT0_LCD_SRC                 INT1_LCD_RUN
+#define INT0_LCD_PHASE               LCD_RUN_INTPHASE
+#else
+#define INT0_LCD_SRC                 INT1_LCD_DSTB
+#define INT0_LCD_PHASE               LCD_DSTB_INTPHASE
 #endif
 
 #define SLEEPOUT                     DrvXbus_WriteLcd8(0x1100,0x00)
